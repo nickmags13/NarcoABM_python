@@ -27,4 +27,11 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
         xpay_noevent[i] = pay_noevent(i)  # payoff for route A with no S&L event
         xpay_event[i] = pay_event(i)   # payoff for route A with S&L event
 
+    for i in np.arange(1, len(c_trans) + 1):
+        inset = np.where(dtonei == dtonei(i))
+        ypay_noevent[i] = np.mean(pay_noevent(inset != i))
+        ypay_event[i] = np.mean(pay_event(inset != i))
+        value_noevent[i] = np.abs(ypay_noevent(i) - xpay_noevent(i)) / (
+                    np.abs(ypay_noevent(i)) + np.abs(xpay_noevent(i)) + 1)
+
     return neipick, neivalue, valuex
