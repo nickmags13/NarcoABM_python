@@ -19,19 +19,35 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
     salwght_event = np.zeros(len(c_trans), 1)
     valuex = np.zeros(len(c_trans), 1)
     valuey = np.zeros(len(c_trans), 1)
-    iset = np.arange(1, len(c_trans) + 1)
+    iset = np.arange(0, len(c_trans))
 
-    for i in np.arange(1, len(c_trans)+1):
+    for i in np.arange(1, len(c_trans) + 1):
         pay_noevent[i] = y_node(i) * q_node(i) - c_trans(i) * q_node(i)  # payoff with no S&L event
         pay_event[i] = y_node(i) * q_node(i) - c_trans(i) * q_node(i) - y_node(i) * q_node(i)  # payoff with S&L event
         xpay_noevent[i] = pay_noevent(i)  # payoff for route A with no S&L event
-        xpay_event[i] = pay_event(i)   # payoff for route A with S&L event
+        xpay_event[i] = pay_event(i)  # payoff for route A with S&L event
 
-    for i in np.arange(1, len(c_trans) + 1):
+    for i in np.arange(0, len(c_trans)):
         inset = np.where(dtonei == dtonei(i))
         ypay_noevent[i] = np.mean(pay_noevent(inset != i))
         ypay_event[i] = np.mean(pay_event(inset != i))
-        value_noevent[i] = np.abs(ypay_noevent(i) - xpay_noevent(i)) / (
-                    np.abs(ypay_noevent(i)) + np.abs(xpay_noevent(i)) + 1)
+        value_noevent[i] = np.abs(ypay_noevent(i) - xpay_noevent(i)) / (np.abs(ypay_noevent(i)) +
+                                                                        np.abs(xpay_noevent(i)) + 1)
+        value_event[i] = np.abs(ypay_event(i) - xpay_event(i)) / (np.abs(ypay_event(i)) + np.abs(xpay_event(i)) + 1)
+        __, ipntlval = np.sort(np.array([value_noevent(i), value_event(i)]), 2, 'descend')
+        ival_noevent[i] = ipntlval(1)
+        ival_event[i] = ipntlval(2)
+        dwght_noevent[i] = (lccf ** ival_noevent(i)) / ((lccf ** ival_noevent(i)) * (1 - p_sl(i)) +
+                                                        (lccf ** ival_event(i)) * p_sl(i))
+        dwght_event[i] = (lccf ** ival_event(i)) / ((lccf ** ival_noevent(i)) * (1 - p_sl(i)) +
+                                                    (lccf ** ival_event(i)) * p_sl(i))
+        salwght_noevent[i] = (1 - p_sl(i)) * dwght_noevent(i)
+        salwght_event[i] = p_sl(i) * dwght_event(i)
+        valuey[i] = salwght_noevent(i) * ypay_noevent(i) + salwght_event(i) * ypay_event(i)
+        valuex[i] = salwght_noevent(i) * xpay_noevent(i) + salwght_event(i) * xpay_event(i)
+
+    rankroute = np.sort(np.array(
+        [np.multiply(np.transpose(rtpref), valuex), np.transpose(p_sl), np.transpose(q_node), np.transpose(iset),
+         dtonei, np.transpose(totcpcty)]), - 1)
 
     return neipick, neivalue, valuex
