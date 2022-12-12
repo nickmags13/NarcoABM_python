@@ -56,5 +56,7 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
         icut = []
         for j in np.arange(0, len(dtos)):
             idto = np.where(rankroute[:, 5] == dtos[j])
+            if profmdl == 1:
+                if len(np.where(valuex(dtonei == dtos[j]) > 0, 1)) == 1:
 
     return neipick, neivalue, valuex
