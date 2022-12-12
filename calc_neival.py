@@ -34,7 +34,7 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
         value_noevent[i] = np.abs(ypay_noevent[i] - xpay_noevent[i]) / (np.abs(ypay_noevent[i]) +
                                                                         np.abs(xpay_noevent[i]) + 1)
         value_event[i] = np.abs(ypay_event[i] - xpay_event[i]) / (np.abs(ypay_event[i]) + np.abs(xpay_event[i]) + 1)
-        __, ipntlval = np.sort(np.array([value_noevent[i], value_event[i]]), 2, 'descend')
+        __, ipntlval = np.sort(np.array([value_noevent[i], value_event[i]]), 2, 'descend')  ## CHECK
         ival_noevent[i] = ipntlval[1]
         ival_event[i] = ipntlval[2]
         dwght_noevent[i] = (lccf ** ival_noevent[i]) / ((lccf ** ival_noevent[i]) * (1 - p_sl[i]) +
@@ -48,7 +48,7 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
 
     rankroute = np.sort(np.array(
         [np.multiply(np.transpose(rtpref), valuex), np.transpose(p_sl), np.transpose(q_node), np.transpose(iset),
-         dtonei, np.transpose(totcpcty)]), - 1)
+         dtonei, np.transpose(totcpcty)]), - 1)  # CHECK
 
     dtos = np.unique(dtonei(dtonei != 0))
 
@@ -57,6 +57,6 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
         for j in np.arange(0, len(dtos)):
             idto = np.where(rankroute[:, 5] == dtos[j])
             if profmdl == 1:
-                if len(np.where(valuex(dtonei == dtos[j]) > 0, 1)) == 1:
+                if len(np.where(valuex(dtonei == dtos[j]) > 0, 1)) == 1:  # CHECK
 
     return neipick, neivalue, valuex
