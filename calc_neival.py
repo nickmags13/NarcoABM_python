@@ -63,7 +63,7 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
                                                'first') + 1)))  # CHECK whether to start from 0 and should not have +1
                 elif len(np.where(rankroute[idto, 1] > 0, 1)) == 1:
                     subicut = np.where(rankroute[idto, 1] >= 0, edgechange[j], 'first')
-                elif len(np.where(np.cumsum(rankroute[idto,6]) >= totstock,1)) == 1:
+                elif len(np.where(np.cumsum(rankroute[idto, 6]) >= totstock, 1)) == 1:
                     subicut = np.where(rankroute[idto, 1] >= 0, edgechange[j], 'first')
                 else:
                     subicut = np.where(rankroute[idto, 1] >= 0, edgechange[j], 'first')
@@ -72,6 +72,48 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
                 icut = np.array([icut], [idto[subicut]])
             elif profmdl == 2:
                 if len(np.where(valuex(dtonei == dtos(j)) > 0, 1)) == 1:
+                    subicut = np.transpose(
+                        (np.arange(1, np.where(np.cumsum(rankroute[idto, 6]) >= totstock, edgechange(j),
+                                               'first') + 1)))
+                elif len(np.where(np.cumsum(rankroute[idto, 1]) > 0, 1)) == 1:
+                    subicut = np.where(rankroute[idto, 1] >= 0, edgechange[j], 'first')
+                elif len(np.where(np.cumsum(rankroute[idto, 6]) >= totstock, 1)) == 1:
+                    subicut = np.where(rankroute[idto, 1] >= 0, edgechange[j], 'first')
+                else:
+                    subicut = np.where(rankroute[idto, 1] >= 0, edgechange[j], 'first')  # CHECK why all else
+                    # subicut are same
+                if cutflag(dtos[j]) == 1:
+                    subicut = []
+                icut = np.array([icut], [idto[subicut]])
+            if rankroute[rankroute[: ,5] == 0, 1] > 0:
+                icut = np.array([[icut], [np.where(rankroute[:, 5] == 0)]])
+    else:
+        if profmdl == 1:
+            if len(np.where(valuex > 0, 1)) == 1:
+                if len(np.where(valuex > 0, 1)) == 1:
+                    icut = np.transpose((np.arange(1, np.where(np.cumsum(rankroute[:, 6]) >= totstock, 1, 'first')+1)))
+                elif len(np.where(rankroute[:,1] > 0,1)) == 1:
+                    volcut = np.transpose((np.arange(1, np.where(np.cumsum(rankroute[:, 6]) >= totstock, 1,
+                                                                 'first')+1)))
+                    valcut = np.where(rankroute[:, 1] >= 0)
+                    icut = np.isin(valcut, volcut)
+                elif len(np.find(np.cumsum(rankroute[:,6]) >= totstock,1)) == 1:
+                    icut = np.where(rankroute[:, 1] >= 0)
+                else:
+                    icut = np.where(rankroute[:, 1] >= 0)
+        elif profmdl == 2:
+            if len(np.where(valuex > 0, 1)) == 1:
+                icut = np.transpose((np.arange(1, np.where(np.cumsum(rankroute[:, 6]) >= totstock, 1, 'first')+1)))
+            elif len(np.where(np.cumsum(rankroute[:, 1]) > 0, 1)) == 1:
+                volcut = np.transpose((np.arange(1, np.where(np.cumsum(rankroute[:, 6]) >= totstock, 1, 'first')+1)))
+                valcut = np.where(np.cumsum(rankroute[:, 1]) >= 0)
+                icut = np.isin(valcut, volcut)
+            elif len(np.where(np.cumsum(rankroute[:, 6]) >= totstock, 1)) == 1:
+                icut = np.where(rankroute[:, 1] >= 0)
+            else:
+                icut = np.where(rankroute[:, 1] >= 0)
 
+    neipick = rankroute[icut, 4]
+    neivalue = rankroute[icut, 1]
 
     return neipick, neivalue, valuex
