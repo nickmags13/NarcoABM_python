@@ -46,6 +46,7 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
         valuey[i] = salwght_noevent[i] * ypay_noevent[i] + salwght_event[i] * ypay_event[i]
         valuex[i] = salwght_noevent[i] * xpay_noevent[i] + salwght_event[i] * xpay_event[i]
 
+    # Selection based on maximize profits while less than average S&L risk
     rankroute = np.sort(np.array(
         [np.multiply(np.transpose(rtpref), valuex), np.transpose(p_sl), np.transpose(q_node), np.transpose(iset),
          dtonei, np.transpose(totcpcty)]), - 1)  # CHECK
@@ -91,10 +92,11 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
         if profmdl == 1:
             if len(np.where(valuex > 0, 1)) == 1:
                 if len(np.where(valuex > 0, 1)) == 1:
-                    icut = np.transpose((np.arange(1, np.where(np.cumsum(rankroute[:, 6]) >= totstock, 1, 'first')+1)))
+                    icut = np.transpose(
+                        (np.arange(1, np.where(np.cumsum(rankroute[:, 6]) >= totstock, 1, 'first') + 1)))
                 elif len(np.where(rankroute[:, 1] > 0, 1)) == 1:
                     volcut = np.transpose((np.arange(1, np.where(np.cumsum(rankroute[:, 6]) >= totstock, 1,
-                                                                 'first')+1)))
+                                                                 'first') + 1)))
                     valcut = np.where(rankroute[:, 1] >= 0)
                     icut = np.isin(valcut, volcut)
                 elif len(np.find(np.cumsum(rankroute[:, 6]) >= totstock, 1)) == 1:
@@ -103,9 +105,9 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
                     icut = np.where(rankroute[:, 1] >= 0)
         elif profmdl == 2:
             if len(np.where(valuex > 0, 1)) == 1:
-                icut = np.transpose((np.arange(1, np.where(np.cumsum(rankroute[:, 6]) >= totstock, 1, 'first')+1)))
+                icut = np.transpose((np.arange(1, np.where(np.cumsum(rankroute[:, 6]) >= totstock, 1, 'first') + 1)))
             elif len(np.where(np.cumsum(rankroute[:, 1]) > 0, 1)) == 1:
-                volcut = np.transpose((np.arange(1, np.where(np.cumsum(rankroute[:, 6]) >= totstock, 1, 'first')+1)))
+                volcut = np.transpose((np.arange(1, np.where(np.cumsum(rankroute[:, 6]) >= totstock, 1, 'first') + 1)))
                 valcut = np.where(np.cumsum(rankroute[:, 1]) >= 0)
                 icut = np.isin(valcut, volcut)
             elif len(np.where(np.cumsum(rankroute[:, 6]) >= totstock, 1)) == 1:
