@@ -11,7 +11,7 @@ def lldistkm(latlon1, latlon2):
     deltaLat = lat2 - lat1
     deltaLon = lon2 - lon1
     a = np.sin((deltaLat) / 2) ** 2 + np.multiply(np.multiply(np.cos(lat1), np.cos(lat2)), np.sin(deltaLon / 2) ** 2)
-    c = 2.0 * atan2(np.sqrt(a), np.sqrt(1 - a))
+    c = 2.0 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
     d1km = np.multiply(radius, c)
 
     x = np.multiply(deltaLon, np.cos((lat1 + lat2) / 2))
