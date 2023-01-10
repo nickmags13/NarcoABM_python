@@ -33,8 +33,28 @@ def load_expmntl_parms(ERUNS):
     baserisk = 0.43 * np.ones((1, ERUNS))
     riskmltplr = 2 * np.ones((1, ERUNS))
 
+    startstock = 16000 * np.ones((1, ERUNS))
+    endstock = 292000 * np.ones((1, ERUNS))  # kg/month
 
-    return sl_max, sl_min, baserisk, riskmltplr, startstock, sl_learn, rt_learn, \
-           losslim, prodgrow, targetseize, intcpctymodel, profitmodel, endstock, growthmdl, \
-           timewght, locthink, expandmax, empSLflag, optSLflag, suitflag, extnetflag, rtcap, \
-           basecap, p_sucintcpt
+    sl_learn = 0.6 * np.ones((1, ERUNS))  # baseline; rate of interdiction learning
+    rt_learn = 0.3558 * np.ones((1, ERUNS))  # basline; rate of network agent learning
+
+    losslim = 0.05 * np.ones((1, ERUNS))
+
+    growthmdl = 2 * np.ones((1, ERUNS))
+    prodgrow = 0.5 * np.ones((1, ERUNS))
+
+    timewght = np.ones((1, ERUNS))  # time discounting for subjective risk perception (Gallagher, 2014), range[0,1.05]
+    locthink = 0.35 * np.ones((1, ERUNS))  # 'Local thinker' coefficient for salience function (Bordalo et al., 2012) -
+    # lower gives more weight to loss
+
+    targetseize = 0.3417 * np.ones((1, ERUNS))  # baseline; target portion of total flow to seize
+
+    intcpctymodel = np.ones((1, ERUNS))  # decreasing(1) or increasing(2) capacity response to missing target seizures
+
+    profitmodel = np.ones((1, ERUNS))  # profit maximization model for node selection: 1 is standard, 2 is cumulative
+    expandmax = 9 * np.ones((1, ERUNS))  # number of new nodes established per month
+
+    return sl_max, sl_min, baserisk, riskmltplr, startstock, sl_learn, rt_learn, losslim, prodgrow, targetseize, \
+           intcpctymodel, profitmodel, endstock, growthmdl, timewght, locthink, expandmax, empSLflag, optSLflag, \
+           suitflag, extnetflag, rtcap, basecap, p_sucintcpt
