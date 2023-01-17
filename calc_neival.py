@@ -22,10 +22,10 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
     iset = np.arange(0, c_trans.shape[1])
 
     for i in np.arange(0, c_trans.shape[1]):
-        pay_noevent[i] = y_node[i] * q_node[i] - c_trans[i] * q_node[i]  # payoff with no S&L event
-        pay_event[i] = y_node[i] * q_node[i] - c_trans[i] * q_node[i] - y_node[i] * q_node[i]  # payoff with S&L event
-        xpay_noevent[i] = pay_noevent[i]  # payoff for route A with no S&L event
-        xpay_event[i] = pay_event[i]  # payoff for route A with S&L event
+        pay_noevent[i, 0] = y_node[i, 0] * q_node[0, i] - c_trans[0, i] * q_node[0, i]  # payoff with no S&L event
+        pay_event[i, 0] = y_node[i, 0] * q_node[0, i] - c_trans[0, i] * q_node[0, i] - y_node[i, 0] * q_node[0, i]  # payoff with S&L event
+        xpay_noevent[i, 0] = pay_noevent[i, 0]  # payoff for route A with no S&L event
+        xpay_event[i, 0] = pay_event[i, 0]  # payoff for route A with S&L event
 
     for i in np.arange(0, c_trans.shape[1]):
         inset = np.where(dtonei == dtonei(i))
