@@ -29,12 +29,13 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
 
     for i in np.arange(0, c_trans.shape[1]):
         inset = np.where(dtonei == dtonei[i, 0])
-        ypay_noevent[i] = np.mean(pay_noevent(inset != i))
-        ypay_event[i] = np.mean(pay_event(inset != i))
-        value_noevent[i] = np.abs(ypay_noevent[i] - xpay_noevent[i]) / (np.abs(ypay_noevent[i]) +
-                                                                        np.abs(xpay_noevent[i]) + 1)
-        value_event[i] = np.abs(ypay_event[i] - xpay_event[i]) / (np.abs(ypay_event[i]) + np.abs(xpay_event[i]) + 1)
-        __, ipntlval = np.sort(np.array([value_noevent[i], value_event[i]]), 2, 'descend')  # CHECK
+        ypay_noevent[i,0] = np.mean(pay_noevent[inset != i, 0])
+        ypay_event[i, 0] = np.mean(pay_event[inset != i, 0])
+        value_noevent[i, 0] = np.abs(ypay_noevent[i, 0] - xpay_noevent[i, 0]) / (np.abs(ypay_noevent[i, 0]) +
+                                                                        np.abs(xpay_noevent[i, 0]) + 1)
+        value_event[i, 0] = np.abs(ypay_event[i, 0] - xpay_event[i, 0]) / (np.abs(ypay_event[i, 0]) +
+                                                                           np.abs(xpay_event[i, 0]) + 1)
+        __, ipntlval = np.sort(np.array([value_noevent[i, 0], value_event[i, 0]]), 2, 'descend')  # CHECK
         ival_noevent[i] = ipntlval[1]
         ival_event[i] = ipntlval[2]
         dwght_noevent[i] = (lccf ** ival_noevent[i]) / ((lccf ** ival_noevent[i]) * (1 - p_sl[i]) +
