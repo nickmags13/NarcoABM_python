@@ -36,16 +36,16 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
         value_event[i, 0] = np.abs(ypay_event[i, 0] - xpay_event[i, 0]) / (np.abs(ypay_event[i, 0]) +
                                                                            np.abs(xpay_event[i, 0]) + 1)
         __, ipntlval = np.sort(np.array([value_noevent[i, 0], value_event[i, 0]]), 2, 'descend')  # CHECK
-        ival_noevent[i] = ipntlval[1]
-        ival_event[i] = ipntlval[2]
-        dwght_noevent[i] = (lccf ** ival_noevent[i]) / ((lccf ** ival_noevent[i]) * (1 - p_sl[i]) +
-                                                        (lccf ** ival_event[i]) * p_sl[i])
-        dwght_event[i] = (lccf ** ival_event[i]) / ((lccf ** ival_noevent[i]) * (1 - p_sl[i]) +
-                                                    (lccf ** ival_event[i]) * p_sl[i])
-        salwght_noevent[i] = (1 - p_sl[i]) * dwght_noevent[i]
-        salwght_event[i] = p_sl[i] * dwght_event[i]
-        valuey[i] = salwght_noevent[i] * ypay_noevent[i] + salwght_event[i] * ypay_event[i]
-        valuex[i] = salwght_noevent[i] * xpay_noevent[i] + salwght_event[i] * xpay_event[i]
+        ival_noevent[i, 0] = ipntlval[0]
+        ival_event[i] = ipntlval[1]
+        dwght_noevent[i, 0] = (lccf ** ival_noevent[i, 0]) / ((lccf ** ival_noevent[i, 0]) * (1 - p_sl[i, 0]) +
+                                                        (lccf ** ival_event[i, 0]) * p_sl[i, 0])
+        dwght_event[i, 0] = (lccf ** ival_event[i, 0]) / ((lccf ** ival_noevent[i, 0]) * (1 - p_sl[i, 0]) +
+                                                    (lccf ** ival_event[i, 0]) * p_sl[i, 0])
+        salwght_noevent[i, 0] = (1 - p_sl[i]) * dwght_noevent[i, 0]
+        salwght_event[i, 0] = p_sl[i] * dwght_event[i, 0]
+        valuey[i, 0] = salwght_noevent[i, 0] * ypay_noevent[i, 0] + salwght_event[i, 0] * ypay_event[i, 0]
+        valuex[i, 0] = salwght_noevent[i, 0] * xpay_noevent[i, 0] + salwght_event[i, 0] * xpay_event[i, 0]
 
     # Selection based on maximize profits while less than average S&L risk
     rankroute = np.sort(np.array(
