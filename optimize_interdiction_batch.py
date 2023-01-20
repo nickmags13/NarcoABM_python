@@ -57,5 +57,14 @@ def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
         elif batchrun == 24:
             os.chdir("D:\\NSF_EAGER_Models\\INT_Nodes\\INT_Nodes_24")
 
+    readflag = 0
+    trgtfile = 'MTMCI_IntNodes.txt'
+    print('Looking for ' + trgtfile)
+
+    while readflag == 0:
+        fnames = os.listdir()
+
+
+
 
     return intrdct_events, intrdct_nodes
