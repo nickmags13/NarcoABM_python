@@ -2,9 +2,10 @@
 
 import os
 
+import numpy as np
+
 
 def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
-
     if testflag == 1:
         os.chdir("C:\\Users\\pcbmi\\Box\\NSF_D-ISN\\Code\\NarcoLogic\\MTMCI_IntNodes")
     else:
@@ -61,10 +62,17 @@ def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
     trgtfile = 'MTMCI_IntNodes.txt'
     print('Looking for ' + trgtfile)
 
-    while readflag == 0:
+    while readflag == 0:        # Complete the while loop
         fnames = os.listdir()
 
+    print('Interdiction Input File Success, t= ' + t)
+    Tintevent = np.loadtxt(trgtfile)
+    intrdct_events = np.zeros((ADJ.shape))
+    intrdct_nodes = Tintevent
+    for j in np.arange(0,len(Tintevent)):       # Check whether it needs len or shape
+        iupstream = (ADJ[:, Tintevent[j]] == 1)
+        intrdct_events[iupstream, Tintevent[j]] = 1
 
-
+    os.chdir("C:\\Users\\pcbmi\\Box\\NSF_D-ISN\\Code\\NarcoLogic")
 
     return intrdct_events, intrdct_nodes
