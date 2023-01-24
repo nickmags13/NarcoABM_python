@@ -1,4 +1,6 @@
-#################    Build trafficking network    #########################
+"""
+Method to Build trafficking network
+"""
 
 import numpy as np
 
@@ -10,4 +12,3 @@ def build_network(ca_adm0, Rcagrid_cntry, dptgrid, Rdptgrid, LANDSUIT, dptcodes,
     stcol = ca_adm0.shape[1]
     edrow = 100
     edcol = 100
-
