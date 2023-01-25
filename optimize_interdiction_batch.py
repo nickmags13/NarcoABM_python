@@ -6,6 +6,8 @@ import numpy as np
 
 
 def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
+
+    """
     if testflag == 1:
         os.chdir("C:\\Users\\pcbmi\\Box\\NSF_D-ISN\\Code\\NarcoLogic\\MTMCI_IntNodes")
     else:
@@ -57,6 +59,7 @@ def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
             os.chdir("D:\\NSF_EAGER_Models\\INT_Nodes\\INT_Nodes_23")
         elif batchrun == 24:
             os.chdir("D:\\NSF_EAGER_Models\\INT_Nodes\\INT_Nodes_24")
+    """
 
     readflag = 0
     trgtfile = 'MTMCI_IntNodes.txt'
