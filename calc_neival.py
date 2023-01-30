@@ -56,7 +56,7 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
     rankroute = route[route[:, 0].argsort()[::-1]]
 
     breakpoint()
-    dtos = np.unique(dtonei(dtonei != 0))
+    dtos = np.unique(dtonei[dtonei.any(axis=1)])
 
     icut = []  # moved the initialization out from if loop
     if len(dtos) > 1:
