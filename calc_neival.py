@@ -23,30 +23,33 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
 
     for i in np.arange(0, c_trans.shape[1]):
         pay_noevent[i, 0] = y_node[i, 0] * q_node[0, i] - c_trans[0, i] * q_node[0, i]  # payoff with no S&L event
-        pay_event[i, 0] = y_node[i, 0] * q_node[0, i] - c_trans[0, i] * q_node[0, i] - y_node[i, 0] * q_node[0, i]  # payoff with S&L event
+        pay_event[i, 0] = y_node[i, 0] * q_node[0, i] - c_trans[0, i] * q_node[0, i] - y_node[i, 0] * q_node[
+            0, i]  # payoff with S&L event
         xpay_noevent[i, 0] = pay_noevent[i, 0]  # payoff for route A with no S&L event
         xpay_event[i, 0] = pay_event[i, 0]  # payoff for route A with S&L event
 
     for i in np.arange(0, c_trans.shape[1]):
-        inset = np.where(dtonei == dtonei[i, 0])
-        ypay_noevent[i,0] = np.mean(pay_noevent[inset != i, 0])
-        ypay_event[i, 0] = np.mean(pay_event[inset != i, 0])
+        inset = np.where(dtonei == dtonei[i, 0])[0]
+        mask = np.not_equal(inset, i)
+        ypay_noevent[i, 0] = np.mean([pay_noevent[j, 0] for j in range(len(mask)) if mask[j]])
+        ypay_event[i, 0] = np.mean([pay_event[j, 0] for j in range(len(mask)) if mask[j]])
         value_noevent[i, 0] = np.abs(ypay_noevent[i, 0] - xpay_noevent[i, 0]) / (np.abs(ypay_noevent[i, 0]) +
-                                                                        np.abs(xpay_noevent[i, 0]) + 1)
+                                                                                 np.abs(xpay_noevent[i, 0]) + 1)
         value_event[i, 0] = np.abs(ypay_event[i, 0] - xpay_event[i, 0]) / (np.abs(ypay_event[i, 0]) +
                                                                            np.abs(xpay_event[i, 0]) + 1)
-        __, ipntlval = np.sort(np.array([value_noevent[i, 0], value_event[i, 0]]), 2, 'descend')  # CHECK
+        ipntlval = np.flip(np.argsort(np.array([value_noevent[i, 0], value_event[i, 0]])))  # CHECK
         ival_noevent[i, 0] = ipntlval[0]
-        ival_event[i] = ipntlval[1]
-        dwght_noevent[i, 0] = (lccf ** ival_noevent[i, 0]) / ((lccf ** ival_noevent[i, 0]) * (1 - p_sl[i, 0]) +
-                                                        (lccf ** ival_event[i, 0]) * p_sl[i, 0])
-        dwght_event[i, 0] = (lccf ** ival_event[i, 0]) / ((lccf ** ival_noevent[i, 0]) * (1 - p_sl[i, 0]) +
-                                                    (lccf ** ival_event[i, 0]) * p_sl[i, 0])
-        salwght_noevent[i, 0] = (1 - p_sl[i]) * dwght_noevent[i, 0]
-        salwght_event[i, 0] = p_sl[i] * dwght_event[i, 0]
+        ival_event[i, 0] = ipntlval[1]
+        dwght_noevent[i, 0] = (lccf ** ival_noevent[i, 0]) / ((lccf ** ival_noevent[i, 0]) * (1 - p_sl[0, i]) +
+                                                              (lccf ** ival_event[i, 0]) * p_sl[0, i])
+        dwght_event[i, 0] = (lccf ** ival_event[i, 0]) / ((lccf ** ival_noevent[i, 0]) * (1 - p_sl[0, i]) +
+                                                          (lccf ** ival_event[i, 0]) * p_sl[0, i])
+        salwght_noevent[i, 0] = (1 - p_sl[0, i]) * dwght_noevent[i, 0]
+        salwght_event[i, 0] = p_sl[0, i] * dwght_event[i, 0]
         valuey[i, 0] = salwght_noevent[i, 0] * ypay_noevent[i, 0] + salwght_event[i, 0] * ypay_event[i, 0]
         valuex[i, 0] = salwght_noevent[i, 0] * xpay_noevent[i, 0] + salwght_event[i, 0] * xpay_event[i, 0]
 
+    breakpoint()
     # Selection based on maximize profits while less than average S&L risk
     rankroute = np.sort(np.array(
         [np.multiply(np.transpose(rtpref), valuex), np.transpose(p_sl), np.transpose(q_node), np.transpose(iset),
