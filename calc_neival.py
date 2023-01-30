@@ -53,7 +53,7 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
     # Selection based on maximize profits while less than average S&L risk
     rankroute = np.sort(np.array(
         [np.multiply(np.transpose(rtpref), valuex), np.transpose(p_sl), np.transpose(q_node), np.transpose(iset),
-         dtonei, np.transpose(totcpcty)]), - 1)  # CHECK
+         dtonei, np.transpose(totcpcty)]), axis=0)[::-1]  # CHECK
 
     dtos = np.unique(dtonei(dtonei != 0))
 
