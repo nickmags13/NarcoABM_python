@@ -37,7 +37,7 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
                                                                                  np.abs(xpay_noevent[i, 0]) + 1)
         value_event[i, 0] = np.abs(ypay_event[i, 0] - xpay_event[i, 0]) / (np.abs(ypay_event[i, 0]) +
                                                                            np.abs(xpay_event[i, 0]) + 1)
-        ipntlval = np.flip(np.argsort(np.array([value_noevent[i, 0], value_event[i, 0]])))  # CHECK
+        ipntlval = np.flip(np.argsort(np.array([value_noevent[i, 0], value_event[i, 0]])))
         ival_noevent[i, 0] = ipntlval[0]
         ival_event[i, 0] = ipntlval[1]
         dwght_noevent[i, 0] = (lccf ** ival_noevent[i, 0]) / ((lccf ** ival_noevent[i, 0]) * (1 - p_sl[0, i]) +
@@ -53,7 +53,7 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
     route = np.stack([np.multiply(np.transpose(rtpref), valuex)[:, 0].tolist(), np.transpose(p_sl)[:, 0].tolist(),
                       np.transpose(q_node)[:, 0].tolist(), np.transpose(iset)[:, 0].tolist(), dtonei[:, 0].tolist(),
                       np.transpose(totcpcty)[:, 0].tolist()], axis=1)
-    rankroute = route[route[:, 0].argsort()[::-1]]  # CHECK
+    rankroute = route[route[:, 0].argsort()[::-1]]
 
     breakpoint()
     dtos = np.unique(dtonei(dtonei != 0))
