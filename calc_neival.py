@@ -19,7 +19,7 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
     salwght_event = np.zeros((c_trans.shape[1], 1))
     valuex = np.zeros((c_trans.shape[1], 1))
     valuey = np.zeros((c_trans.shape[1], 1))
-    iset = np.arange(0, c_trans.shape[1])
+    iset = np.arange(0, c_trans.shape[1]).reshape(1, c_trans.shape[1])
 
     for i in np.arange(0, c_trans.shape[1]):
         pay_noevent[i, 0] = y_node[i, 0] * q_node[0, i] - c_trans[0, i] * q_node[0, i]  # payoff with no S&L event
@@ -49,12 +49,13 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
         valuey[i, 0] = salwght_noevent[i, 0] * ypay_noevent[i, 0] + salwght_event[i, 0] * ypay_event[i, 0]
         valuex[i, 0] = salwght_noevent[i, 0] * xpay_noevent[i, 0] + salwght_event[i, 0] * xpay_event[i, 0]
 
-    breakpoint()
     # Selection based on maximize profits while less than average S&L risk
-    rankroute = np.sort(np.array(
-        [np.multiply(np.transpose(rtpref), valuex), np.transpose(p_sl), np.transpose(q_node), np.transpose(iset),
-         dtonei, np.transpose(totcpcty)]), axis=0)[::-1]  # CHECK
+    route = np.stack([np.multiply(np.transpose(rtpref), valuex)[:, 0].tolist(), np.transpose(p_sl)[:, 0].tolist(),
+                      np.transpose(q_node)[:, 0].tolist(), np.transpose(iset)[:, 0].tolist(), dtonei[:, 0].tolist(),
+                      np.transpose(totcpcty)[:, 0].tolist()], axis=1)
+    rankroute = route[route[:, 0].argsort()[::-1]]  # CHECK
 
+    breakpoint()
     dtos = np.unique(dtonei(dtonei != 0))
 
     icut = []  # moved the initialization out from if loop
