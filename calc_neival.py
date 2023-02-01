@@ -62,54 +62,25 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
     if len(dtos) > 1:
         for j in np.arange(0, len(dtos)):
             idto = np.where(rankroute[:, 4] == dtos[j])[0]
-            if profmdl == 1:
-                if np.where(valuex[np.where(dtonei == dtos[j])[0]] > 0)[0].size == 0:  # CHECK
-                    subicut = np.transpose(np.arange(0, np.where(np.cumsum(rankroute[idto, 6]) >= totstock
-                                                                 )[0][0:edgechange[j]]))  # CHECK
-                elif np.where(rankroute[idto, 1] > 0)[0].size == 0:
-                    subicut = np.where(rankroute[idto, 1] >= 0)[0][0:edgechange[j]]
-                elif np.where(np.cumsum(rankroute[idto, 6]) >= totstock)[0].size == 0:
-                    subicut = np.where(rankroute[idto, 1] >= 0)[0][0:edgechange[j]]
-                else:
-                    subicut = np.where(rankroute[idto, 1] >= 0)[0][0:edgechange[j]]
-                if cutflag[dtos[j]] == 1:
-                    subicut = []
-                icut = np.array([icut], [idto[subicut]])
-            elif profmdl == 2:
-                if np.where(valuex[np.where(dtonei == dtos[j])[0]] > 0)[0].size == 0:
-                    subicut = np.transpose((np.arange(0, np.where(np.cumsum(rankroute[idto, 6]) >= totstock
-                                                                  )[0][0:edgechange(j)])))
-                elif np.where(np.cumsum(rankroute[idto, 1]) > 0)[0].size == 0:
-                    subicut = np.where(rankroute[idto, 1] >= 0)[0][0:edgechange[j]]
-                elif np.where(np.cumsum(rankroute[idto, 6]) >= totstock)[0].size == 0:
-                    subicut = np.where(rankroute[idto, 1] >= 0)[0][0:edgechange[j]]
-                else:
-                    subicut = np.where(rankroute[idto, 1] >= 0)[0][0:edgechange[j]]  # CHECK why all else
-                    # subicut are same
-                if cutflag[dtos[j]] == 1:
-                    subicut = []
-                icut = np.array([icut], [idto[subicut]])
-            if rankroute[rankroute[:, 5] == 0, 1] > 0:
-                icut = np.array([[icut], [np.where(rankroute[:, 5] == 0)]])
+            if np.where(valuex[np.where(dtonei == dtos[j])[0]] > 0)[0].size == 0:  # CHECK
+                subicut = np.transpose(np.arange(0, np.where(np.cumsum(rankroute[idto, 6]) >= totstock
+                                                             )[0][0:edgechange[j]]))  # CHECK
+            elif np.where(rankroute[idto, 1] > 0)[0].size == 0:
+                subicut = np.where(rankroute[idto, 1] >= 0)[0][0:edgechange[j]]
+            elif np.where(np.cumsum(rankroute[idto, 6]) >= totstock)[0].size == 0:
+                subicut = np.where(rankroute[idto, 1] >= 0)[0][0:edgechange[j]]
+            else:
+                subicut = np.where(rankroute[idto, 1] >= 0)[0][0:edgechange[j]]
+            if cutflag[dtos[j]] == 1:
+                subicut = []
+            icut = np.array([icut], [idto[subicut]])
     else:
-        if profmdl == 1:
-            if np.where(valuex > 0)[0].size == 0:
-                if np.where(valuex > 0).size == 0:
-                    icut = np.transpose(np.arange(0, np.where(np.cumsum(rankroute[:, 6]) >= totstock)[0][0]))
-                elif np.where(rankroute[:, 1] > 0)[0].size == 0:
-                    volcut = np.transpose(np.arange(0, np.where(np.cumsum(rankroute[:, 6]) >= totstock)[0][0]))
-                    valcut = np.where(rankroute[:, 1] >= 0)
-                    icut = np.isin(valcut, volcut)
-                elif np.where(np.cumsum(rankroute[:, 6]) >= totstock)[0].size == 0:
-                    icut = np.where(rankroute[:, 1] >= 0)
-                else:
-                    icut = np.where(rankroute[:, 1] >= 0)
-        elif profmdl == 2:
-            if np.where(valuex > 0)[0].size == 0:
+        if np.where(valuex > 0)[0].size == 0:
+            if np.where(valuex > 0).size == 0:
                 icut = np.transpose(np.arange(0, np.where(np.cumsum(rankroute[:, 6]) >= totstock)[0][0]))
-            elif np.where(np.cumsum(rankroute[:, 1]) > 0)[0].size == 0:
+            elif np.where(rankroute[:, 1] > 0)[0].size == 0:
                 volcut = np.transpose(np.arange(0, np.where(np.cumsum(rankroute[:, 6]) >= totstock)[0][0]))
-                valcut = np.where(np.cumsum(rankroute[:, 1]) >= 0)
+                valcut = np.where(rankroute[:, 1] >= 0)
                 icut = np.isin(valcut, volcut)
             elif np.where(np.cumsum(rankroute[:, 6]) >= totstock)[0].size == 0:
                 icut = np.where(rankroute[:, 1] >= 0)
