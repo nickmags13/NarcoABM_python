@@ -75,17 +75,16 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
                 subicut = []
             icut = np.array([icut], [idto[subicut]])
     else:
-        if np.where(valuex > 0)[0].size == 0:
-            if np.where(valuex > 0).size == 0:
-                icut = np.transpose(np.arange(0, np.where(np.cumsum(rankroute[:, 6]) >= totstock)[0][0]))
-            elif np.where(rankroute[:, 1] > 0)[0].size == 0:
-                volcut = np.transpose(np.arange(0, np.where(np.cumsum(rankroute[:, 6]) >= totstock)[0][0]))
-                valcut = np.where(rankroute[:, 1] >= 0)
-                icut = np.isin(valcut, volcut)
-            elif np.where(np.cumsum(rankroute[:, 6]) >= totstock)[0].size == 0:
-                icut = np.where(rankroute[:, 1] >= 0)
-            else:
-                icut = np.where(rankroute[:, 1] >= 0)
+        if np.where(valuex > 0).size == 0:
+            icut = np.transpose(np.arange(0, np.where(np.cumsum(rankroute[:, 6]) >= totstock)[0][0]))
+        elif np.where(rankroute[:, 1] > 0)[0].size == 0:
+            volcut = np.transpose(np.arange(0, np.where(np.cumsum(rankroute[:, 6]) >= totstock)[0][0]))
+            valcut = np.where(rankroute[:, 1] >= 0)
+            icut = np.isin(valcut, volcut)
+        elif np.where(np.cumsum(rankroute[:, 6]) >= totstock)[0].size == 0:
+            icut = np.where(rankroute[:, 1] >= 0)
+        else:
+            icut = np.where(rankroute[:, 1] >= 0)
 
     neipick = rankroute[icut, 4]
     neivalue = rankroute[icut, 1]
