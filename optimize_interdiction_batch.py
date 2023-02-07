@@ -1,7 +1,7 @@
 """   Interdiction events from optimization model   """
 
 import os
-
+import glob
 import numpy as np
 
 
@@ -65,8 +65,11 @@ def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
     trgtfile = 'MTMCI_IntNodes.txt'
     print('Looking for ' + trgtfile)
 
-    while readflag == 0:        # Complete the while loop
-        fnames = os.listdir()
+    fileSearch = trgtfile.split('.')
+    fnames = glob.glob(fileSearch[0]+"*"+fileSearch[1])
+    for file in fnames:
+        if os.stat(file).st_size > 0:
+            readflag = 1
 
     print('Interdiction Input File Success, t= ' + t)
     Tintevent = np.loadtxt(trgtfile)
