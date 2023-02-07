@@ -14,7 +14,7 @@ def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
     fileSearch = trgtfile.split('.')
     fnames = glob.glob(fileSearch[0]+"*"+fileSearch[1])
     for file in fnames:
-        if os.stat(file).st_size > 0:
+        if os.path.getsize(trgtfile) > 0:
             readflag = 1
 
     print('Interdiction Input File Success, t= ' + t)
