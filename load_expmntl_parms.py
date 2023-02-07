@@ -28,7 +28,7 @@ def load_expmntl_parms(ERUNS):
                       [1, 1, 1, 1, 1, 1, 1.15, 1.4, 1.35, 1.2, 1.0, 1.31, 1.36, 1.46, 1.1, 1.13, 1.63, 1.49, 2.14]])
     low = np.linspace(0.1, 10, 6)
     high = np.linspace(10, 20, 6)
-    p_sucintcpt = np.array([low, high(np.arange(1, 6))])
+    p_sucintcpt = np.concatenate((low, high[1:6]))
 
     baserisk = 0.43 * np.ones((1, ERUNS))
     riskmltplr = 2 * np.ones((1, ERUNS))
@@ -54,6 +54,7 @@ def load_expmntl_parms(ERUNS):
 
     profitmodel = np.ones((1, ERUNS))  # profit maximization model for node selection: 1 is standard, 2 is cumulative
     expandmax = 9 * np.ones((1, ERUNS))  # number of new nodes established per month
+
 
     return sl_max, sl_min, baserisk, riskmltplr, startstock, sl_learn, rt_learn, losslim, prodgrow, targetseize, \
            intcpctymodel, profitmodel, endstock, growthmdl, timewght, locthink, expandmax, empSLflag, optSLflag, \
