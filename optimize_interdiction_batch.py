@@ -76,6 +76,6 @@ def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
         iupstream = (ADJ[:, Tintevent[j]] == 1)
         intrdct_events[iupstream, Tintevent[j]] = 1
 
-    os.chdir("C:\\Users\\pcbmi\\Box\\NSF_D-ISN\\Code\\NarcoLogic")
+    # os.chdir("C:\\Users\\pcbmi\\Box\\NSF_D-ISN\\Code\\NarcoLogic")
 
     return intrdct_events, intrdct_nodes
