@@ -21,7 +21,7 @@ def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
     Tintevent = np.loadtxt(trgtfile)
     intrdct_events = np.zeros((ADJ.shape))
     intrdct_nodes = Tintevent
-    for j in np.arange(0,len(Tintevent)):       # Check whether it needs len or shape
+    for j in np.arange(0, len(Tintevent)):       # Check whether it needs len or shape
         iupstream = (ADJ[:, Tintevent[j]] == 1)
         intrdct_events[iupstream, Tintevent[j]] = 1
 
