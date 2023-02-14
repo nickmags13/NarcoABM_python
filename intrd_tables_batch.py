@@ -16,4 +16,6 @@ def intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testfla
     else:
         startSLPROB = SLPROB[:][:][t - 2]
 
+    sumprob = np.sum(startSLPROB)
+
     return Tflow, Tintrd
