@@ -40,36 +40,46 @@ def NarcoLogic_initialize_python_v1(mr):
     # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     # Interdiction Agent #
-    delta_sl = sl_learn(erun)  # reinforcement learning rate for S&L vents (i.e., weight on new information)
+    delta_sl = sl_learn[erun]  # reinforcement learning rate for S&L vents (i.e., weight on new information)
 
     # Network Agent #
     ndto = 2  # initial number of DTOs
     dtocutflag = np.zeros((ndto, 1))
     DTOBDGT = np.zeros((ndto, TMAX))
     losstol = losslim(erun)  # tolerance threshold for loss due to S&L, triggers route fragmentation
-    stock_0 = startstock(erun)  # initial cocaine stock at producer node
-    stock_max = endstock(erun)
+    stock_0 = startstock[erun]  # initial cocaine stock at producer node
+    stock_max = endstock[erun]
     startvalue = 4500  # producer price, $385/kg: Zoe's numbers 4,500 in Panama
     deltavalue = 4.46  # added value for distance traveled $8/kilo/km: Zoe's numbers $4.46
     nodeloss = 0  # amount of cocaine that is normally lost (i.e., non-interdiction) at each node
     ctrans_inland = 371  # transportation costs (kg/km) over-ground (3.5), includes
     ctrans_coast = 160  # transportation costs (kg/km) via plane or boat (1.5)
     ctrans_air = 3486
-    delta_rt = rt_learn(erun)   # reinforcement learning rate for network agent
+    delta_rt = rt_learn[erun]   # reinforcement learning rate for network agent
 
     # (i.e., weight on new information for successful routes)
     # perceived risk model
     alpharisk = 2
     betarisk = 0.5
-    timewght_0 = timewght(erun)
+    timewght_0 = timewght[erun]
 
     slprob_0 = 1 / (sum(np.power(timewght_0, np.array((np.arange(0, 13)))) + betarisk))  # CHECK
     bribepct = 0.3
     bribethresh = 12
     rentcap = 1 - bribepct
-    edgechange = expandmax(erun) * np.ones((ndto, 1))
+    edgechange = expandmax[erun] * np.ones((ndto, 1))
 
     savedState = rng    # CHECK
     random.seed(thistate)
+
+    ###################################################################
+    #   Build trafficking network - NodeTable and EdgeTable   #
+    ###################################################################
+
+    scipy.io.loadmat('network_file_nodirect') # Check the file format and if it can be changed to non .mat file
+    EdgeTable['Capacity'] = rtcap[erun] * np.ones(EdgeTable.shape[0], 1)
+    nnodes = NodeTable.shape[0]
+    mexnode = nnodes
+    endnodeset = mexnode
 
     return argout
