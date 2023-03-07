@@ -8,7 +8,7 @@ import math
 def intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, mrun, batchrun):
     Tflow = pd.DataFrame(columns=['End_Node', 'Start_Node', 'IntitFlow', 'DTO'], index=range(1, EdgeTable.shape[0]+1),
                          dtype=float)
-    startFLOW = FLOW[:][:][t] + slsuccess[:][:][t]
+    startFLOW = FLOW[:, :, t] + slsuccess[:, :, t]
     Tintrd = pd.DataFrame(columns=['End_Node', 'Start_Node', 'IntitProb'], index=range(1, EdgeTable.shape[0]+1),
                           dtype=float)
 
