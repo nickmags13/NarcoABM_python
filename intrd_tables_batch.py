@@ -14,9 +14,9 @@ def intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testfla
 
     breakpoint()
     if t == 1:
-        startSLPROB = SLPROB[:][:][0]
+        startSLPROB = SLPROB[:, :, 0]
     else:
-        startSLPROB = SLPROB[:][:][t - 2]
+        startSLPROB = SLPROB[:, :, t-2]
 
     sumprob = np.sum(startSLPROB)
 
