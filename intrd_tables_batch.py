@@ -8,11 +8,10 @@ import math
 def intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, mrun, batchrun):
     Tflow = pd.DataFrame(columns=['End_Node', 'Start_Node', 'IntitFlow', 'DTO'], index=range(1, EdgeTable.shape[0]+1),
                          dtype=float)
-    startFLOW = FLOW[:, :, t] + slsuccess[:, :, t]
+    startFLOW = np.add(FLOW[:, :, t-1], slsuccess[:, :, t-1])
     Tintrd = pd.DataFrame(columns=['End_Node', 'Start_Node', 'IntitProb'], index=range(1, EdgeTable.shape[0]+1),
                           dtype=float)
 
-    breakpoint()
     if t == 1:
         startSLPROB = SLPROB[:, :, 0]
     else:
@@ -20,7 +19,6 @@ def intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testfla
 
     sumprob = np.sum(startSLPROB)
 
-    breakpoint()
     for i in range(EdgeTable.shape[0]):
         edge = EdgeTable.iloc[i]["EndNodes"]
         Tflow.iloc[i]["End_Node"] = edge[1]
@@ -44,5 +42,9 @@ def intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testfla
     erun_t1 = math.floor(erun/100)
     erun_t2 = math.floor(erun/10)
     erun_t3 = erun % 10
+
+    Tflow.to_excel('../FunctionTesting/Tflow_python.txt')
+    Tintrd.to_excel('../FunctionTesting/Tintrd_python.txt')
+    breakpoint()
 
     return Tflow, Tintrd
