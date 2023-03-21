@@ -8,6 +8,8 @@ Function for initializing and executing NarcoLogic dynamics from Python
 import numpy as np
 import random
 from load_expmntl_parms import load_expmntl_parms
+from optimize_interdiction_batch import optimize_interdiction_batch
+from intrd_tables_batch import intrd_tables_batch
 import scipy
 
 

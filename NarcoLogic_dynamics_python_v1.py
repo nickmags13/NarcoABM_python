@@ -1,9 +1,6 @@
 
 
 import numpy as np
-from optimize_interdiction_batch import optimize_interdiction_batch
-from intrd_tables_batch import intrd_tables_batch
-
 
 def NarcoLogic_dynamics_python_v1(t):
     # Check what variables NarcoLogic_wrksp.mat is loading and add code to load these variables
