@@ -9,7 +9,6 @@ import scipy
 
 
 def NarcoLogic_initialize_python_v1(mr):
-    argout = 'Dummy output'
 
     batchrun = 9
     MRUNS = 30
@@ -83,7 +82,6 @@ def NarcoLogic_initialize_python_v1(mr):
     icoastdist = sub2ind(dcoast.shape, NodeTable.shape[0], NodeTable.shape[1])
     coastdist = dcoast[icoastdist]
 
-    return argout
 
 
 def sub2ind(sz, row, col):
