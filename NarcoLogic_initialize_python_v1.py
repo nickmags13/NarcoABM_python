@@ -25,7 +25,6 @@ def NarcoLogic_initialize_python_v1(mr):
 
     random.seed(mrun)
 
-
     # load experimental parameters file
     sl_max, sl_min, baserisk, riskmltplr, startstock, sl_learn, rt_learn, losslim, prodgrow, targetseize, \
     intcpctymodel, profitmodel, endstock, growthmdl, timewght, locthink, expandmax, empSLflag, optSLflag, suitflag, \
@@ -55,7 +54,7 @@ def NarcoLogic_initialize_python_v1(mr):
     ctrans_inland = 371  # transportation costs (kg/km) over-ground (3.5), includes
     ctrans_coast = 160  # transportation costs (kg/km) via plane or boat (1.5)
     ctrans_air = 3486
-    delta_rt = rt_learn[erun]   # reinforcement learning rate for network agent
+    delta_rt = rt_learn[erun]  # reinforcement learning rate for network agent
 
     # (i.e., weight on new information for successful routes)
     # perceived risk model
@@ -69,17 +68,24 @@ def NarcoLogic_initialize_python_v1(mr):
     rentcap = 1 - bribepct
     edgechange = expandmax[erun] * np.ones((ndto, 1))
 
-    savedState = rng    # CHECK
+    savedState = rng  # CHECK
     random.seed(thistate)
 
     ###################################################################
     #   Build trafficking network - NodeTable and EdgeTable   #
     ###################################################################
 
-    scipy.io.loadmat('network_file_nodirect') # Check the file format and if it can be changed to non .mat file
+    scipy.io.loadmat('network_file_nodirect')  # Check the file format and if it can be changed to non .mat file
     EdgeTable['Capacity'] = rtcap[erun] * np.ones(EdgeTable.shape[0], 1)
     nnodes = NodeTable.shape[0]
     mexnode = nnodes
     endnodeset = mexnode
+    icoastdist = sub2ind(dcoast.shape, NodeTable.shape[0], NodeTable.shape[1])
+    coastdist = dcoast[icoastdist]
 
     return argout
+
+
+def sub2ind(sz, row, col):
+    n_rows = sz[0]
+    return [n_rows * (c - 1) + r for r, c in zip(row, col)]
