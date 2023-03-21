@@ -1,6 +1,4 @@
-"""
-Function for executing NarcoLogic dynamics from Python
-"""
+
 
 import numpy as np
 from optimize_interdiction_batch import optimize_interdiction_batch

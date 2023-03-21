@@ -1,6 +1,9 @@
-# Initialize NarcoLogic for execution from Python #
+"""
+Function for initializing and executing NarcoLogic dynamics from Python
+# NarcoLogic for execution from Python #
 # Notes for executing:
 
+"""
 
 import numpy as np
 import random
