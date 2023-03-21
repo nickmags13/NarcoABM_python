@@ -14,7 +14,6 @@ import scipy
 
 
 def NarcoLogic_initialize_python_v1(mr):
-
     batchrun = 9
     MRUNS = 30
     ERUNS = 11
@@ -85,9 +84,16 @@ def NarcoLogic_initialize_python_v1(mr):
     mexnode = nnodes
     endnodeset = mexnode
     icoastdist = sub2ind(dcoast.shape, NodeTable.shape[0], NodeTable.shape[1])
-    coastdist = dcoast[icoastdist]
+    coastdist = dcoast[icoastdist]  # convert to km
 
+    NodeTable['CoastDist'] = coastdist
+    NodeTable['CoastDist'][0] = 0
+    NodeTable['CoastDist'][nnodes-1] = 0
 
+    # Assign nodes to initials DTOs
+    for nn in range(1, nnodes - 2):
+        westdir = NodeTable.Col(nn) - find(
+            np.isnan(dcoast(NodeTable.Row(nn), np.arange(0, NodeTable.Col(nn) - 2))) == 1)[-1]
 
 def sub2ind(sz, row, col):
     n_rows = sz[0]
