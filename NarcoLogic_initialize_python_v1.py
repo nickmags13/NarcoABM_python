@@ -104,7 +104,11 @@ def NarcoLogic_initialize_python_v1(mr):
                                                                    NodeTable['Col'][nn]]) == 1)[-1]
         southdir = np.where(np.isnan(dcoast[np.arange(NodeTable['Row'][nn] + 1, LANDSUIT.shape[0] + 1),
                                             NodeTable['Col'][nn]]) == 1)[0]
-
+        mindist, imindist = np.amin(np.array([westdir, eastdir, northdir, southdir]))
+        if westdir < 2.5 * eastdir:
+            NodeTable['DTO'][nn] = 1
+        else:
+            NodeTable['DTO'][nn] = 2
 
 
 def sub2ind(sz, row, col):
