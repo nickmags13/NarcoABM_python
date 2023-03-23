@@ -34,8 +34,8 @@ def NarcoLogic_initialize_python_v1(mr):
     extnetflag, rtcap, basecap, p_sucintcpt = load_expmntl_parms(ERUNS)
 
     # Load landscape files
-    scipy.io.loadmat('coast_dist')  # Check the file format and if it can be changed to non .mat file
-    scipy.io.loadmat('landsuit_file_default')
+    dcoast = scipy.io.loadmat('coast_dist')['dcoast']  # Check the file format and if it can be changed to non .mat file
+    LANDSUIT = scipy.io.loadmat('landsuit_file_default')['LANDSUIT']
 
     # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     # @@@@@@@@@@ Agent Attributes @@@@@@@@@@@@
