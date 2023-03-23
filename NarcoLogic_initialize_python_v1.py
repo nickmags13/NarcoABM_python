@@ -93,7 +93,7 @@ def NarcoLogic_initialize_python_v1(mr):
 
     # Assign nodes to initials DTOs
     for nn in range(1, nnodes - 2):
-        westdir = NodeTable.Col(nn) - find(
+        westdir = NodeTable.Col(nn) - np.where(
             np.isnan(dcoast(NodeTable.Row(nn), np.arange(0, NodeTable.Col(nn) - 2))) == 1)[-1]
 
 def sub2ind(sz, row, col):
