@@ -27,6 +27,7 @@ def NarcoLogic_initialize_python_v1(mr):
     # Start initialization, set random number generator state for repeatability
 
     random.seed(mrun)
+    thistate = scipy.io.loadmat('data/savedrngstate.mat')['thistate']
 
     # load experimental parameters file
     sl_max, sl_min, baserisk, riskmltplr, startstock, sl_learn, rt_learn, losslim, prodgrow, targetseize, \
