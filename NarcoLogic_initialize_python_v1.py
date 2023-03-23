@@ -34,8 +34,8 @@ def NarcoLogic_initialize_python_v1(mr):
     extnetflag, rtcap, basecap, p_sucintcpt = load_expmntl_parms(ERUNS)
 
     # Load landscape files
-    dcoast = scipy.io.loadmat('coast_dist')['dcoast']  # Check the file format and if it can be changed to non .mat file
-    LANDSUIT = scipy.io.loadmat('landsuit_file_default')['LANDSUIT']
+    dcoast = scipy.io.loadmat('data/coast_dist')['dcoast']
+    LANDSUIT = scipy.io.loadmat('data/landsuit_file_default')['LANDSUIT']
 
     # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     # @@@@@@@@@@ Agent Attributes @@@@@@@@@@@@
@@ -78,7 +78,8 @@ def NarcoLogic_initialize_python_v1(mr):
     #   Build trafficking network - NodeTable and EdgeTable   #
     ###################################################################
 
-    scipy.io.loadmat('network_file_nodirect')  # Check the file format and if it can be changed to non .mat file
+    EdgeTable = scipy.io.loadmat('data/EdgeTable.mat')['EdgeTable']
+    NodeTable = scipy.io.loadmat('data/NodeTable.mat')['NodeTable']
     EdgeTable['Capacity'] = rtcap[erun] * np.ones(EdgeTable.shape[0], 1)
     nnodes = NodeTable.shape[0]
     mexnode = nnodes
