@@ -20,6 +20,8 @@ def NarcoLogic_initialize_python_v1(mr):
     TSTART = 1
     TMAX = 180  # 15 years at monthly time steps
 
+    thistate = scipy.io.loadmat('data/savedrngstate.mat')['thistate']
+
     testflag = 1
     erun = 4
     mrun = mr
@@ -27,7 +29,6 @@ def NarcoLogic_initialize_python_v1(mr):
     # Start initialization, set random number generator state for repeatability
 
     random.seed(mrun)
-    thistate = scipy.io.loadmat('data/savedrngstate.mat')['thistate']
 
     # load experimental parameters file
     sl_max, sl_min, baserisk, riskmltplr, startstock, sl_learn, rt_learn, losslim, prodgrow, targetseize, \
@@ -72,7 +73,7 @@ def NarcoLogic_initialize_python_v1(mr):
     rentcap = 1 - bribepct
     edgechange = expandmax[erun] * np.ones((ndto, 1))
 
-    savedState = rng  # CHECK
+    savedState = random.getstate()  # CHECK
     random.seed(thistate)
 
     ###################################################################
@@ -93,9 +94,18 @@ def NarcoLogic_initialize_python_v1(mr):
     NodeTable['CoastDist'][nnodes-1] = 0
 
     # Assign nodes to initials DTOs
+    # CHECK the variable assignments in the for loop ####
     for nn in range(1, nnodes - 2):
-        westdir = NodeTable.Col(nn) - np.where(
-            np.isnan(dcoast(NodeTable.Row(nn), np.arange(0, NodeTable.Col(nn) - 2))) == 1)[-1]
+        westdir = NodeTable['Col'][nn] - np.where(np.isnan(dcoast[NodeTable['Row'][nn],
+                                                                  np.arange(0, NodeTable['Col'][nn] - 2)]) == 1)[-1]
+        eastdir = np.where(np.isnan(dcoast[NodeTable['Row'][nn], np.arange(NodeTable['Col'][nn] + 1,
+                                                                           LANDSUIT.shape[1] + 1)]) == 1)[0]
+        northdir = NodeTable['Row'][nn] - np.where(np.isnan(dcoast[np.arange(0, NodeTable['Row'][nn]-2),
+                                                                   NodeTable['Col'][nn]]) == 1)[-1]
+        southdir = np.where(np.isnan(dcoast[np.arange(NodeTable['Row'][nn] + 1, LANDSUIT.shape[0] + 1),
+                                            NodeTable['Col'][nn]]) == 1)[0]
+
+
 
 def sub2ind(sz, row, col):
     n_rows = sz[0]
