@@ -92,7 +92,7 @@ def NarcoLogic_initialize_python_v1(mr):
 
     NodeTable['CoastDist'] = coastdist
     NodeTable['CoastDist'][0] = 0
-    NodeTable['CoastDist'][nnodes-1] = 0
+    NodeTable['CoastDist'][nnodes - 1] = 0
 
     # Assign nodes to initials DTOs
     # CHECK the variable assignments in the for loop ####
@@ -101,7 +101,7 @@ def NarcoLogic_initialize_python_v1(mr):
                                                                   np.arange(0, NodeTable['Col'][nn] - 2)]) == 1)[-1]
         eastdir = np.where(np.isnan(dcoast[NodeTable['Row'][nn], np.arange(NodeTable['Col'][nn] + 1,
                                                                            LANDSUIT.shape[1] + 1)]) == 1)[0]
-        northdir = NodeTable['Row'][nn] - np.where(np.isnan(dcoast[np.arange(0, NodeTable['Row'][nn]-2),
+        northdir = NodeTable['Row'][nn] - np.where(np.isnan(dcoast[np.arange(0, NodeTable['Row'][nn] - 2),
                                                                    NodeTable['Col'][nn]]) == 1)[-1]
         southdir = np.where(np.isnan(dcoast[np.arange(NodeTable['Row'][nn] + 1, LANDSUIT.shape[0] + 1),
                                             NodeTable['Col'][nn]]) == 1)[0]
@@ -117,6 +117,31 @@ def NarcoLogic_initialize_python_v1(mr):
 
     if extnetflag == 1:
         ext_NodeTable, ext_EdgeTable = extend_network(nnodes, NodeTable, EdgeTable, Rdptgrid)
+        NodeTable = ext_NodeTable
+        EdgeTable = ext_EdgeTable
+        nnodes = NodeTable.shape[1]
+        endnodeset = np.array([mexnode, np.arange(160, nnodes + 1)])
+        EdgeTable['Capacity'] = basecap(erun) * np.ones((EdgeTable.shape[1], 1))
+
+    ADJ = np.zeros((nnodes, nnodes))  # adjacency matrix for trafficking network
+    TRRTY = np.zeros((nnodes, nnodes))  # control of nodes by each DTO
+    DIST = np.zeros((nnodes, nnodes))  # geographic distance associated with edges
+    ADDVAL = np.zeros((nnodes, nnodes))  # added value per edge in trafficking network
+    WGHT = np.ones((nnodes, nnodes))  # dynamic weighting of edges
+    FLOW = np.zeros((nnodes, nnodes, TMAX))  # dynamic flows of cocaine between nodes
+    SLRISK = slprob_0 * np.ones((nnodes, nnodes))  # dynamic perceived risk of seisure and loss per edge by node agent
+    INTRISK = np.zeros((nnodes, TMAX))  # dynamic perceived risk of interdiction at each node
+    CPCTY = np.zeros((nnodes, nnodes))  # maximum flow possible between nodes
+    CTRANS = np.zeros((nnodes, nnodes, TMAX))  # ransportation costs between nodes
+    RMTFAC = np.zeros((nnodes, nnodes))  # landscape factor (remoteness) influencing S&L risk
+    COASTFAC = np.zeros((nnodes, nnodes))  # landscape factor (distance to coast) influencing S&L risk
+    LATFAC = np.zeros((nnodes, nnodes))  # decreased likelihood of S&L moving north to reflect greater DTO investment
+    BRDRFAC = np.zeros((nnodes, nnodes))    # increased probability of S&L in department bordering an
+    # international border
+
+    SUITFAC = np.zeros((nnodes, nnodes))
+    NEIHOOD = cell(nnodes, 2)
+
 
 def sub2ind(sz, row, col):
     n_rows = sz[0]
