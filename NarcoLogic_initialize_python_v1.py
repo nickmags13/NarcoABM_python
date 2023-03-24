@@ -10,6 +10,7 @@ import random
 from load_expmntl_parms import load_expmntl_parms
 from optimize_interdiction_batch import optimize_interdiction_batch
 from intrd_tables_batch import intrd_tables_batch
+from extend_network import extend_network
 import scipy
 
 
@@ -110,6 +111,12 @@ def NarcoLogic_initialize_python_v1(mr):
         else:
             NodeTable['DTO'][nn] = 2
 
+    dptcodes = scipy.io.loadmat('data/dptcodes.mat')['dptcodes']
+    dptgrid = scipy.io.loadmat('data/dptgrid.mat')['dptgrid']
+    Rdptgrid = scipy.io.loadmat('data/Rdptgrid.mat')['Rdptgrid']  # Geographic cells reference - check format in python
+
+    if extnetflag == 1:
+        ext_NodeTable, ext_EdgeTable = extend_network(nnodes, NodeTable, EdgeTable, Rdptgrid)
 
 def sub2ind(sz, row, col):
     n_rows = sz[0]
