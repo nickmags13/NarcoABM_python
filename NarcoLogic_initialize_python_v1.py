@@ -267,6 +267,20 @@ def NarcoLogic_initialize_python_v1(mr):
                 CTRANS[0, j, TSTART] = CTRANS[0, j, TSTART] + np.mean(
                     np.multiply(ctrans_coast, DIST[j, ireceiver[idist_coast]]) / DIST[1, mexnode])
 
+    # Initialize Interdiction agent
+    # Create S&L probability layer
+    routepref = np.zeros((nnodes, nnodes, TMAX))    # weighting by network agent of successful routes
+    slevent = np.zeros((nnodes, nnodes, TMAX))  # occurrence of S&L event
+    intrdctobs = np.zeros((nnodes, nnodes, TMAX))
+    slnodes = cell(1, TMAX)
+    slsuccess = np.zeros((nnodes, nnodes, TMAX))    # volume of cocaine seized in S&L events
+    slvalue = np.zeros((nnodes, nnodes, TMAX))  # value of cocaine seized in S&L events
+    slcount_edges = np.zeros((1, TMAX))
+    slcount_vol = np.zeros((1, TMAX))
+    INTRDPROB = np.zeros((nnodes, TMAX))
+    SLPROB = np.zeros((nnodes, nnodes, TMAX))   # dynamic probability of S&L event per edge
+
+    if empSLflag(erun) == 1:
 
 
 def sub2ind(sz, row, col):
