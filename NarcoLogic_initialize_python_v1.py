@@ -13,6 +13,7 @@ from intrd_tables_batch import intrd_tables_batch
 from lldistkm import lldistkm
 from extend_network import extend_network
 import scipy
+from ismember import ismember
 
 
 def NarcoLogic_initialize_python_v1(mr):
@@ -193,6 +194,7 @@ def NarcoLogic_initialize_python_v1(mr):
         latlon1 = np.matlib.repmat(np.array([NodeTable['Lat'][j], NodeTable['Lon'][j]]), len(latlon2[:, 1]), 1)
         d1km, d2km = lldistkm(latlon1, latlon2)
         DIST[j, ADJ[j, :] == 1] = d1km
+
         if extnetflag == 1:
             # add distance for extended network
             latlon1 = np.matlib.repmat(np.array([NodeTable['Lat'][0], NodeTable['Lon'][0]]), 4, 1)
@@ -218,6 +220,29 @@ def NarcoLogic_initialize_python_v1(mr):
                                 NodeTable['Lon'][np.transpose(np.where(ADJ[160, :] == 1))]])
             d1km, d2km = lldistkm(latlon1, latlon2)
             DIST[160, np.transpose[np.where[ADJ[160, :] == 1]]] = d1km
+
+        # Create added value matrix (USD) and price per node
+        ADDVAL[j, ADJ[j, :] == 1] = np.multiply(deltavalue, DIST[j, ADJ[j, :] == 1])
+        if j == 1:
+            PRICE[j, TSTART] = startvalue
+        elif j in endnodeset:
+            continue
+        elif 157 <= j <= 160:
+            isender = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == j, 0]
+            inextleg = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 0] == j, 1]
+            PRICE[j, TSTART] = PRICE[isender, TSTART] + ADDVAL[isender, j] + PRICE[isender, TSTART] \
+                               + np.mean(ADDVAL(j, inextleg))
+            # even prices for long haul routes
+            if j == 160:
+                PRICE[np.array[[157, 160]], TSTART] = np.amin(PRICE[np.array([157, 160]), TSTART])
+                PRICE[np.array[[158, 159]], TSTART] = np.amin(PRICE[np.array([158, 159]), TSTART])
+        else:
+            isender = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == j, 0]
+            PRICE[j, TSTART] = np.mean(PRICE[isender, TSTART] + ADDVAL[isender, j])
+
+        for en in range(0, len(endnodeset)):
+            PRICE[endnodeset[en], TSTART] = np.amax(PRICE[ADJ[:, endnodeset[en]] == 1, TSTART])
+
 
 
 
