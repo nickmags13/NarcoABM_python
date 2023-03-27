@@ -169,6 +169,15 @@ def NarcoLogic_initialize_python_v1(mr):
         ADJ[k, EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == k, 2]] = 1
 
     # Node Attributes
+    remotefac = np.array([[0], [1 - NodeTable['PopSuit'][np.arange(1, nnodes + 1)]]])
+    brdrfac = np.array([[0], [NodeTable['DistBorderSuit'][np.arange(1, nnodes + 1)]]])
+    suitfac = np.array([[0], [NodeTable['LandSuit'][np.arange(1, nnodes + 1)]]])
+    coastfac = np.array([[0], [NodeTable['CoastDist'][np.arange(1, nnodes + 1)] / np.amax(NodeTable.CoastDist)]])
+    nwvec = np.sqrt(np.multiply(0.9, NodeTable['Lat'][np.arange(1, nnodes + 1)] ** 2) +
+                    np.multiply(0.1, NodeTable['Lon'][np.arange(1, nnodes + 1)] ** 2))
+    latfac = np.array([[0], [1 - nwvec / np.amax(nwvec)]])
+
+
 
 
 def sub2ind(sz, row, col):
