@@ -164,6 +164,11 @@ def NarcoLogic_initialize_python_v1(mr):
     np.random.seed(savedState)
     hitrngstate = np.random.rand(nnodes, 1)
 
+    for k in range(0, nnodes):
+        # Create adjacency matrix
+        ADJ[k, EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == k, 2]] = 1
+
+    # Node Attributes
 
 
 def sub2ind(sz, row, col):
