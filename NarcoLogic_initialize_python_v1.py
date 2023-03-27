@@ -295,6 +295,17 @@ def NarcoLogic_initialize_python_v1(mr):
     slmin = SLPROB[:,:, TSTART]
     INTRDPROB[:, TSTART + 1] = slprob_0 * np.ones((nnodes, 1))
 
+    # Initialize Node agents
+    STOCK[:, TSTART] = NodeTable['Stock']
+    TOTCPTL[:, TSTART] = NodeTable['Capital']
+    PRICE[:, TSTART + 1] = PRICE[:, TSTART]
+    slcpcty_0 = sl_min[erun]
+    slcpcty_max = sl_max[erun]
+    slcpcty[TSTART + 1] = slcpcty_0
+    # subjective risk perception with time distortion
+    twght = timewght_0 * np.ones((nnodes, 1))
+
+    # Set-up trafficking netowrk benefit-cost logic  ############
 
 
 
