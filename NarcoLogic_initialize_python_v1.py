@@ -242,7 +242,13 @@ def NarcoLogic_initialize_python_v1(mr):
 
         for en in range(0, len(endnodeset)):
             PRICE[endnodeset[en], TSTART] = np.amax(PRICE[ADJ[:, endnodeset[en]] == 1, TSTART])
-
+        RMTFAC[j, ADJ[j, :] == 1] = remotefac[ADJ[j, :] == 1]
+        COASTFAC[j, ADJ[j, :] == 1] = coastfac[ADJ[j, :] == 1]
+        LATFAC[j, ADJ[j, :] == 1] = latfac[ADJ[j, :] == 1]
+        BRDRFAC[j, ADJ[j, :] == 1] = brdrfac[ADJ[j, :] == 1]
+        SUITFAC[j, ADJ[j, :] == 1] = suitfac[ADJ[j, :] == 1]
+        # Transportation costs
+        ireceiver = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == j, 2]
 
 
 
