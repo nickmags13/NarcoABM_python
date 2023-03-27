@@ -157,10 +157,10 @@ def NarcoLogic_initialize_python_v1(mr):
     RENTCAP = np.zeros((nnodes, TMAX))  # portion of MARGIN retained at node as profit
     LEAK = np.zeros((nnodes, TMAX))  # dynamic amount of cocaine leaked at each node
     """Check which data structure to use instead of cell"""
-    activeroute = cell(nnodes, TMAX)    # track active routes
+    activeroute = cell(nnodes, TMAX)  # track active routes
     """Check which data structure to use instead of cell"""
     avgslrisk = cell(nnodes, TMAX)  # average S&L risk at each node given active routes
-    totslrisk = np.zeros((1, TMAX)) # etwork-wide average S&L risk
+    totslrisk = np.zeros((1, TMAX))  # etwork-wide average S&L risk
     slcpcty = np.zeros((1, TMAX))
 
     np.random.seed(savedState)
@@ -269,16 +269,16 @@ def NarcoLogic_initialize_python_v1(mr):
 
     # Initialize Interdiction agent
     # Create S&L probability layer
-    routepref = np.zeros((nnodes, nnodes, TMAX))    # weighting by network agent of successful routes
+    routepref = np.zeros((nnodes, nnodes, TMAX))  # weighting by network agent of successful routes
     slevent = np.zeros((nnodes, nnodes, TMAX))  # occurrence of S&L event
     intrdctobs = np.zeros((nnodes, nnodes, TMAX))
     slnodes = cell(1, TMAX)
-    slsuccess = np.zeros((nnodes, nnodes, TMAX))    # volume of cocaine seized in S&L events
+    slsuccess = np.zeros((nnodes, nnodes, TMAX))  # volume of cocaine seized in S&L events
     slvalue = np.zeros((nnodes, nnodes, TMAX))  # value of cocaine seized in S&L events
     slcount_edges = np.zeros((1, TMAX))
     slcount_vol = np.zeros((1, TMAX))
     INTRDPROB = np.zeros((nnodes, TMAX))
-    SLPROB = np.zeros((nnodes, nnodes, TMAX))   # dynamic probability of S&L event per edge
+    SLPROB = np.zeros((nnodes, nnodes, TMAX))  # dynamic probability of S&L event per edge
 
     if empSLflag(erun) == 1:
         empSLPROB, slctnodes = build_SLemp(nnodes, TMAX, CAattr1, NodeTable, ADJ, ccdb)
@@ -291,8 +291,8 @@ def NarcoLogic_initialize_python_v1(mr):
         facmat[:, :, 4] = BRDRFAC
         facmat[:, :, 5] = SUITFAC
         SLPROB[:, :, TSTART] = np.mean(facmat[:, :, range(0, 6)], 2)
-        SLPROB[:, :, TSTART + 1] = SLPROB[:,:, TSTART]
-    slmin = SLPROB[:,:, TSTART]
+        SLPROB[:, :, TSTART + 1] = SLPROB[:, :, TSTART]
+    slmin = SLPROB[:, :, TSTART]
     INTRDPROB[:, TSTART + 1] = slprob_0 * np.ones((nnodes, 1))  # dynamic probability of interdiction at nodes
 
     # Initialize Node agents
@@ -323,7 +323,7 @@ def NarcoLogic_initialize_python_v1(mr):
     totslrisk[TSTART + 1] = 1
 
     OWN = np.zeros((LANDSUIT.shape[0], LANDSUIT.shape[1]))  # node agent land ownership
-    IOWN = cell(nnodes, TMAX)   # dynamic list of owned parcels
+    IOWN = cell(nnodes, TMAX)  # dynamic list of owned parcels
     CTRANS[:, :, TSTART + 1] = CTRANS[:, :, TSTART]
 
     # Set-up figure for trafficking movie
@@ -338,8 +338,18 @@ def NarcoLogic_initialize_python_v1(mr):
 
     rinit, cinit = ind2sub(np.array([nnodes, nnodes]), np.where(FLOW[:, :, 1] > 0))
 
+    for w in range(0, len(rinit)):
+        MOV[rinit[w], cinit[w], 1] = FLOW[rinit[w], cinit[w], 1]
+
+    Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, mrun, batchrun)
 
 
 def sub2ind(sz, row, col):
     n_rows = sz[0]
     return [n_rows * (c - 1) + r for r, c in zip(row, col)]
+
+
+def ind2sub(array_shape, ind):
+    rows = (ind.astype('int') / array_shape[1])
+    cols = (ind.astype('int') % array_shape[1])
+    return rows, cols
