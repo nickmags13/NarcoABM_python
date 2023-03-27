@@ -247,8 +247,25 @@ def NarcoLogic_initialize_python_v1(mr):
         LATFAC[j, ADJ[j, :] == 1] = latfac[ADJ[j, :] == 1]
         BRDRFAC[j, ADJ[j, :] == 1] = brdrfac[ADJ[j, :] == 1]
         SUITFAC[j, ADJ[j, :] == 1] = suitfac[ADJ[j, :] == 1]
+
         # Transportation costs
         ireceiver = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == j, 2]
+        idist_ground = np.logical_and(DIST[j, ireceiver] > 0, DIST[j, ireceiver] <= 500)
+        idist_air = (DIST[j, ireceiver] > 500)
+        CTRANS[j, ireceiver[idist_ground], TSTART] = np.multiply(ctrans_inland,
+                                                                 DIST[j, ireceiver[idist_ground]]) / DIST[0, mexnode]
+        CTRANS[j, ireceiver[idist_air], TSTART] = np.multiply(ctrans_air,
+                                                              DIST[j, ireceiver[idist_air]]) / DIST[0, mexnode]
+        if NodeTable['CoastDist'][j] < 20 or 157 <= j <= 159:
+            ireceiver = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == j, 1]
+            idist_coast = (NodeTable['CoastDist'][ireceiver] < 20)
+            idist_inland = (NodeTable['CoastDist'][ireceiver] >= 20)
+            CTRANS[j, ireceiver[idist_coast], TSTART] = np.multiply(ctrans_coast,
+                                                                    DIST[j, ireceiver[idist_coast]]) / DIST[0, mexnode]
+            if 157 <= j <= 159:
+                CTRANS[j, ireceiver[idist_coast], TSTART] = 0
+                CTRANS[0, j, TSTART] = CTRANS[0, j, TSTART] + np.mean(
+                    np.multiply(ctrans_coast, DIST[j, ireceiver[idist_coast]]) / DIST[1, mexnode])
 
 
 
