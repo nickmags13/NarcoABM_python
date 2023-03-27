@@ -281,6 +281,21 @@ def NarcoLogic_initialize_python_v1(mr):
     SLPROB = np.zeros((nnodes, nnodes, TMAX))   # dynamic probability of S&L event per edge
 
     if empSLflag(erun) == 1:
+        empSLPROB, slctnodes = build_SLemp(nnodes, TMAX, CAattr1, NodeTable, ADJ, ccdb)
+        SLPROB = empSLPROB
+    else:
+        facmat = LATFAC
+        facmat[:, :, 1] = COASTFAC
+        facmat[:, :, 2] = RMTFAC
+        facmat[:, :, 3] = DIST / np.amax(np.amax(DIST))
+        facmat[:, :, 4] = BRDRFAC
+        facmat[:, :, 5] = SUITFAC
+        SLPROB[:, :, TSTART] = np.mean(facmat[:, :, range(0, 6)], 2)
+        SLPROB[:, :, TSTART + 1] = SLPROB[:,:, TSTART]
+    slmin = SLPROB[:,:, TSTART]
+    INTRDPROB[:, TSTART + 1] = slprob_0 * np.ones((nnodes, 1))
+
+
 
 
 def sub2ind(sz, row, col):
