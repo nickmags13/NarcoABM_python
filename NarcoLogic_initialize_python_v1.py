@@ -29,7 +29,7 @@ def NarcoLogic_initialize_python_v1(mr):
 
     # Start initialization, set random number generator state for repeatability
 
-    random.seed(mrun)
+    np.random.seed(mrun)
 
     # load experimental parameters file
     sl_max, sl_min, baserisk, riskmltplr, startstock, sl_learn, rt_learn, losslim, prodgrow, targetseize, \
@@ -74,8 +74,8 @@ def NarcoLogic_initialize_python_v1(mr):
     rentcap = 1 - bribepct
     edgechange = expandmax[erun] * np.ones((ndto, 1))
 
-    savedState = random.getstate()  # CHECK
-    random.seed(thistate)
+    savedState = np.random.getstate()  # CHECK
+    np.random.seed(thistate)
 
     ###################################################################
     #   Build trafficking network - NodeTable and EdgeTable   #
@@ -160,6 +160,9 @@ def NarcoLogic_initialize_python_v1(mr):
     avgslrisk = cell(nnodes, TMAX)  # average S&L risk at each node given active routes
     totslrisk = np.zeros((1, TMAX)) # etwork-wide average S&L risk
     slcpcty = np.zeros((1, TMAX))
+
+    np.random.seed(savedState)
+    hitrngstate = np.random.rand(nnodes, 1)
 
 
 
