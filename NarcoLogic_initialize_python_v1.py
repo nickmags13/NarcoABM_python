@@ -200,6 +200,25 @@ def NarcoLogic_initialize_python_v1(mr):
                                 NodeTable['Lon'](np.array([[156], [161], [162], [163]]))])
             d1km, d2km = lldistkm(latlon1, latlon2)
             DIST[1, np.array[[[156], [161], [162], [163]]]] = d1km
+            latlon1 = np.array([NodeTable['Lat'][157 * np.ones((len(np.where(ADJ[157, :] == 1)), 1))],
+                                NodeTable['Lon'][157 * np.ones((len(np.where(ADJ[157, :] == 1)), 1))]])
+            latlon2 = np.array([NodeTable['Lat'][np.transpose(np.where(ADJ[158, :] == 1))],
+                                NodeTable['Lon'][np.transpose(np.where(ADJ[158, :] == 1))]])
+            d1km, d2km = lldistkm(latlon1, latlon2)
+            DIST[158, np.transpose[np.where[ADJ[158, :] == 1]]] = d1km
+            latlon1 = np.array([NodeTable['Lat'][159 * np.ones((len(np.where(ADJ[159, :] == 1)), 1))],
+                                NodeTable['Lon'][159 * np.ones((len(np.where(ADJ[159, :] == 1)), 1))]])
+            latlon2 = np.array([NodeTable['Lat'][np.transpose(np.where(ADJ[159, :] == 1))],
+                                NodeTable['Lon'][np.transpose(np.where(ADJ[159, :] == 1))]])
+            d1km, d2km = lldistkm(latlon1, latlon2)
+            DIST[159, np.transpose[np.where[ADJ[159, :] == 1]]] = d1km
+            latlon1 = np.array([NodeTable['Lat'][160 * np.ones((len(np.where(ADJ[160, :] == 1)), 1))],
+                                NodeTable['Lon'][160 * np.ones((len(np.where(ADJ[160, :] == 1)), 1))]])
+            latlon2 = np.array([NodeTable['Lat'][np.transpose(np.where(ADJ[160, :] == 1))],
+                                NodeTable['Lon'][np.transpose(np.where(ADJ[160, :] == 1))]])
+            d1km, d2km = lldistkm(latlon1, latlon2)
+            DIST[160, np.transpose[np.where[ADJ[160, :] == 1]]] = d1km
+
 
 
 def sub2ind(sz, row, col):
