@@ -10,6 +10,7 @@ import random
 from load_expmntl_parms import load_expmntl_parms
 from optimize_interdiction_batch import optimize_interdiction_batch
 from intrd_tables_batch import intrd_tables_batch
+from lldistkm import lldistkm
 from extend_network import extend_network
 import scipy
 
@@ -177,7 +178,28 @@ def NarcoLogic_initialize_python_v1(mr):
                     np.multiply(0.1, NodeTable['Lon'][np.arange(1, nnodes + 1)] ** 2))
     latfac = np.array([[0], [1 - nwvec / np.amax(nwvec)]])
 
+    # Create adjacency matrix
+    iendnode = NodeTable['ID'][NodeTable['DeptCode'] == 2]
+    ADJ[EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 2] == iendnode, 1], iendnode] = 1
+    iedge = np.where(ADJ == 1)
+    subneihood = np.zeros((LANDSUIT.shape[0], LANDSUIT.shape[1]))
 
+    for j in range(0, nnodes):
+        # Create weight and capacity matrices
+        WGHT[j, ADJ[j, :] == 1] = EdgeTable['Weight'][ADJ[j, :] == 1]
+        CPCTY[j, ADJ[j, :] == 1] = EdgeTable['Capacity'][ADJ[j, :] == 1]
+        # Create distance (in km) matrix
+        latlon2 = np.array([NodeTable['Lat'][ADJ[j, :] == 1], NodeTable['Lon'][ADJ[j, :] == 1]])
+        latlon1 = np.matlib.repmat(np.array([NodeTable['Lat'][j], NodeTable['Lon'][j]]), len(latlon2[:, 1]), 1)
+        d1km, d2km = lldistkm(latlon1, latlon2)
+        DIST[j, ADJ[j, :] == 1] = d1km
+        if extnetflag == 1:
+            # add distance for extended network
+            latlon1 = np.matlib.repmat(np.array([NodeTable['Lat'][0], NodeTable['Lon'][0]]), 4, 1)
+            latlon2 = np.array([NodeTable['Lat'](np.array([[156], [161], [162], [163]])),
+                                NodeTable['Lon'](np.array([[156], [161], [162], [163]]))])
+            d1km, d2km = lldistkm(latlon1, latlon2)
+            DIST[1, np.array[[[156], [161], [162], [163]]]] = d1km
 
 
 def sub2ind(sz, row, col):
