@@ -319,7 +319,15 @@ def NarcoLogic_initialize_python_v1(mr):
         margvalset = idto[not ismember(idto, endnodeset)]
         routepref[1, idto, TSTART + 1] = margval[1, idto] / np.amax(margval[1, margvalset])
 
+    routepref[:, endnodeset, TSTART + 1] = 1
+    totslrisk[TSTART + 1] = 1
 
+    OWN = np.zeros((LANDSUIT.shape[0], LANDSUIT.shape[1]))  # node agent land ownership
+    IOWN = cell(nnodes, TMAX)   # dynamic list of owned parcels
+    CTRANS[:, :, TSTART + 1] = CTRANS[:, :, TSTART]
+
+    # Set-up figure for trafficking movie
+    MOV = np.zeros((nnodes, nnodes, TMAX))
 
 
 def sub2ind(sz, row, col):
