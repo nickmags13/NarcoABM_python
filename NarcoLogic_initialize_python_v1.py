@@ -329,6 +329,13 @@ def NarcoLogic_initialize_python_v1(mr):
     # Set-up figure for trafficking movie
     MOV = np.zeros((nnodes, nnodes, TMAX))
 
+    # Output tables for flows(t) and interdiction prob(t-1)
+    t = TSTART + 1
+    if extnetflag(erun) == 1:
+        scipy.io.loadmat('init_flow_ext')
+    else:
+        scipy.io.loadmat('init_flow')
+
 
 def sub2ind(sz, row, col):
     n_rows = sz[0]
