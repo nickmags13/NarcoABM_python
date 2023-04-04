@@ -35,7 +35,7 @@ def NarcoLogic_initialize_python_v1(mr):
     sl_max, sl_min, baserisk, riskmltplr, startstock, sl_learn, rt_learn, losslim, prodgrow, targetseize, \
     intcpctymodel, profitmodel, endstock, growthmdl, timewght, locthink, expandmax, empSLflag, optSLflag, suitflag, \
     extnetflag, rtcap, basecap, p_sucintcpt = load_expmntl_parms(ERUNS)
-    breakpoint()
+
     # Load landscape files
     dcoast = scipy.io.loadmat('data/coast_dist')['dcoast']
     LANDSUIT = scipy.io.loadmat('data/landsuit_file_default')['LANDSUIT']
@@ -67,8 +67,8 @@ def NarcoLogic_initialize_python_v1(mr):
     alpharisk = 2
     betarisk = 0.5
     timewght_0 = timewght[0, erun]
-
-    slprob_0 = 1 / (sum(np.power(timewght_0, np.array((np.arange(0, 13)))) + betarisk))  # CHECK
+    breakpoint()
+    slprob_0 = 1 / (np.sum(np.power(timewght_0, np.array((np.arange(0, 13))))) + betarisk)
     bribepct = 0.3
     bribethresh = 12
     rentcap = 1 - bribepct
