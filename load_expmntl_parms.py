@@ -4,7 +4,6 @@ import numpy as np
 def load_expmntl_parms(ERUNS):
     empSLflag = np.zeros((1, ERUNS))  # determines is empirical (1) or artificial (0) S&L schedule used
     optSLflag = np.ones((1, ERUNS))
-    extnetflag = np.ones((1, ERUNS))
     suitflag = np.zeros((1, ERUNS))  # use RAT suitability (1) or build from covariates (0)
 
     sl_max = 125 * np.ones((1, ERUNS))  # baseline; maximum interdiction capacity
@@ -58,4 +57,4 @@ def load_expmntl_parms(ERUNS):
 
     return sl_max, sl_min, baserisk, riskmltplr, startstock, sl_learn, rt_learn, losslim, prodgrow, targetseize, \
            intcpctymodel, profitmodel, endstock, growthmdl, timewght, locthink, expandmax, empSLflag, optSLflag, \
-           suitflag, extnetflag, rtcap, basecap, p_sucintcpt
+           suitflag, rtcap, basecap, p_sucintcpt
