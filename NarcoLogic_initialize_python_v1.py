@@ -93,7 +93,7 @@ def NarcoLogic_initialize_python_v1(mr):
     mexnode = nnodes
     endnodeset = mexnode
     breakpoint()
-    icoastdist = sub2ind(dcoast.shape, NodeTable.shape[0], NodeTable.shape[1])
+    icoastdist = sub2ind(dcoast.shape, NodeTable['Row'], NodeTable['Col'])
     coastdist = dcoast[icoastdist]  # convert to km
     NodeTable['CoastDist'] = coastdist
     NodeTable['CoastDist'][0] = 0
