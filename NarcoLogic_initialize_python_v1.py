@@ -134,7 +134,7 @@ def NarcoLogic_initialize_python_v1(mr):
 
     SUITFAC = np.zeros((nnodes, nnodes))
     """Check which data structure to use instead of cell"""
-    NEIHOOD = cell(nnodes, 2)
+    NEIHOOD = np.empty((nnodes, 2))
     STOCK = np.zeros((nnodes, TMAX))  # dynamic cocaine stock at each node
     PRICE = np.zeros((nnodes, TMAX))  # $/kilo at each node
     RISKPREM = np.ones((nnodes, nnodes, TMAX))
@@ -148,9 +148,9 @@ def NarcoLogic_initialize_python_v1(mr):
     RENTCAP = np.zeros((nnodes, TMAX))  # portion of MARGIN retained at node as profit
     LEAK = np.zeros((nnodes, TMAX))  # dynamic amount of cocaine leaked at each node
     """Check which data structure to use instead of cell"""
-    activeroute = cell(nnodes, TMAX)  # track active routes
+    activeroute = np.empty((nnodes, TMAX))  # track active routes
     """Check which data structure to use instead of cell"""
-    avgslrisk = cell(nnodes, TMAX)  # average S&L risk at each node given active routes
+    avgslrisk = np.empty((nnodes, TMAX))  # average S&L risk at each node given active routes
     totslrisk = np.zeros((1, TMAX))  # etwork-wide average S&L risk
     slcpcty = np.zeros((1, TMAX))
 
@@ -237,7 +237,7 @@ def NarcoLogic_initialize_python_v1(mr):
     routepref = np.zeros((nnodes, nnodes, TMAX))  # weighting by network agent of successful routes
     slevent = np.zeros((nnodes, nnodes, TMAX))  # occurrence of S&L event
     intrdctobs = np.zeros((nnodes, nnodes, TMAX))
-    slnodes = cell(1, TMAX)
+    slnodes = np.empty((1, TMAX))
     slsuccess = np.zeros((nnodes, nnodes, TMAX))  # volume of cocaine seized in S&L events
     slvalue = np.zeros((nnodes, nnodes, TMAX))  # value of cocaine seized in S&L events
     slcount_edges = np.zeros((1, TMAX))
@@ -284,7 +284,7 @@ def NarcoLogic_initialize_python_v1(mr):
     totslrisk[TSTART + 1] = 1
 
     OWN = np.zeros((LANDSUIT.shape[0], LANDSUIT.shape[1]))  # node agent land ownership
-    IOWN = cell(nnodes, TMAX)  # dynamic list of owned parcels
+    IOWN = np.empty((nnodes, TMAX))  # dynamic list of owned parcels
     CTRANS[:, :, TSTART + 1] = CTRANS[:, :, TSTART]
 
     # Set-up figure for trafficking movie
