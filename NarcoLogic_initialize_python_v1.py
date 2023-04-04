@@ -116,14 +116,6 @@ def NarcoLogic_initialize_python_v1(mr):
     dptgrid = scipy.io.loadmat('data/dptgrid.mat')['dptgrid']
     Rdptgrid = scipy.io.loadmat('data/Rdptgrid.mat')['Rdptgrid']  # Geographic cells reference - check format in python
 
-    if extnetflag == 1:
-        ext_NodeTable, ext_EdgeTable = extend_network(nnodes, NodeTable, EdgeTable, Rdptgrid)
-        NodeTable = ext_NodeTable
-        EdgeTable = ext_EdgeTable
-        nnodes = NodeTable.shape[1]
-        endnodeset = np.array([mexnode, np.arange(160, nnodes + 1)])
-        EdgeTable['Capacity'] = basecap(erun) * np.ones((EdgeTable.shape[1], 1))
-
     ADJ = np.zeros((nnodes, nnodes))  # adjacency matrix for trafficking network
     TRRTY = np.zeros((nnodes, nnodes))  # control of nodes by each DTO
     DIST = np.zeros((nnodes, nnodes))  # geographic distance associated with edges
