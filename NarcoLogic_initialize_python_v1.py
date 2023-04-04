@@ -51,28 +51,28 @@ def NarcoLogic_initialize_python_v1(mr):
     ndto = 2  # initial number of DTOs
     dtocutflag = np.zeros((ndto, 1))
     DTOBDGT = np.zeros((ndto, TMAX))
-    losstol = losslim(erun)  # tolerance threshold for loss due to S&L, triggers route fragmentation
-    stock_0 = startstock[erun]  # initial cocaine stock at producer node
-    stock_max = endstock[erun]
+    losstol = losslim[0, erun]  # tolerance threshold for loss due to S&L, triggers route fragmentation
+    stock_0 = startstock[0, erun]  # initial cocaine stock at producer node
+    stock_max = endstock[0, erun]
     startvalue = 4500  # producer price, $385/kg: Zoe's numbers 4,500 in Panama
     deltavalue = 4.46  # added value for distance traveled $8/kilo/km: Zoe's numbers $4.46
     nodeloss = 0  # amount of cocaine that is normally lost (i.e., non-interdiction) at each node
     ctrans_inland = 371  # transportation costs (kg/km) over-ground (3.5), includes
     ctrans_coast = 160  # transportation costs (kg/km) via plane or boat (1.5)
     ctrans_air = 3486
-    delta_rt = rt_learn[erun]  # reinforcement learning rate for network agent
+    delta_rt = rt_learn[0, erun]  # reinforcement learning rate for network agent
 
     # (i.e., weight on new information for successful routes)
     # perceived risk model
     alpharisk = 2
     betarisk = 0.5
-    timewght_0 = timewght[erun]
+    timewght_0 = timewght[0, erun]
 
     slprob_0 = 1 / (sum(np.power(timewght_0, np.array((np.arange(0, 13)))) + betarisk))  # CHECK
     bribepct = 0.3
     bribethresh = 12
     rentcap = 1 - bribepct
-    edgechange = expandmax[erun] * np.ones((ndto, 1))
+    edgechange = expandmax[0, erun] * np.ones((ndto, 1))
 
     savedState = np.random.get_state()  # CHECK
     np.random.seed(thistate)
@@ -83,7 +83,7 @@ def NarcoLogic_initialize_python_v1(mr):
 
     EdgeTable = scipy.io.loadmat('data/EdgeTable_163.mat')['EdgeTable']
     NodeTable = scipy.io.loadmat('data/NodeTable_163.mat')['NodeTable']
-    EdgeTable['Capacity'] = rtcap[erun] * np.ones(EdgeTable.shape[0], 1)
+    EdgeTable['Capacity'] = rtcap[0, erun] * np.ones(EdgeTable.shape[0], 1)
     nnodes = NodeTable.shape[0]
     mexnode = nnodes
     endnodeset = mexnode
@@ -258,15 +258,15 @@ def NarcoLogic_initialize_python_v1(mr):
     STOCK[:, TSTART] = NodeTable['Stock']
     TOTCPTL[:, TSTART] = NodeTable['Capital']
     PRICE[:, TSTART + 1] = PRICE[:, TSTART]
-    slcpcty_0 = sl_min[erun]
-    slcpcty_max = sl_max[erun]
+    slcpcty_0 = sl_min[0, erun]
+    slcpcty_max = sl_max[0, erun]
     slcpcty[TSTART + 1] = slcpcty_0
 
     # subjective risk perception with time distortion
     twght = timewght_0 * np.ones((nnodes, 1))
 
     # Set-up trafficking netowrk benefit-cost logic  ############
-    ltcoeff = locthink[erun] * np.ones((nnodes, 1))
+    ltcoeff = locthink[0, erun] * np.ones((nnodes, 1))
     margval = np.zeros((nnodes, nnodes, TMAX))
     for q in range(0, nnodes):
         if len(np.where(ADJ[q, :] == 1)) > 0:
