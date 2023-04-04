@@ -21,7 +21,8 @@ def NarcoLogic_initialize_python_v1(mr):
     TSTART = 1
     TMAX = 180  # 15 years at monthly time steps
 
-    thistate = scipy.io.loadmat('data/savedrngstate.mat')['thistate']
+    # thistate = scipy.io.loadmat('data/savedrngstate.mat')['thistate']
+    thistate = 1  # Verify the correct file upload and remove it after testing
 
     testflag = 1
     erun = 3
@@ -194,7 +195,8 @@ def NarcoLogic_initialize_python_v1(mr):
         elif 157 <= j <= 160:
             isender = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == j, 0]
             inextleg = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 0] == j, 1]
-            PRICE[j, TSTART] = PRICE[isender, TSTART] + ADDVAL[isender, j] + PRICE[isender, TSTART] + np.mean(ADDVAL[j, inextleg])
+            PRICE[j, TSTART] = PRICE[isender, TSTART] + ADDVAL[isender, j] + PRICE[isender, TSTART] + np.mean(
+                ADDVAL[j, inextleg])
             # even prices for long haul routes
             if j == 160:
                 PRICE[np.array([157, 160]), TSTART] = np.amin(PRICE[np.array([157, 160]), TSTART])
