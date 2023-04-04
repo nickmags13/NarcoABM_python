@@ -88,13 +88,13 @@ def NarcoLogic_initialize_python_v1(mr):
     EdgeTable['EndNodes'] = EdgeTable[['EndNodes_1', 'EndNodes_2']].values.tolist()
     EdgeTable = EdgeTable.drop(columns=['EndNodes_1', 'EndNodes_2'])
     NodeTable = pd.read_csv('data/NodeTable.csv')
-    EdgeTable['Capacity'] = rtcap[0, erun] * np.ones(EdgeTable.shape[0], 1)
+    EdgeTable['Capacity'] = rtcap[0, erun] * np.ones(EdgeTable.shape[0])
     nnodes = NodeTable.shape[0]
     mexnode = nnodes
     endnodeset = mexnode
+    breakpoint()
     icoastdist = sub2ind(dcoast.shape, NodeTable.shape[0], NodeTable.shape[1])
     coastdist = dcoast[icoastdist]  # convert to km
-    breakpoint()
     NodeTable['CoastDist'] = coastdist
     NodeTable['CoastDist'][0] = 0
     NodeTable['CoastDist'][nnodes - 1] = 0
