@@ -82,8 +82,8 @@ def NarcoLogic_initialize_python_v1(mr):
     #   Build trafficking network - NodeTable and EdgeTable   #
     ###################################################################
 
-    EdgeTable = scipy.io.loadmat('data/EdgeTable.mat')['EdgeTable']
-    NodeTable = scipy.io.loadmat('data/NodeTable.mat')['NodeTable']
+    EdgeTable = scipy.io.loadmat('data/EdgeTable_163.mat')['EdgeTable']
+    NodeTable = scipy.io.loadmat('data/NodeTable_163.mat')['NodeTable']
     EdgeTable['Capacity'] = rtcap[erun] * np.ones(EdgeTable.shape[0], 1)
     nnodes = NodeTable.shape[0]
     mexnode = nnodes
