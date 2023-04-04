@@ -6,6 +6,8 @@ Function for initializing and executing NarcoLogic dynamics from Python
 """
 
 import numpy as np
+import pandas as pd
+
 from load_expmntl_parms import load_expmntl_parms
 from optimize_interdiction_batch import optimize_interdiction_batch
 from intrd_tables_batch import intrd_tables_batch
@@ -82,8 +84,10 @@ def NarcoLogic_initialize_python_v1(mr):
     #   Build trafficking network - NodeTable and EdgeTable   #
     ###################################################################
 
-    EdgeTable = scipy.io.loadmat('data/EdgeTable_163.mat')['EdgeTable']
-    NodeTable = scipy.io.loadmat('data/NodeTable_163.mat')['NodeTable']
+    EdgeTable = pd.read_csv('data/EdgeTable.csv')
+    EdgeTable['EndNodes'] = np.array([EdgeTable['EndNodes_1'], EdgeTable['EndNodes_2']])
+    EdgeTable = EdgeTable.drop(columns=['EndNodes_1', 'EndNodes_2'])
+    NodeTable = pd.read_csv('data/NodeTable.csv')
     EdgeTable['Capacity'] = rtcap[0, erun] * np.ones(EdgeTable.shape[0], 1)
     nnodes = NodeTable.shape[0]
     mexnode = nnodes
