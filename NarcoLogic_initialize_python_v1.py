@@ -24,7 +24,7 @@ def NarcoLogic_initialize_python_v1(mr):
     thistate = scipy.io.loadmat('data/savedrngstate.mat')['thistate']
 
     testflag = 1
-    erun = 4
+    erun = 3
     mrun = mr
 
     # Start initialization, set random number generator state for repeatability
@@ -35,7 +35,7 @@ def NarcoLogic_initialize_python_v1(mr):
     sl_max, sl_min, baserisk, riskmltplr, startstock, sl_learn, rt_learn, losslim, prodgrow, targetseize, \
     intcpctymodel, profitmodel, endstock, growthmdl, timewght, locthink, expandmax, empSLflag, optSLflag, suitflag, \
     extnetflag, rtcap, basecap, p_sucintcpt = load_expmntl_parms(ERUNS)
-
+    breakpoint()
     # Load landscape files
     dcoast = scipy.io.loadmat('data/coast_dist')['dcoast']
     LANDSUIT = scipy.io.loadmat('data/landsuit_file_default')['LANDSUIT']
@@ -45,7 +45,7 @@ def NarcoLogic_initialize_python_v1(mr):
     # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     # Interdiction Agent #
-    delta_sl = sl_learn[erun]  # reinforcement learning rate for S&L vents (i.e., weight on new information)
+    delta_sl = sl_learn[0, erun]  # reinforcement learning rate for S&L vents (i.e., weight on new information)
 
     # Network Agent #
     ndto = 2  # initial number of DTOs
