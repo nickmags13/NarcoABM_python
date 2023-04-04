@@ -10,7 +10,6 @@ from load_expmntl_parms import load_expmntl_parms
 from optimize_interdiction_batch import optimize_interdiction_batch
 from intrd_tables_batch import intrd_tables_batch
 from lldistkm import lldistkm
-from extend_network import extend_network
 import scipy
 from ismember import ismember
 
