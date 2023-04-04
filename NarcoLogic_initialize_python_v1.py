@@ -74,7 +74,7 @@ def NarcoLogic_initialize_python_v1(mr):
     rentcap = 1 - bribepct
     edgechange = expandmax[erun] * np.ones((ndto, 1))
 
-    savedState = np.random.getstate()  # CHECK
+    savedState = np.random.get_state()  # CHECK
     np.random.seed(thistate)
 
     ###################################################################
@@ -194,8 +194,7 @@ def NarcoLogic_initialize_python_v1(mr):
         elif 157 <= j <= 160:
             isender = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == j, 0]
             inextleg = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 0] == j, 1]
-            PRICE[j, TSTART] = PRICE[isender, TSTART] + ADDVAL[isender, j] + PRICE[isender, TSTART] \
-                               + np.mean(ADDVAL(j, inextleg))
+            PRICE[j, TSTART] = PRICE[isender, TSTART] + ADDVAL[isender, j] + PRICE[isender, TSTART] + np.mean(ADDVAL[j, inextleg])
             # even prices for long haul routes
             if j == 160:
                 PRICE[np.array[[157, 160]], TSTART] = np.amin(PRICE[np.array([157, 160]), TSTART])
