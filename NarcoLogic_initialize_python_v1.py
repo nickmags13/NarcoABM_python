@@ -197,8 +197,8 @@ def NarcoLogic_initialize_python_v1(mr):
             PRICE[j, TSTART] = PRICE[isender, TSTART] + ADDVAL[isender, j] + PRICE[isender, TSTART] + np.mean(ADDVAL[j, inextleg])
             # even prices for long haul routes
             if j == 160:
-                PRICE[np.array[[157, 160]], TSTART] = np.amin(PRICE[np.array([157, 160]), TSTART])
-                PRICE[np.array[[158, 159]], TSTART] = np.amin(PRICE[np.array([158, 159]), TSTART])
+                PRICE[np.array([157, 160]), TSTART] = np.amin(PRICE[np.array([157, 160]), TSTART])
+                PRICE[np.array([158, 159]), TSTART] = np.amin(PRICE[np.array([158, 159]), TSTART])
         else:
             isender = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == j, 0]
             PRICE[j, TSTART] = np.mean(PRICE[isender, TSTART] + ADDVAL[isender, j])
