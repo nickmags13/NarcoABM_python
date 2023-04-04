@@ -296,10 +296,7 @@ def NarcoLogic_initialize_python_v1(mr):
 
     # Output tables for flows(t) and interdiction prob(t-1)
     t = TSTART + 1
-    if extnetflag(erun) == 1:
-        FLOW = scipy.io.loadmat('init_flow_ext')['FLOW']
-    else:
-        FLOW = scipy.io.loadmat('init_flow')['FLOW']
+    FLOW = scipy.io.loadmat('init_flow')['FLOW']
 
     rinit, cinit = ind2sub(np.array([nnodes, nnodes]), np.where(FLOW[:, :, 1] > 0))
 
