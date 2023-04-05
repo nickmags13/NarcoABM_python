@@ -92,13 +92,13 @@ def NarcoLogic_initialize_python_v1(mr):
     nnodes = NodeTable.shape[0]
     mexnode = nnodes
     endnodeset = mexnode
-    breakpoint()
-    icoastdist = sub2ind(dcoast.shape, NodeTable['Row'], NodeTable['Col'])
-    coastdist = dcoast[icoastdist]  # convert to km
+    # icoastdist = sub2ind(dcoast.shape, NodeTable['Row'], NodeTable['Col'])
+    # coastdist = dcoast[icoastdist]  # convert to km
+    coastdist = [dcoast[row][col] for row, col in zip(NodeTable['Row'], NodeTable['Col'])]
     NodeTable['CoastDist'] = coastdist
     NodeTable['CoastDist'][0] = 0
     NodeTable['CoastDist'][nnodes - 1] = 0
-
+    breakpoint()
     # Assign nodes to initials DTOs
     # CHECK the variable assignments in the for loop ####
     for nn in range(1, nnodes - 2):
