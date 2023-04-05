@@ -88,6 +88,8 @@ def NarcoLogic_initialize_python_v1(mr):
     EdgeTable['EndNodes'] = EdgeTable[['EndNodes_1', 'EndNodes_2']].values.tolist()
     EdgeTable = EdgeTable.drop(columns=['EndNodes_1', 'EndNodes_2'])
     NodeTable = pd.read_csv('data/NodeTable.csv')
+    NodeTable['Row'] = NodeTable['Row'] - 1
+    NodeTable['Col'] = NodeTable['Col'] - 1
     EdgeTable['Capacity'] = rtcap[0, erun] * np.ones(EdgeTable.shape[0])
     nnodes = NodeTable.shape[0]
     mexnode = nnodes
