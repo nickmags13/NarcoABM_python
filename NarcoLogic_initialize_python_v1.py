@@ -100,24 +100,26 @@ def NarcoLogic_initialize_python_v1(mr):
     NodeTable['CoastDist'] = coastdist
     NodeTable['CoastDist'][0] = 0
     NodeTable['CoastDist'][nnodes - 1] = 0
-    breakpoint()
+
     # Assign nodes to initials DTOs
     # CHECK the variable assignments in the for loop ####
     for nn in range(1, nnodes - 2):
         westdir = NodeTable['Col'][nn] - np.where(np.isnan(dcoast[NodeTable['Row'][nn],
                                                                   np.arange(0, NodeTable['Col'][nn] - 2)]) == 1)[0][-1]
-        eastdir = np.where(np.isnan(dcoast[NodeTable['Row'][nn], np.arange(NodeTable['Col'][nn] + 1,
-                                                                           LANDSUIT.shape[1] + 1)]) == 1)[0][0]
+        eastdir = np.where(np.isnan(dcoast[NodeTable['Row'][nn], np.arange(NodeTable['Col'][nn],
+                                                                           LANDSUIT.shape[1] - 1)]) == 1)[0][0]
         northdir = NodeTable['Row'][nn] - np.where(np.isnan(dcoast[np.arange(0, NodeTable['Row'][nn] - 2),
                                                                    NodeTable['Col'][nn]]) == 1)[0][-1]
-        southdir = np.where(np.isnan(dcoast[np.arange(NodeTable['Row'][nn] + 1, LANDSUIT.shape[0] + 1),
+        southdir = np.where(np.isnan(dcoast[np.arange(NodeTable['Row'][nn], LANDSUIT.shape[0] - 1),
                                             NodeTable['Col'][nn]]) == 1)[0][0]
-        mindist, imindist = np.amin(np.array([westdir, eastdir, northdir, southdir]))
+        """ Below line is not used - check if needed """
+        # mindist, imindist = np.min(np.array([westdir, eastdir, northdir, southdir]))
         if westdir < 2.5 * eastdir:
             NodeTable['DTO'][nn] = 1
         else:
             NodeTable['DTO'][nn] = 2
 
+    breakpoint()
     dptcodes = scipy.io.loadmat('data/dptcodes.mat')['dptcodes']
     dptgrid = scipy.io.loadmat('data/dptgrid.mat')['dptgrid']
     Rdptgrid = scipy.io.loadmat('data/Rdptgrid.mat')['Rdptgrid']  # Geographic cells reference - check format in python
