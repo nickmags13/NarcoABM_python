@@ -192,7 +192,7 @@ def NarcoLogic_initialize_python_v1(mr):
 
     # Create adjacency matrix
     iendnode = NodeTable['ID'][NodeTable['DeptCode'] == 2]
-    ADJ[EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 2] == iendnode, 1], iendnode] = 1
+    ADJ[EdgeTable['EndNodes'][np.where(EdgeTable['EndNodes'].str[1] == iendnode)], iendnode] = 1
     iedge = np.where(ADJ == 1)
     subneihood = np.zeros((LANDSUIT.shape[0], LANDSUIT.shape[1]))
 
