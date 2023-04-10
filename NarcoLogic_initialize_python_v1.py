@@ -107,22 +107,22 @@ def NarcoLogic_initialize_python_v1(mr):
         try:
             westdir = NodeTable['Col'][nn] - np.where(np.isnan(dcoast[NodeTable['Row'][nn],
                                                                   np.arange(0, NodeTable['Col'][nn] - 2)]) == 1)[0][-1]
-        finally:
+        except IndexError:
             westdir = 0
         try:
             eastdir = np.where(np.isnan(dcoast[NodeTable['Row'][nn], np.arange(NodeTable['Col'][nn],
                                                                            LANDSUIT.shape[1] - 1)]) == 1)[0][0]
-        finally:
+        except IndexError:
             eastdir = 0
         try:
             northdir = NodeTable['Row'][nn] - np.where(np.isnan(dcoast[np.arange(0, NodeTable['Row'][nn] - 2),
                                                                    NodeTable['Col'][nn]]) == 1)[0][-1]
-        finally:
+        except IndexError:
             northdir = 0
         try:
             southdir = np.where(np.isnan(dcoast[np.arange(NodeTable['Row'][nn], LANDSUIT.shape[0] - 1),
                                             NodeTable['Col'][nn]]) == 1)[0][0]
-        finally:
+        except IndexError:
             southdir = 0
         """ Below line is not used - check if needed """
         # mindist, imindist = np.min(np.array([westdir, eastdir, northdir, southdir]))
