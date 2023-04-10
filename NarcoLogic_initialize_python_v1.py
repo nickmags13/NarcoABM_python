@@ -176,10 +176,10 @@ def NarcoLogic_initialize_python_v1(mr):
     np.random.set_state(savedState)
     hitrngstate = np.random.rand(nnodes, 1)
 
-    breakpoint()
     for k in range(0, nnodes):
         # Create adjacency matrix
-        ADJ[k, EdgeTable['EndNodes'][np.where(EdgeTable['EndNodes'].str[0] == k)[0]]] = 1
+        breakpoint()
+        ADJ[k, EdgeTable['EndNodes'].str[1][np.where(EdgeTable['EndNodes'].str[0] == k)[0]]] = 1
 
     # Node Attributes
     remotefac = np.array([[0], [1 - NodeTable['PopSuit'][np.arange(1, nnodes + 1)]]])
@@ -192,7 +192,7 @@ def NarcoLogic_initialize_python_v1(mr):
 
     # Create adjacency matrix
     iendnode = NodeTable['ID'][NodeTable['DeptCode'] == 2]
-    ADJ[EdgeTable['EndNodes'][np.where(EdgeTable['EndNodes'].str[1] == iendnode)], iendnode] = 1
+    ADJ[EdgeTable['EndNodes'].str[0][np.where(EdgeTable['EndNodes'].str[1] == iendnode)], iendnode] = 1
     iedge = np.where(ADJ == 1)
     subneihood = np.zeros((LANDSUIT.shape[0], LANDSUIT.shape[1]))
 
