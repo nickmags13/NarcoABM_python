@@ -131,10 +131,9 @@ def NarcoLogic_initialize_python_v1(mr):
         else:
             NodeTable['DTO'][nn] = 2
 
-    breakpoint()
     dptcodes = scipy.io.loadmat('data/dptcodes.mat')['dptcodes']
     dptgrid = scipy.io.loadmat('data/dptgrid.mat')['dptgrid']
-    Rdptgrid = scipy.io.loadmat('data/Rdptgrid.mat')['Rdptgrid']  # Geographic cells reference - check format in python
+    # Rdptgrid = scipy.io.loadmat('data/Rdptgrid.mat')['Rdptgrid']  # Geographic cells reference - check in python
 
     ADJ = np.zeros((nnodes, nnodes))  # adjacency matrix for trafficking network
     TRRTY = np.zeros((nnodes, nnodes))  # control of nodes by each DTO
@@ -177,6 +176,7 @@ def NarcoLogic_initialize_python_v1(mr):
     np.random.seed(savedState)
     hitrngstate = np.random.rand(nnodes, 1)
 
+    breakpoint()
     for k in range(0, nnodes):
         # Create adjacency matrix
         ADJ[k, EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == k, 2]] = 1
