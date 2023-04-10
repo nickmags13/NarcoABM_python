@@ -172,13 +172,14 @@ def NarcoLogic_initialize_python_v1(mr):
     avgslrisk = np.empty((nnodes, TMAX))  # average S&L risk at each node given active routes
     totslrisk = np.zeros((1, TMAX))  # etwork-wide average S&L risk
     slcpcty = np.zeros((1, TMAX))
-    breakpoint()
+
     np.random.set_state(savedState)
     hitrngstate = np.random.rand(nnodes, 1)
 
+    breakpoint()
     for k in range(0, nnodes):
         # Create adjacency matrix
-        ADJ[k, EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == k, 2]] = 1
+        ADJ[k, EdgeTable['EndNodes'][np.where(EdgeTable['EndNodes'].str[0] == k)[0]]] = 1
 
     # Node Attributes
     remotefac = np.array([[0], [1 - NodeTable['PopSuit'][np.arange(1, nnodes + 1)]]])
