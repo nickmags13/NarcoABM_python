@@ -178,9 +178,9 @@ def NarcoLogic_initialize_python_v1(mr):
 
     for k in range(0, nnodes):
         # Create adjacency matrix
-        breakpoint()
         ADJ[k, EdgeTable['EndNodes'].str[1][np.where(EdgeTable['EndNodes'].str[0] == k)[0]]] = 1
 
+    breakpoint()
     # Node Attributes
     remotefac = np.array([[0], [1 - NodeTable['PopSuit'][np.arange(1, nnodes + 1)]]])
     brdrfac = np.array([[0], [NodeTable['DistBorderSuit'][np.arange(1, nnodes + 1)]]])
@@ -192,8 +192,8 @@ def NarcoLogic_initialize_python_v1(mr):
 
     # Create adjacency matrix
     iendnode = NodeTable['ID'][NodeTable['DeptCode'] == 2]
-    ADJ[EdgeTable['EndNodes'].str[0][np.where(EdgeTable['EndNodes'].str[1] == iendnode)], iendnode] = 1
-    iedge = np.where(ADJ == 1)
+    ADJ[EdgeTable['EndNodes'].str[0][np.where(EdgeTable['EndNodes'].str[1] == iendnode)[0]], iendnode] = 1
+    iedge = np.where(ADJ == 1)[0]
     subneihood = np.zeros((LANDSUIT.shape[0], LANDSUIT.shape[1]))
 
     for j in range(0, nnodes):
