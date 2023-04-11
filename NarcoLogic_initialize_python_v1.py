@@ -203,10 +203,11 @@ def NarcoLogic_initialize_python_v1(mr):
 
     for j in range(0, nnodes):
         # Create weight and capacity matrices
-        WGHT[j, ADJ[j, :] == 1] = EdgeTable['Weight'][ADJ[j, :] == 1]
-        CPCTY[j, ADJ[j, :] == 1] = EdgeTable['Capacity'][ADJ[j, :] == 1]
+        WGHT[0, np.where(ADJ[j, :] == 1)[0]] = EdgeTable['Weight'][np.where(ADJ[j, :] == 1)[0]]
+        CPCTY[j, np.where(ADJ[j, :] == 1)[0]] = EdgeTable['Capacity'][np.where(ADJ[j, :] == 1)[0]]
         # Create distance (in km) matrix
-        latlon2 = np.array([NodeTable['Lat'][ADJ[j, :] == 1], NodeTable['Lon'][ADJ[j, :] == 1]])
+        latlon2 = np.array([NodeTable['Lat'][np.where(ADJ[j, :] == 1)[0]],
+                            NodeTable['Lon'][np.where(ADJ[j, :] == 1)[0]]])
         latlon1 = np.matlib.repmat(np.array([NodeTable['Lat'][j], NodeTable['Lon'][j]]), len(latlon2[:, 1]), 1)
         d1km, d2km = lldistkm(latlon1, latlon2)
         DIST[j, ADJ[j, :] == 1] = d1km
