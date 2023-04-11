@@ -213,14 +213,14 @@ def NarcoLogic_initialize_python_v1(mr):
         DIST[j, ADJ[j, :] == 1] = d1km
 
         # Create added value matrix (USD) and price per node
-        ADDVAL[j, ADJ[j, :] == 1] = np.multiply(deltavalue, DIST[j, ADJ[j, :] == 1])
+        ADDVAL[j, np.where(ADJ[j, :] == 1)[0]] = np.multiply(deltavalue, DIST[j, np.where(ADJ[j, :] == 1)[0]])
         if j == 1:
             PRICE[j, TSTART] = startvalue
         elif j in endnodeset:
             continue
         elif 157 <= j <= 160:
-            isender = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == j, 0]
-            inextleg = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 0] == j, 1]
+            isender = EdgeTable['EndNodes'].str(0)[EdgeTable['EndNodes'].str(1) == j]
+            inextleg = EdgeTable['EndNodes'].str(1)[EdgeTable['EndNodes'].str(0) == j]
             PRICE[j, TSTART] = PRICE[isender, TSTART] + ADDVAL[isender, j] + PRICE[isender, TSTART] + np.mean(
                 ADDVAL[j, inextleg])
             # even prices for long haul routes
@@ -228,7 +228,7 @@ def NarcoLogic_initialize_python_v1(mr):
                 PRICE[np.array([157, 160]), TSTART] = np.amin(PRICE[np.array([157, 160]), TSTART])
                 PRICE[np.array([158, 159]), TSTART] = np.amin(PRICE[np.array([158, 159]), TSTART])
         else:
-            isender = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == j, 0]
+            isender = EdgeTable['EndNodes'].str(0)[EdgeTable['EndNodes'].str(1) == j]
             PRICE[j, TSTART] = np.mean(PRICE[isender, TSTART] + ADDVAL[isender, j])
 
         for en in range(0, len(endnodeset)):
@@ -240,7 +240,7 @@ def NarcoLogic_initialize_python_v1(mr):
         SUITFAC[j, ADJ[j, :] == 1] = suitfac[ADJ[j, :] == 1]
 
         # Transportation costs
-        ireceiver = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == j, 2]
+        ireceiver = EdgeTable['EndNodes'].str(1)[EdgeTable['EndNodes'].str(0) == j]
         idist_ground = np.logical_and(DIST[j, ireceiver] > 0, DIST[j, ireceiver] <= 500)
         idist_air = (DIST[j, ireceiver] > 500)
         CTRANS[j, ireceiver[idist_ground], TSTART] = np.multiply(ctrans_inland,
@@ -248,7 +248,7 @@ def NarcoLogic_initialize_python_v1(mr):
         CTRANS[j, ireceiver[idist_air], TSTART] = np.multiply(ctrans_air,
                                                               DIST[j, ireceiver[idist_air]]) / DIST[0, mexnode]
         if NodeTable['CoastDist'][j] < 20 or 157 <= j <= 159:
-            ireceiver = EdgeTable['EndNodes'][EdgeTable['EndNodes'][:, 1] == j, 1]
+            ireceiver = EdgeTable['EndNodes'].str(1)[EdgeTable['EndNodes'].str(0) == j]
             idist_coast = (NodeTable['CoastDist'][ireceiver] < 20)
             idist_inland = (NodeTable['CoastDist'][ireceiver] >= 20)
             CTRANS[j, ireceiver[idist_coast], TSTART] = np.multiply(ctrans_coast,
