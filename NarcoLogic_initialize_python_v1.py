@@ -215,17 +215,17 @@ def NarcoLogic_initialize_python_v1(mr):
         breakpoint()
         # Create added value matrix (USD) and price per node
         ADDVAL[j, np.where(ADJ[j, :] == 1)[0]] = np.multiply(deltavalue, DIST[j, np.where(ADJ[j, :] == 1)[0]])
-        if j == 1:
+        if j == 0:
             PRICE[j, TSTART] = startvalue
         elif j in endnodeset:
             continue
-        elif 157 <= j <= 160:
+        elif 156 <= j <= 159:
             isender = EdgeTable['EndNodes'].str(0)[EdgeTable['EndNodes'].str(1) == j]
             inextleg = EdgeTable['EndNodes'].str(1)[EdgeTable['EndNodes'].str(0) == j]
             PRICE[j, TSTART] = PRICE[isender, TSTART] + ADDVAL[isender, j] + PRICE[isender, TSTART] + np.mean(
                 ADDVAL[j, inextleg])
             # even prices for long haul routes
-            if j == 160:
+            if j == 159:
                 PRICE[np.array([157, 160]), TSTART] = np.amin(PRICE[np.array([157, 160]), TSTART])
                 PRICE[np.array([158, 159]), TSTART] = np.amin(PRICE[np.array([158, 159]), TSTART])
         else:
