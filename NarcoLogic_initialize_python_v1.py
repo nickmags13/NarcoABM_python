@@ -233,12 +233,12 @@ def NarcoLogic_initialize_python_v1(mr):
             PRICE[j, TSTART] = np.mean(PRICE[isender, TSTART] + ADDVAL[isender, j])
 
         for en in range(0, len(endnodeset)):
-            PRICE[endnodeset[en], TSTART] = np.amax(PRICE[ADJ[:, endnodeset[en]] == 1, TSTART])
-        RMTFAC[j, ADJ[j, :] == 1] = remotefac[ADJ[j, :] == 1]
-        COASTFAC[j, ADJ[j, :] == 1] = coastfac[ADJ[j, :] == 1]
-        LATFAC[j, ADJ[j, :] == 1] = latfac[ADJ[j, :] == 1]
-        BRDRFAC[j, ADJ[j, :] == 1] = brdrfac[ADJ[j, :] == 1]
-        SUITFAC[j, ADJ[j, :] == 1] = suitfac[ADJ[j, :] == 1]
+            PRICE[endnodeset[en], TSTART] = np.amax(PRICE[np.where(ADJ[:, endnodeset[en]] == 1)[0], TSTART])
+        RMTFAC[j, np.where(ADJ[j, :] == 1)[0]] = remotefac[np.where(ADJ[j, :] == 1)[0]]
+        COASTFAC[j, np.where(ADJ[j, :] == 1)[0]] = coastfac[np.where(ADJ[j, :] == 1)[0]]
+        LATFAC[j, np.where(ADJ[j, :] == 1)[0]] = latfac[np.where(ADJ[j, :] == 1)[0]]
+        BRDRFAC[j, np.where(ADJ[j, :] == 1)[0]] = brdrfac[np.where(ADJ[j, :] == 1)[0]]
+        SUITFAC[j, np.where(ADJ[j, :] == 1)[0]] = suitfac[np.where(ADJ[j, :] == 1)[0]]
 
         # Transportation costs
         ireceiver = EdgeTable['EndNodes'].str(1)[EdgeTable['EndNodes'].str(0) == j]
