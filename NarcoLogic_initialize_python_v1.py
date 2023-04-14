@@ -212,12 +212,11 @@ def NarcoLogic_initialize_python_v1(mr):
         d1km, d2km = lldistkm(latlon1, latlon2)
         DIST[j, np.where(ADJ[j, :] == 1)[0]] = d1km
 
-        breakpoint()
         # Create added value matrix (USD) and price per node
         ADDVAL[j, np.where(ADJ[j, :] == 1)[0]] = np.multiply(deltavalue, DIST[j, np.where(ADJ[j, :] == 1)[0]])
         if j == 0:
             PRICE[j, TSTART] = startvalue
-        elif j == endnodeset:
+        elif j in endnodeset:
             continue
         elif 156 <= j <= 159:
             isender = EdgeTable['EndNodes'].str(0)[EdgeTable['EndNodes'].str(1) == j]
@@ -231,9 +230,13 @@ def NarcoLogic_initialize_python_v1(mr):
         else:
             isender = EdgeTable['EndNodes'].str(0)[EdgeTable['EndNodes'].str(1) == j]
             PRICE[j, TSTART] = np.mean(PRICE[isender, TSTART] + ADDVAL[isender, j])
-
-        for en in range(0, len(endnodeset)):
+        breakpoint()
+        """
+        loop not needed as endnodeset is an integer
+        for en in range(0, len(endnodeset)+1):
             PRICE[endnodeset[en], TSTART] = np.amax(PRICE[np.where(ADJ[:, endnodeset[en]] == 1)[0], TSTART])
+        """
+        PRICE[endnodeset, TSTART] = np.amax(PRICE[np.where(ADJ[:, endnodeset] == 1)[0], TSTART])
         RMTFAC[j, np.where(ADJ[j, :] == 1)[0]] = remotefac[np.where(ADJ[j, :] == 1)[0]]
         COASTFAC[j, np.where(ADJ[j, :] == 1)[0]] = coastfac[np.where(ADJ[j, :] == 1)[0]]
         LATFAC[j, np.where(ADJ[j, :] == 1)[0]] = latfac[np.where(ADJ[j, :] == 1)[0]]
