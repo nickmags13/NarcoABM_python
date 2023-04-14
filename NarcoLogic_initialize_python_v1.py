@@ -244,7 +244,7 @@ def NarcoLogic_initialize_python_v1(mr):
         SUITFAC[j, np.where(ADJ[j, :] == 1)[0]] = suitfac[np.where(ADJ[j, :] == 1)[0]].flatten()
         breakpoint()
         # Transportation costs
-        ireceiver = EdgeTable['EndNodes'].str(1)[np.where(EdgeTable['EndNodes'].str(0) == j)[0]]
+        ireceiver = EdgeTable['EndNodes'].str[1][np.where(EdgeTable['EndNodes'].str[0] == j)[0]]
         idist_ground = np.logical_and(DIST[j, ireceiver] > 0, DIST[j, ireceiver] <= 500)
         idist_air = (DIST[j, ireceiver] > 500)
         CTRANS[j, ireceiver[idist_ground], TSTART] = np.multiply(ctrans_inland,
