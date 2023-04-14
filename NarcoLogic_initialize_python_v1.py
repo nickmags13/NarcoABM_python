@@ -217,7 +217,7 @@ def NarcoLogic_initialize_python_v1(mr):
         ADDVAL[j, np.where(ADJ[j, :] == 1)[0]] = np.multiply(deltavalue, DIST[j, np.where(ADJ[j, :] == 1)[0]])
         if j == 0:
             PRICE[j, TSTART] = startvalue
-        elif j in endnodeset:
+        elif j == endnodeset - 1:
             continue
         elif 156 <= j <= 159:
             isender = EdgeTable['EndNodes'].str(0)[EdgeTable['EndNodes'].str(1) == j]
