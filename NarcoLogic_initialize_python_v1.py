@@ -20,7 +20,7 @@ def NarcoLogic_initialize_python_v1(mr):
     batchrun = 9
     MRUNS = 30
     ERUNS = 11
-    TSTART = 1
+    TSTART = 0
     TMAX = 180  # 15 years at monthly time steps
 
     # thistate = scipy.io.loadmat('data/savedrngstate.mat')['thistate']
