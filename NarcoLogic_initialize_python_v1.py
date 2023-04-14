@@ -219,8 +219,8 @@ def NarcoLogic_initialize_python_v1(mr):
         elif j in endnodeset:
             continue
         elif 156 <= j <= 159:
-            isender = EdgeTable['EndNodes'].str(0)[EdgeTable['EndNodes'].str(1) == j]
-            inextleg = EdgeTable['EndNodes'].str(1)[EdgeTable['EndNodes'].str(0) == j]
+            isender = EdgeTable['EndNodes'].str(0)[np.where(EdgeTable['EndNodes'].str(1) == j)[0]]
+            inextleg = EdgeTable['EndNodes'].str(1)[np.where(EdgeTable['EndNodes'].str(0) == j)[0]]
             PRICE[j, TSTART] = PRICE[isender, TSTART] + ADDVAL[isender, j] + PRICE[isender, TSTART] + np.mean(
                 ADDVAL[j, inextleg])
             # even prices for long haul routes
@@ -237,15 +237,14 @@ def NarcoLogic_initialize_python_v1(mr):
             PRICE[endnodeset[en], TSTART] = np.amax(PRICE[np.where(ADJ[:, endnodeset[en]] == 1)[0], TSTART])
         """
         PRICE[endnodeset, TSTART] = np.amax(PRICE[np.where(ADJ[:, endnodeset] == 1)[0], TSTART])
-        breakpoint()
         RMTFAC[j, np.where(ADJ[j, :] == 1)[0]] = remotefac[np.where(ADJ[j, :] == 1)[0]].flatten()
         COASTFAC[j, np.where(ADJ[j, :] == 1)[0]] = coastfac[np.where(ADJ[j, :] == 1)[0]].flatten()
         LATFAC[j, np.where(ADJ[j, :] == 1)[0]] = latfac[np.where(ADJ[j, :] == 1)[0]].flatten()
         BRDRFAC[j, np.where(ADJ[j, :] == 1)[0]] = brdrfac[np.where(ADJ[j, :] == 1)[0]].flatten()
         SUITFAC[j, np.where(ADJ[j, :] == 1)[0]] = suitfac[np.where(ADJ[j, :] == 1)[0]].flatten()
-
+        breakpoint()
         # Transportation costs
-        ireceiver = EdgeTable['EndNodes'].str(1)[EdgeTable['EndNodes'].str(0) == j]
+        ireceiver = EdgeTable['EndNodes'].str(1)[np.where(EdgeTable['EndNodes'].str(0) == j)[0]]
         idist_ground = np.logical_and(DIST[j, ireceiver] > 0, DIST[j, ireceiver] <= 500)
         idist_air = (DIST[j, ireceiver] > 500)
         CTRANS[j, ireceiver[idist_ground], TSTART] = np.multiply(ctrans_inland,
