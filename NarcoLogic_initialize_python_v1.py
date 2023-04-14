@@ -181,16 +181,16 @@ def NarcoLogic_initialize_python_v1(mr):
         ADJ[k, EdgeTable['EndNodes'].str[1][np.where(EdgeTable['EndNodes'].str[0] == k)[0]]] = 1
 
     # Node Attributes
-    remotefac = (1 - NodeTable['PopSuit'].to_numpy()).reshape(163, 1)
+    remotefac = (1 - NodeTable['PopSuit'].to_numpy()).reshape(-1, 1)
     remotefac[0, 0] = 0
-    brdrfac = NodeTable['DistBorderSuit'].to_numpy().reshape(163, 1)
+    brdrfac = NodeTable['DistBorderSuit'].to_numpy().reshape(-1, 1)
     brdrfac[0, 0] = 0
-    suitfac = NodeTable['LandSuit'].to_numpy().reshape(163, 1)
+    suitfac = NodeTable['LandSuit'].to_numpy().reshape(-1, 1)
     suitfac[0, 0] = 0
-    coastfac = (NodeTable['CoastDist'].to_numpy()/np.amax(NodeTable['CoastDist'])).reshape(163, 1)
+    coastfac = (NodeTable['CoastDist'].to_numpy()/np.amax(NodeTable['CoastDist'])).reshape(-1, 1)
     coastfac[0, 0] = 0
     nwvec = (np.sqrt(np.multiply(0.9, NodeTable['Lat'].to_numpy() ** 2) +
-                    np.multiply(0.1, NodeTable['Lon'].to_numpy() ** 2))).reshape(163, 1)
+                    np.multiply(0.1, NodeTable['Lon'].to_numpy() ** 2))).reshape(-1, 1)
     latfac = 1 - nwvec / np.amax(nwvec)
     latfac[0, 0] = 0
 
