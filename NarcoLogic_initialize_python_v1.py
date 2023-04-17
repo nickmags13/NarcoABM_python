@@ -228,7 +228,7 @@ def NarcoLogic_initialize_python_v1(mr):
                 PRICE[np.array([156, 159]), TSTART] = np.amin(PRICE[np.array([156, 159]), TSTART])
                 PRICE[np.array([157, 158]), TSTART] = np.amin(PRICE[np.array([157, 158]), TSTART])
         else:
-            isender = EdgeTable['EndNodes'].str(0)[EdgeTable['EndNodes'].str(1) == j]
+            isender = EdgeTable['EndNodes'].str[0][EdgeTable['EndNodes'].str[1] == j]
             PRICE[j, TSTART] = np.mean(PRICE[isender, TSTART] + ADDVAL[isender, j])
 
         """
