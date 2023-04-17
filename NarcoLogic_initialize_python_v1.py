@@ -284,11 +284,10 @@ def NarcoLogic_initialize_python_v1(mr):
 
     facmat_list = [LATFAC, COASTFAC, RMTFAC, DIST / np.amax(np.amax(DIST)), BRDRFAC, SUITFAC]
     facmat = np.stack(facmat_list, axis=2)
-    breakpoint()
     SLPROB[:, :, TSTART] = np.mean(facmat[:, :, range(0, 5)], 2)
     SLPROB[:, :, TSTART + 1] = SLPROB[:, :, TSTART]
     slmin = SLPROB[:, :, TSTART]
-    INTRDPROB[:, TSTART + 1] = slprob_0 * np.ones((nnodes, 1))  # dynamic probability of interdiction at nodes
+    INTRDPROB[:, TSTART + 1] = slprob_0 * np.ones(nnodes)  # dynamic probability of interdiction at nodes
 
     # Initialize Node agents
     STOCK[:, TSTART] = NodeTable['Stock']
@@ -296,7 +295,8 @@ def NarcoLogic_initialize_python_v1(mr):
     PRICE[:, TSTART + 1] = PRICE[:, TSTART]
     slcpcty_0 = sl_min[0, erun]
     slcpcty_max = sl_max[0, erun]
-    slcpcty[TSTART + 1] = slcpcty_0
+    slcpcty[0, TSTART + 1] = slcpcty_0
+    breakpoint()
 
     # subjective risk perception with time distortion
     twght = timewght_0 * np.ones((nnodes, 1))
