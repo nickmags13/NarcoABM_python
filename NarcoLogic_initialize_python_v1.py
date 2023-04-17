@@ -216,7 +216,7 @@ def NarcoLogic_initialize_python_v1(mr):
         ADDVAL[j, np.where(ADJ[j, :] == 1)[0]] = np.multiply(deltavalue, DIST[j, np.where(ADJ[j, :] == 1)[0]])
         if j == 0:
             PRICE[j, TSTART] = startvalue
-        elif j in endnodeset:
+        elif j == endnodeset:
             continue
         elif 156 <= j <= 159:
             isender = EdgeTable['EndNodes'].str[0][np.where(EdgeTable['EndNodes'].str[1] == j)[0]]
@@ -253,12 +253,12 @@ def NarcoLogic_initialize_python_v1(mr):
                                                                  DIST[j, ireceiver[idist_ground]]) / DIST[0, mexnode]
         CTRANS[j, ireceiver[idist_air], TSTART] = np.multiply(ctrans_air,
                                                               DIST[j, ireceiver[idist_air]]) / DIST[0, mexnode]
-        breakpoint()
+
         if NodeTable.loc[j, 'CoastDist'] < 20 or 156 <= j <= 158:
             ireceiver = (EdgeTable['EndNodes'].str[1][EdgeTable['EndNodes'].str[0] == j]).to_numpy()
             ireceiver = ireceiver.reshape(len(ireceiver), 1)
-            idist_coast = (NodeTable.loc[ireceiver[:, 0], 'CoastDist'] < 20).reshape(-1, 1)
-            idist_inland = (NodeTable.loc[ireceiver[:, 0], 'CoastDist'] >= 20).reshape(-1, 1)
+            idist_coast = (NodeTable.loc[ireceiver[:, 0], 'CoastDist'] < 20).to_numpy().reshape(-1, 1)
+            idist_inland = (NodeTable.loc[ireceiver[:, 0], 'CoastDist'] >= 20).to_numpy().reshape(-1, 1)
             CTRANS[j, ireceiver[idist_coast], TSTART] = np.multiply(ctrans_coast,
                                                                     DIST[j, ireceiver[idist_coast]]) / DIST[0, mexnode]
             if 156 <= j <= 158:
@@ -266,6 +266,9 @@ def NarcoLogic_initialize_python_v1(mr):
                 CTRANS[0, j, TSTART] = CTRANS[0, j, TSTART] + np.mean(
                     np.multiply(ctrans_coast, DIST[j, ireceiver[idist_coast]]) / DIST[1, mexnode])
 
+    CTRANS_test = scipy.io.loadmat('../FunctionTesting/CTRANS.mat')['CTRANS']
+    PRICE_test = scipy.io.loadmat('../FunctionTesting/PRICE.mat')['PRICE']
+    breakpoint()
     # Initialize Interdiction agent
     # Create S&L probability layer
     routepref = np.zeros((nnodes, nnodes, TMAX))  # weighting by network agent of successful routes
