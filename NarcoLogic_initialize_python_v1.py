@@ -282,7 +282,7 @@ def NarcoLogic_initialize_python_v1(mr):
     facmat_list = [LATFAC, COASTFAC, RMTFAC, DIST / np.amax(np.amax(DIST)), BRDRFAC, SUITFAC]
     facmat = np.stack(facmat_list, axis=2)
     breakpoint()
-    SLPROB[:, :, TSTART] = np.mean(facmat[:, :, range(0, 6)], 2)
+    SLPROB[:, :, TSTART] = np.mean(facmat[:, :, range(0, 5)], 2)
     SLPROB[:, :, TSTART + 1] = SLPROB[:, :, TSTART]
     slmin = SLPROB[:, :, TSTART]
     INTRDPROB[:, TSTART + 1] = slprob_0 * np.ones((nnodes, 1))  # dynamic probability of interdiction at nodes
