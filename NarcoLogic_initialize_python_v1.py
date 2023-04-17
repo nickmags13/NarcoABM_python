@@ -279,13 +279,25 @@ def NarcoLogic_initialize_python_v1(mr):
     INTRDPROB = np.zeros((nnodes, TMAX))
     SLPROB = np.zeros((nnodes, nnodes, TMAX))  # dynamic probability of S&L event per edge
 
-    breakpoint()
+
+    """
     facmat = LATFAC
-    facmat[:, :, 1] = COASTFAC
+    facmat = np.stack((facmat, COASTFAC), axis=2)
     facmat[:, :, 2] = RMTFAC
     facmat[:, :, 3] = DIST / np.amax(np.amax(DIST))
     facmat[:, :, 4] = BRDRFAC
     facmat[:, :, 5] = SUITFAC
+    """
+    facmat_list = [LATFAC]
+    facmat_list.append(COASTFAC)
+    facmat_list.append(RMTFAC)
+    facmat_list.append(DIST / np.amax(np.amax(DIST)))
+    facmat_list.append(BRDRFAC)
+    facmat_list.append(SUITFAC)
+    facmat = np.stack(facmat_list, axis=2)
+    facmat_test = scipy.io.loadmat('../FunctionTesting/facmat.mat')['facmat']
+    breakpoint()
+
     SLPROB[:, :, TSTART] = np.mean(facmat[:, :, range(0, 6)], 2)
     SLPROB[:, :, TSTART + 1] = SLPROB[:, :, TSTART]
     slmin = SLPROB[:, :, TSTART]
