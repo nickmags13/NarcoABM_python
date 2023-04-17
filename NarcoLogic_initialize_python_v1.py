@@ -219,14 +219,14 @@ def NarcoLogic_initialize_python_v1(mr):
         elif j in endnodeset:
             continue
         elif 156 <= j <= 159:
-            isender = EdgeTable['EndNodes'].str(0)[np.where(EdgeTable['EndNodes'].str(1) == j)[0]]
-            inextleg = EdgeTable['EndNodes'].str(1)[np.where(EdgeTable['EndNodes'].str(0) == j)[0]]
+            isender = EdgeTable['EndNodes'].str[0][np.where(EdgeTable['EndNodes'].str[1] == j)[0]]
+            inextleg = EdgeTable['EndNodes'].str[1][np.where(EdgeTable['EndNodes'].str[0] == j)[0]]
             PRICE[j, TSTART] = PRICE[isender, TSTART] + ADDVAL[isender, j] + PRICE[isender, TSTART] + np.mean(
                 ADDVAL[j, inextleg])
             # even prices for long haul routes
             if j == 159:
-                PRICE[np.array([157, 160]), TSTART] = np.amin(PRICE[np.array([157, 160]), TSTART])
-                PRICE[np.array([158, 159]), TSTART] = np.amin(PRICE[np.array([158, 159]), TSTART])
+                PRICE[np.array([156, 159]), TSTART] = np.amin(PRICE[np.array([156, 159]), TSTART])
+                PRICE[np.array([157, 158]), TSTART] = np.amin(PRICE[np.array([157, 158]), TSTART])
         else:
             isender = EdgeTable['EndNodes'].str(0)[EdgeTable['EndNodes'].str(1) == j]
             PRICE[j, TSTART] = np.mean(PRICE[isender, TSTART] + ADDVAL[isender, j])
@@ -248,19 +248,20 @@ def NarcoLogic_initialize_python_v1(mr):
         ireceiver = ireceiver.reshape(len(ireceiver), 1)
         idist_ground = np.logical_and(DIST[j, ireceiver] > 0, DIST[j, ireceiver] <= 500).reshape(-1, 1)
         idist_air = (DIST[j, ireceiver] > 500).reshape(-1, 1)
-        """ CHECK FOR DIVIDE BY ZERO in below 2 lines """
+        """ CHECK FOR DIVIDE BY ZERO for CTRANS calculations """
         CTRANS[j, ireceiver[idist_ground], TSTART] = np.multiply(ctrans_inland,
                                                                  DIST[j, ireceiver[idist_ground]]) / DIST[0, mexnode]
         CTRANS[j, ireceiver[idist_air], TSTART] = np.multiply(ctrans_air,
                                                               DIST[j, ireceiver[idist_air]]) / DIST[0, mexnode]
         breakpoint()
         if NodeTable.loc[j, 'CoastDist'] < 20 or 156 <= j <= 158:
-            ireceiver = EdgeTable['EndNodes'].str[1][EdgeTable['EndNodes'].str[0] == j]
-            idist_coast = (NodeTable['CoastDist'][ireceiver] < 20).reshape(-1, 1)
-            idist_inland = (NodeTable['CoastDist'][ireceiver] >= 20).reshape(-1, 1)
+            ireceiver = (EdgeTable['EndNodes'].str[1][EdgeTable['EndNodes'].str[0] == j]).to_numpy()
+            ireceiver = ireceiver.reshape(len(ireceiver), 1)
+            idist_coast = (NodeTable.loc[ireceiver[:, 0], 'CoastDist'] < 20).reshape(-1, 1)
+            idist_inland = (NodeTable.loc[ireceiver[:, 0], 'CoastDist'] >= 20).reshape(-1, 1)
             CTRANS[j, ireceiver[idist_coast], TSTART] = np.multiply(ctrans_coast,
                                                                     DIST[j, ireceiver[idist_coast]]) / DIST[0, mexnode]
-            if 157 <= j <= 159:
+            if 156 <= j <= 158:
                 CTRANS[j, ireceiver[idist_coast], TSTART] = 0
                 CTRANS[0, j, TSTART] = CTRANS[0, j, TSTART] + np.mean(
                     np.multiply(ctrans_coast, DIST[j, ireceiver[idist_coast]]) / DIST[1, mexnode])
