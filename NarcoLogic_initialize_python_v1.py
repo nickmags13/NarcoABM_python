@@ -266,9 +266,6 @@ def NarcoLogic_initialize_python_v1(mr):
                 CTRANS[0, j, TSTART] = CTRANS[0, j, TSTART] + np.mean(
                     np.multiply(ctrans_coast, DIST[j, ireceiver[idist_coast]]) / DIST[1, mexnode])
 
-    CTRANS_test = scipy.io.loadmat('../FunctionTesting/CTRANS.mat')['CTRANS']
-    PRICE_test = scipy.io.loadmat('../FunctionTesting/PRICE.mat')['PRICE']
-    breakpoint()
     # Initialize Interdiction agent
     # Create S&L probability layer
     routepref = np.zeros((nnodes, nnodes, TMAX))  # weighting by network agent of successful routes
@@ -282,6 +279,7 @@ def NarcoLogic_initialize_python_v1(mr):
     INTRDPROB = np.zeros((nnodes, TMAX))
     SLPROB = np.zeros((nnodes, nnodes, TMAX))  # dynamic probability of S&L event per edge
 
+    breakpoint()
     facmat = LATFAC
     facmat[:, :, 1] = COASTFAC
     facmat[:, :, 2] = RMTFAC
