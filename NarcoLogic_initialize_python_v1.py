@@ -17,6 +17,9 @@ from ismember import ismember
 
 
 def NarcoLogic_initialize_python_v1(mr):
+    # Ignore divide by zero warning
+    np.seterr(divide='ignore')
+
     batchrun = 9
     MRUNS = 30
     ERUNS = 11
