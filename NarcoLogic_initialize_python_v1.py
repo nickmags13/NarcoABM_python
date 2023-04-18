@@ -130,9 +130,9 @@ def NarcoLogic_initialize_python_v1(mr):
         """ Below line is not used - check if needed """
         # mindist, imindist = np.min(np.array([westdir, eastdir, northdir, southdir]))
         if westdir < 2.5 * eastdir:
-            NodeTable['DTO'][nn] = 0
-        else:
             NodeTable['DTO'][nn] = 1
+        else:
+            NodeTable['DTO'][nn] = 2
 
     dptcodes = scipy.io.loadmat('data/dptcodes.mat')['dptcodes']
     dptgrid = scipy.io.loadmat('data/dptgrid.mat')['dptgrid']
@@ -309,7 +309,7 @@ def NarcoLogic_initialize_python_v1(mr):
 
     breakpoint()
     for nd in range(0, ndto):
-        idto = np.where(NodeTable['DTO'] == nd)[0]
+        idto = np.where(NodeTable['DTO'] == nd+1)[0]
         margvalset = idto[not ismember(idto, endnodeset)]
         routepref[1, idto, TSTART + 1] = margval[1, idto] / np.amax(margval[1, margvalset])
 
