@@ -299,15 +299,15 @@ def NarcoLogic_initialize_python_v1(mr):
 
     # subjective risk perception with time distortion
     twght = timewght_0 * np.ones((nnodes, 1))
-    breakpoint()
+
     # Set-up trafficking netowrk benefit-cost logic  ############
     ltcoeff = locthink[0, erun] * np.ones((nnodes, 1))
     margval = np.zeros((nnodes, nnodes, TMAX))
     for q in range(0, nnodes):
         if len(np.where(ADJ[q, :] == 1)[0]) > 0:
-            continue
-        margval[q, range(q, nnodes), TSTART] = PRICE[range(q, nnodes), TSTART] - PRICE[q, TSTART]
+            margval[q, range(q, nnodes), TSTART] = PRICE[range(q, nnodes), TSTART] - PRICE[q, TSTART]
 
+    breakpoint()
     for nd in range(0, ndto):
         idto = np.where(NodeTable['DTO'] == nd)
         margvalset = idto[not ismember(idto, endnodeset)]
