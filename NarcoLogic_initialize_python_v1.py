@@ -309,11 +309,11 @@ def NarcoLogic_initialize_python_v1(mr):
     for nd in range(0, ndto):
         idto = np.where(NodeTable['DTO'] == nd+1)[0]
         margvalset = [idto[x] for x in range(len(idto)) if idto[x] != endnodeset]
-        routepref[1, idto, TSTART + 1] = margval[1, idto] / np.amax(margval[1, margvalset])
+        routepref[0, idto, TSTART + 1] = margval[0, idto, 0] / np.amax(margval[0, margvalset])
 
     breakpoint()
     routepref[:, endnodeset, TSTART + 1] = 1
-    totslrisk[TSTART + 1] = 1
+    totslrisk[0, TSTART + 1] = 1
 
     OWN = np.zeros((LANDSUIT.shape[0], LANDSUIT.shape[1]))  # node agent land ownership
     IOWN = np.empty((nnodes, TMAX))  # dynamic list of owned parcels
