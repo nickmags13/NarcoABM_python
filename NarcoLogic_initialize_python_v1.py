@@ -96,8 +96,6 @@ def NarcoLogic_initialize_python_v1(mr):
     nnodes = NodeTable.shape[0]
     mexnode = nnodes - 1
     endnodeset = mexnode
-    # icoastdist = sub2ind(dcoast.shape, NodeTable['Row'], NodeTable['Col'])
-    # coastdist = dcoast[icoastdist]  # convert to km
     coastdist = [dcoast[row][col] for row, col in zip(NodeTable['Row'], NodeTable['Col'])]
     NodeTable['CoastDist'] = coastdist
     NodeTable['CoastDist'][0] = 0
@@ -311,7 +309,6 @@ def NarcoLogic_initialize_python_v1(mr):
         margvalset = [idto[x] for x in range(len(idto)) if idto[x] != endnodeset]
         routepref[0, idto, TSTART + 1] = margval[0, idto, 0] / np.amax(margval[0, margvalset])
 
-    breakpoint()
     routepref[:, endnodeset, TSTART + 1] = 1
     totslrisk[0, TSTART + 1] = 1
 
@@ -324,6 +321,7 @@ def NarcoLogic_initialize_python_v1(mr):
 
     # Output tables for flows(t) and interdiction prob(t-1)
     t = TSTART + 1
+    breakpoint()
     FLOW = scipy.io.loadmat('data/init_flow_ext.mat')['FLOW']
 
     rinit, cinit = ind2sub(np.array([nnodes, nnodes]), np.where(FLOW[:, :, 1] > 0))
@@ -332,11 +330,6 @@ def NarcoLogic_initialize_python_v1(mr):
         MOV[rinit[w], cinit[w], 1] = FLOW[rinit[w], cinit[w], 1]
 
     Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, mrun, batchrun)
-
-
-def sub2ind(sz, row, col):
-    n_rows = sz[0]
-    return [n_rows * (c - 1) + r for r, c in zip(row, col)]
 
 
 def ind2sub(array_shape, ind):
