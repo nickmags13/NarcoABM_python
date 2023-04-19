@@ -13,7 +13,6 @@ from optimize_interdiction_batch import optimize_interdiction_batch
 from intrd_tables_batch import intrd_tables_batch
 from lldistkm import lldistkm
 import scipy
-from ismember import ismember
 
 
 def NarcoLogic_initialize_python_v1(mr):
@@ -307,12 +306,12 @@ def NarcoLogic_initialize_python_v1(mr):
         if len(np.where(ADJ[q, :] == 1)[0]) > 0:
             margval[q, range(q, nnodes), TSTART] = PRICE[range(q, nnodes), TSTART] - PRICE[q, TSTART]
 
-    breakpoint()
     for nd in range(0, ndto):
         idto = np.where(NodeTable['DTO'] == nd+1)[0]
-        margvalset = idto[not ismember(idto, endnodeset)]
+        margvalset = [idto[x] for x in range(len(idto)) if idto[x] != endnodeset]
         routepref[1, idto, TSTART + 1] = margval[1, idto] / np.amax(margval[1, margvalset])
 
+    breakpoint()
     routepref[:, endnodeset, TSTART + 1] = 1
     totslrisk[TSTART + 1] = 1
 
