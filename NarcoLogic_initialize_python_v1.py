@@ -324,7 +324,7 @@ def NarcoLogic_initialize_python_v1(mr):
 
     # Output tables for flows(t) and interdiction prob(t-1)
     t = TSTART + 1
-    FLOW = scipy.io.loadmat('/data/init_flow_ext.mat')['FLOW']
+    FLOW = scipy.io.loadmat('data/init_flow_ext.mat')['FLOW']
 
     rinit, cinit = ind2sub(np.array([nnodes, nnodes]), np.where(FLOW[:, :, 1] > 0))
 
