@@ -43,8 +43,8 @@ def intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testfla
     erun_t2 = math.floor(erun/10)
     erun_t3 = erun % 10
 
-    Tflow.to_excel('../FunctionTesting/Tflow_python.txt')
-    Tintrd.to_excel('../FunctionTesting/Tintrd_python.txt')
-    breakpoint()
+    # Saving to excel required?
+    # Tflow.to_excel('../FunctionTesting/Tflow_python.xlsx')
+    # Tintrd.to_excel('../FunctionTesting/Tintrd_python.xlsx')
 
     return Tflow, Tintrd
