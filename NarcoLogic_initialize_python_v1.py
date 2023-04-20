@@ -321,18 +321,15 @@ def NarcoLogic_initialize_python_v1(mr):
 
     # Output tables for flows(t) and interdiction prob(t-1)
     t = TSTART + 1
-    breakpoint()
+
     FLOW = scipy.io.loadmat('data/init_flow_ext.mat')['FLOW']
 
-    rinit, cinit = ind2sub(np.array([nnodes, nnodes]), np.where(FLOW[:, :, 1] > 0))
+    init = np.where(FLOW[:, :, 0] > 0)
+    rinit = init[0]
+    cinit = init[1]
 
     for w in range(0, len(rinit)):
         MOV[rinit[w], cinit[w], 1] = FLOW[rinit[w], cinit[w], 1]
 
     Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, mrun, batchrun)
 
-
-def ind2sub(array_shape, ind):
-    rows = (ind.astype('int') / array_shape[1])
-    cols = (ind.astype('int') % array_shape[1])
-    return rows, cols
