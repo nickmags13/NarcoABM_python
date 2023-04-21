@@ -334,5 +334,6 @@ def NarcoLogic_initialize_python_v1(mr, times):
     Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, mrun, batchrun)
 
     for m in mr:
-        for i in times:
-
+        for time in times:
+            intrdct_events, intrdct_nodes = optimize_interdiction_batch(time, ADJ, testflag, erun, mrun, batchrun)
+            slevent[:][:][time] = intrdct_events
