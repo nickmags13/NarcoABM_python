@@ -337,3 +337,13 @@ def NarcoLogic(mr, times):
         for time in times:
             intrdct_events, intrdct_nodes = optimize_interdiction_batch(time, ADJ, testflag, erun, mrun, batchrun)
             slevent[:][:][time] = intrdct_events
+            """CHECK THE LINE BELOW FOR SHAPE AND INDICES"""
+            slnodes[0, time] = [intrdct_nodes[intrdct_nodes.shape[0]: 0], intrdct_nodes[0: intrdct_nodes.shape[1]]]
+            MOV[:, 0, time] = NodeTable['Stock']
+
+            # Iterate through trafficking nodes
+            for n in range(0, nnodes):
+                if len(np.where(ADJ[n, :] == 1)[0] > 0) or n == endnodeset:
+                    continue
+
+            # Route cocaine shipments #
