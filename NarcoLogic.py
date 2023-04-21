@@ -15,7 +15,7 @@ from lldistkm import lldistkm
 import scipy
 
 
-def NarcoLogic_initialize_python_v1(mr, times):
+def NarcoLogic(mr, times):
     # Ignore divide by zero warning
     np.seterr(divide='ignore')
 
