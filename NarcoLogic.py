@@ -16,7 +16,7 @@ import scipy
 
 
 def NarcoLogic(mr, times):
-    # Ignore divide by zero warning
+    # Ignore divide by zero runtime warning
     np.seterr(divide='ignore')
 
     batchrun = 9
