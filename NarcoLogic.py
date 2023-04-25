@@ -346,4 +346,10 @@ def NarcoLogic(mr, times):
                 if len(np.where(ADJ[n, :] == 1)[0] > 0) or n == endnodeset:
                     continue
 
-            # Route cocaine shipments #
+                # Route cocaine shipments #
+                STOCK[n, time] = STOCK[n, time - 1] + STOCK[n, time]
+                rtdto = NodeTable.loc[np.where(ADJ[n, :] == 1)[0], 'DTO']
+                if len(np.where(rtdto == 0)[0]) > 0:
+                    rtdto[(np.where[rtdto] == 0)[0]] = NodeTable.loc[n, 'DTO']
+                CPCTY[n, np.where(ADJ[n, :] == 1)[0]] = basecap[erun] * rtcap[rtdto, int(np.floor(time / 12)) + 1]
+                TOTCPTL[n, time] = TOTCPTL[n, time - 1] + TOTCPTL[n, time]
