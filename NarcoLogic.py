@@ -353,3 +353,23 @@ def NarcoLogic(mr, times):
                     rtdto[(np.where[rtdto] == 0)[0]] = NodeTable.loc[n, 'DTO']
                 CPCTY[n, np.where(ADJ[n, :] == 1)[0]] = basecap[erun] * rtcap[rtdto, int(np.floor(time / 12)) + 1]
                 TOTCPTL[n, time] = TOTCPTL[n, time - 1] + TOTCPTL[n, time]
+                if STOCK[n, time] > 0:
+                    if n > 1:
+                        LEAK[n, time] = nodeloss * STOCK[n, time]
+                        STOCK[n, time] = STOCK[n, time] - LEAK[n, time]
+                    elif n == 1:
+                        inei = np.logical_and(np.where(ADJ[n, :] == 1), np.where(routepref[n, :, time] > 0))
+                        for nd in range(0, len(np.unique(NodeTable.loc[1:nnodes, 'DTO']))):
+                            if len(np.where(NodeTable.loc[inei, 'DTO'] == nd)) == 0:
+                                idtombr = np.where(NodeTable['DTO'] == nd)
+                                subinei = np.logical_and(np.where(ADJ[n, idtombr] == 1),
+                                                         np.where(routepref[n, idtombr, time] > 0))
+                                if len(subinei) == 0:
+                                    subinei = np.logical_and(np.where(ADJ[n, idtombr] == 1),
+                                                             np.where(routepref[n, idtombr, time] ==
+                                                                      np.max(routepref[n, idtombr, time])))
+                                inei.append(subinei)
+                    else:
+
+
+
