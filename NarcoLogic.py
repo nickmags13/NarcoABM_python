@@ -38,8 +38,8 @@ def NarcoLogic(mr, times):
 
     # load experimental parameters file
     sl_max, sl_min, baserisk, riskmltplr, startstock, sl_learn, rt_learn, losslim, prodgrow, targetseize, \
-    intcpctymodel, profitmodel, endstock, growthmdl, timewght, locthink, expandmax, empSLflag, optSLflag, suitflag, \
-    rtcap, basecap, p_sucintcpt = load_expmntl_parms(ERUNS)
+        intcpctymodel, profitmodel, endstock, growthmdl, timewght, locthink, expandmax, empSLflag, optSLflag, suitflag, \
+        rtcap, basecap, p_sucintcpt = load_expmntl_parms(ERUNS)
 
     # Load landscape files
     dcoast = scipy.io.loadmat('data/coast_dist')['dcoast']
@@ -106,7 +106,7 @@ def NarcoLogic(mr, times):
     for nn in range(1, nnodes - 2):
         try:
             westdir = NodeTable['Col'][nn] - np.where(np.isnan(dcoast[NodeTable['Row'][nn],
-                                                                np.arange(0, NodeTable['Col'][nn] - 1)]) == 1)[0][-1]
+            np.arange(0, NodeTable['Col'][nn] - 1)]) == 1)[0][-1]
         except IndexError:
             westdir = 0
         try:
@@ -116,12 +116,12 @@ def NarcoLogic(mr, times):
             eastdir = 0
         try:
             northdir = NodeTable['Row'][nn] - np.where(np.isnan(dcoast[np.arange(0, NodeTable['Row'][nn] - 1),
-                                                                       NodeTable['Col'][nn]]) == 1)[0][-1]
+            NodeTable['Col'][nn]]) == 1)[0][-1]
         except IndexError:
             northdir = 0
         try:
             southdir = np.where(np.isnan(dcoast[np.arange(NodeTable['Row'][nn], LANDSUIT.shape[0] - 1),
-                                                NodeTable['Col'][nn]]) == 1)[0][0]
+            NodeTable['Col'][nn]]) == 1)[0][0]
         except IndexError:
             southdir = 0
         """ Below line is not used - check if needed """
@@ -187,17 +187,17 @@ def NarcoLogic(mr, times):
     brdrfac[0, 0] = 0
     suitfac = NodeTable['LandSuit'].to_numpy().reshape(-1, 1)
     suitfac[0, 0] = 0
-    coastfac = (NodeTable['CoastDist'].to_numpy()/np.amax(NodeTable['CoastDist'])).reshape(-1, 1)
+    coastfac = (NodeTable['CoastDist'].to_numpy() / np.amax(NodeTable['CoastDist'])).reshape(-1, 1)
     coastfac[0, 0] = 0
     nwvec = (np.sqrt(np.multiply(0.9, NodeTable['Lat'].to_numpy() ** 2) +
-                    np.multiply(0.1, NodeTable['Lon'].to_numpy() ** 2))).reshape(-1, 1)
+                     np.multiply(0.1, NodeTable['Lon'].to_numpy() ** 2))).reshape(-1, 1)
     latfac = 1 - nwvec / np.amax(nwvec)
     latfac[0, 0] = 0
 
     # Create adjacency matrix
     iendnode = NodeTable.loc[NodeTable['DeptCode'] == 2, 'ID'].iloc[0]
     ADJ[EdgeTable['EndNodes'].str[0][np.where(EdgeTable['EndNodes'].str[1] == iendnode)[0]], iendnode] = 1
-    iedge = np.where(ADJ == 1)[0]   # CHECK if required
+    iedge = np.where(ADJ == 1)[0]  # CHECK if required
     subneihood = np.zeros((LANDSUIT.shape[0], LANDSUIT.shape[1]))
 
     for j in range(0, nnodes):
@@ -305,7 +305,7 @@ def NarcoLogic(mr, times):
             margval[q, range(q, nnodes), TSTART] = PRICE[range(q, nnodes), TSTART] - PRICE[q, TSTART]
 
     for nd in range(0, ndto):
-        idto = np.where(NodeTable['DTO'] == nd+1)[0]
+        idto = np.where(NodeTable['DTO'] == nd + 1)[0]
         margvalset = [idto[x] for x in range(len(idto)) if idto[x] != endnodeset]
         routepref[0, idto, TSTART + 1] = margval[0, idto, 0] / np.amax(margval[0, margvalset])
 
@@ -370,6 +370,15 @@ def NarcoLogic(mr, times):
                                                                       np.max(routepref[n, idtombr, time])))
                                 inei.append(subinei)
                     else:
+                        inei = np.logical_and(np.where(ADJ[n, :] == 1), np.where(routepref[n, :, time] > 0))
+                        """ CHECK ismember() function for 2D arrays"""
+                        inei = inei[ismember(inei, np.array(
+                            [np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO']), [np.transpose(endnodeset)]]))]
 
 
-
+def ismember(a, b):
+    bind = {}
+    for i, elt in enumerate(b):
+        if elt not in bind:
+            bind[elt] = i
+    return [bind.get(itm, None) for itm in a]
