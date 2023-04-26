@@ -8,6 +8,7 @@ Function for initializing and executing NarcoLogic dynamics from Python
 import numpy as np
 import pandas as pd
 
+from calc_neival import calc_neival
 from load_expmntl_parms import load_expmntl_parms
 from optimize_interdiction_batch import optimize_interdiction_batch
 from intrd_tables_batch import intrd_tables_batch
@@ -380,6 +381,22 @@ def NarcoLogic(mr, times):
                             inei = inei[ismember(inei, np.array([np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO']),
                                                         [np.transpose(endnodeset)]]))]
 
+                    # Procedure for selecting routes based on expected profit #
+                    c_trans = CTRANS[n, inei, time]
+                    p_sl = SLRISK[n, inei]
+                    y_node = PRICE[inei, time] - PRICE[n, time]
+                    q_node = np.min(STOCK[n, time] / len(inei), CPCTY[n, inei])
+                    lccf = ltcoeff[n]
+                    totstock = STOCK[n, time]
+                    totcpcty = CPCTY[n, inei]
+                    tslrisk = totslrisk[time]
+                    rtpref = routepref[n, inei, time]
+                    dtonei = NodeTable.loc[inei, 'DTO']
+                    profmdl = profitmodel[erun]
+                    cutflag = dtocutflag[np.unique(dtonei[np.where(dtonei != 0)])]
+
+                    neipick, neivalue, valuex = calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk,
+                                                            dtonei, profmdl, cutflag, totcpcty, totstock, edgechange)
 
 
 def ismember(a, b):
