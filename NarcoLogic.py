@@ -374,6 +374,12 @@ def NarcoLogic(mr, times):
                         """ CHECK ismember() function for 2D arrays"""
                         inei = inei[ismember(inei, np.array(
                             [np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO']), [np.transpose(endnodeset)]]))]
+                        if len(np.where(inei, 1)) == 0:
+                            inei = np.logical_and(np.where(ADJ[n,:] == 1),
+                                                  np.where(routepref[n, :, time] == np.max(routepref[n, :, time])))
+                            inei = inei[ismember(inei, np.array([np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO']),
+                                                        [np.transpose(endnodeset)]]))]
+
 
 
 def ismember(a, b):
