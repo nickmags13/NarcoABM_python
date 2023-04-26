@@ -401,8 +401,11 @@ def NarcoLogic(mr, times):
                     # With top-down route optimization
                     inei = inei[neipick]
 
-                    # weight according to salience value fuction
+                    # weight according to salience value function
                     if len(np.where(valuex <= 0)) == 0:
+                        WGHT[n, inei] = (1 - SLRISK[n, inei]) / np.sum(1 - SLRISK[n, inei])
+                    else:
+                        WGHT[n, inei] = np.transpose(np.max(valuex[neipick], 0) / np.sum(np.max(valuex[neipick], 0)))
 
 
 
