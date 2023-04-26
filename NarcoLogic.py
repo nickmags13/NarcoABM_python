@@ -398,6 +398,13 @@ def NarcoLogic(mr, times):
                     neipick, neivalue, valuex = calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk,
                                                             dtonei, profmdl, cutflag, totcpcty, totstock, edgechange)
 
+                    # With top-down route optimization
+                    inei = inei[neipick]
+
+                    # weight according to salience value fuction
+                    if len(np.where(valuex <= 0)) == 0:
+
+
 
 def ismember(a, b):
     bind = {}
