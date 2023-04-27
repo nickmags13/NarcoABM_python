@@ -423,6 +423,15 @@ def NarcoLogic(mr, times):
 
                         # interception probability
                         p_int = np.random.rand(len(intcpt), 1)
+                        for p in range(len(intcpt)):
+                            if p_int[p] <= intcpt[p]:
+                                slsuccess[n, inei[isl[p]], time] = FLOW[n, inei[isl[p]], time]
+                                slvalue[n, inei[isl[p]], time] = np.multiply(FLOW[n, inei[isl[p]], time],
+                                                                          np.transpose(PRICE[inei[isl[p]], time]))
+                                FLOW[n, inei[isl[p]], time] = 0
+                            else:
+                                slsuccess[n, inei[isl[p]], time] = 0
+                                slvalue[n, inei[isl[p]], time] = 0
 
 
 
