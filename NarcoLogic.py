@@ -405,7 +405,7 @@ def NarcoLogic(mr, times):
                     if len(np.where(valuex <= 0)) == 0:
                         WGHT[n, inei] = (1 - SLRISK[n, inei]) / np.sum(1 - SLRISK[n, inei])
                     else:
-                        WGHT[n, inei] = np.transpose(np.max(valuex[neipick], 0) / np.sum(np.max(valuex[neipick], 0)))
+                        WGHT[n, inei] = np.transpose(np.amax(valuex[neipick], 0) / np.sum(np.amax(valuex[neipick], 0)))
 
                     activeroute[n, time] = np.split(np.transpose(inei), len(inei), 1)
                     neiset = np.unique(NodeTable.loc[inei, 'DTO'])
@@ -416,6 +416,14 @@ def NarcoLogic(mr, times):
                     nodecosts = np.sum(np.multiply(FLOW[n, inei, time], CTRANS[n, inei, time]))
 
                     # Check for S#L event
+                    if len(np.where(ismember(np.where(slevent[n, :, time] != 0), inei) != 0)) > 0:
+                        isl = np.where(slevent[n, inei, time] == 1)
+                        intrdctobs[n, inei[isl], time] = 1
+                        intcpt = np.amin(p_sucintcpt[erun] * NodeTable.loc[inei[isl], 'pintcpt'], 1)
+
+                        # interception probability
+                        p_int = np.random.rand(len(intcpt), 1)
+
 
 
 
