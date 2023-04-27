@@ -407,6 +407,17 @@ def NarcoLogic(mr, times):
                     else:
                         WGHT[n, inei] = np.transpose(np.max(valuex[neipick], 0) / np.sum(np.max(valuex[neipick], 0)))
 
+                    activeroute[n, time] = np.split(np.transpose(inei), len(inei), 1)
+                    neiset = np.unique(NodeTable.loc[inei, 'DTO'])
+                    FLOW[n, inei, time] = np.amin(np.multiply(WGHT[n, inei] / np.sum(WGHT[n, inei]), STOCK[n, time]),
+                                               CPCTY[n, inei])
+                    OUTFLOW[n, time] = np.sum(FLOW[n, inei, time])
+                    STOCK[n, time] = STOCK[n, time] - OUTFLOW[n, time]
+                    nodecosts = np.sum(np.multiply(FLOW[n, inei, time], CTRANS[n, inei, time]))
+
+                    # Check for S#L event
+
+
 
 
 def ismember(a, b):
