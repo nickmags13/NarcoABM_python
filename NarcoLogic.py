@@ -449,6 +449,15 @@ def NarcoLogic(mr, times):
                         else:
                             RENTCAP[n, time] = MARGIN[n, time]
                             TOTCPTL[n, time] = TOTCPTL[n, time] + RENTCAP[n, time]
+                    else:
+                        STOCK[inei, time] = STOCK[inei, time] + np.transpose(FLOW[n, inei, time])
+                        nodecosts = np.sum(np.multiply(FLOW[n, inei, time], CTRANS[n, inei, time]))
+                        noderevenue = np.sum(np.multiply(FLOW[n, inei, time], np.transpose(PRICE[inei, time])))
+                        TOTCPTL[inei, time] = TOTCPTL[inei, time] - np.multiply(np.transpose(FLOW[n, inei, time]),
+                                                                                PRICE[inei, time])
+                        ICPTL[n, time] = rentcap * np.sum(np.multiply(FLOW[n, inei], ADDVAL[n, inei]))
+                        MARGIN[n, time] = noderevenue - nodecosts + np.amin(TOTCPTL[n, time], 0)
+
 
 
 
