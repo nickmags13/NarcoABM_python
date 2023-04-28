@@ -457,6 +457,19 @@ def NarcoLogic(mr, times):
                                                                                 PRICE[inei, time])
                         ICPTL[n, time] = rentcap * np.sum(np.multiply(FLOW[n, inei], ADDVAL[n, inei]))
                         MARGIN[n, time] = noderevenue - nodecosts + np.amin(TOTCPTL[n, time], 0)
+                        if n > 1:
+                            BRIBE[n, time] = np.amax(bribepct * MARGIN[n, time], 0)
+                            if MARGIN[n, time] > 0:
+                                RENTCAP[n, time] = MARGIN[n, time] - BRIBE[n, time]
+                            else:
+                                RENTCAP[n, time] = MARGIN[n, time]
+                            TOTCPTL[n, time] = np.amax(TOTCPTL[n, time], 0) + RENTCAP[n, time]
+                        else:
+                            RENTCAP[n, time] = MARGIN[n, time]
+                            TOTCPTL[n, time] = TOTCPTL[n, time] + RENTCAP[n, time]
+
+                    # Update perceived risk in response to S&L and Interdiction events
+                    timeweight = twght[n]
 
 
 
