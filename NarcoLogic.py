@@ -433,6 +433,24 @@ def NarcoLogic(mr, times):
                                 slsuccess[n, inei[isl[p]], time] = 0
                                 slvalue[n, inei[isl[p]], time] = 0
 
+                        STOCK[inei, time] = STOCK[inei, time] + np.transpose(FLOW[n, inei, time])
+                        noderevenue = np.sum(np.multiply(FLOW[n, inei, time], np.transpose(PRICE[inei, time])))
+                        TOTCPTL[inei, time] = TOTCPTL[inei, time] - (np.multiply(np.transpose(FLOW[n, inei, time]),
+                                                                                 PRICE[inei, time]))
+                        ICPTL[n, time] = rentcap * np.sum(np.multiply(FLOW[n, inei], ADDVAL[n, inei]))
+                        MARGIN[n, time] = noderevenue - nodecosts + np.amin(TOTCPTL[n, time], 0)
+                        if n > 1:
+                            BRIBE[n, time] = np.amax(bribepct * MARGIN[n, time], 0)
+                            if MARGIN[n, time] > 0:
+                                RENTCAP[n, time] = MARGIN[n, time] - BRIBE[n, time]
+                            else:
+                                RENTCAP[n, time] = MARGIN[n, time]
+                            TOTCPTL[n, time] = np.amax(TOTCPTL[n, time], 0) + RENTCAP[n, time]
+                        else:
+                            RENTCAP[n, time] = MARGIN[n, time]
+                            TOTCPTL[n, time] = TOTCPTL[n, time] + RENTCAP[n, time]
+
+
 
 
 
