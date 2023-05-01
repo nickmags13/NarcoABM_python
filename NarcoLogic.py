@@ -507,6 +507,12 @@ def NarcoLogic(mr, times):
             CTRANS[:, :, time + 1] = np.multiply(CTRANS[:, :, time], RISKPREM[:, :, time])
             totslrisk[time + 1] = np.mean(np.concatenate(2, avgslrisk[:, time]))
 
+            # Reinforcement learning for successful routes
+            iactivenode = np.where(OUTFLOW[np.arange(2, nnodes + 1), time] > 0)
+            avgflow = STOCK[iendnode, time] / len(iactivenode)
+            activenodes = np.unique(np.concatenate(1, activeroute[:, time]))
+            actedge = activeroute[:, time]
+
 
 def ismember(a, b):
     bind = {}
