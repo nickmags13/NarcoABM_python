@@ -477,11 +477,15 @@ def NarcoLogic(mr, times):
                     if t == TSTART + 1:
                         # Risk perception only updated when successful interdiction takes place
                         sloccur = np.array([[np.zeros((12, len(fwdnei)))], [(slsuccess[n, fwdnei, TSTART + 1] > 0)]])
-                    elif t > TSTART+1 and len(fwdnei) == 1:
-
-
-
-
+                    elif t > TSTART + 1 and len(fwdnei) == 1:
+                        sloccur = np.array([[np.zeros((13 - len(np.arange(np.amax(TSTART + 1, time - 12), time)), 1))],
+                                            [np.squeeze(slsuccess[n, fwdnei, np.arange(np.amax(TSTART + 1, time - 12),
+                                                                                       time + 1)] > 0)]])
+                    else:
+                        sloccur = np.array([[np.zeros((13 - len(np.arange(np.amax(TSTART + 1, time - 12), time + 1)),
+                                                       len(fwdnei)))],
+                                            [np.transpose(np.squeeze(slsuccess[n, fwdnei,
+                                            np.arange(np.amax(TSTART + 1, time - 12), time + 1)] > 0))]])
 
 
 def ismember(a, b):
