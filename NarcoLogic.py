@@ -8,6 +8,7 @@ Function for initializing and executing NarcoLogic dynamics from Python
 import numpy as np
 import pandas as pd
 
+from calc_intrisk import calc_intrisk
 from calc_neival import calc_neival
 from load_expmntl_parms import load_expmntl_parms
 from optimize_interdiction_batch import optimize_interdiction_batch
@@ -478,7 +479,8 @@ def NarcoLogic(mr, times):
                         # Risk perception only updated when successful interdiction takes place
                         sloccur = np.array([[np.zeros((12, len(fwdnei)))], [(slsuccess[n, fwdnei, TSTART + 1] > 0)]])
                     elif t > TSTART + 1 and len(fwdnei) == 1:
-                        sloccur = np.array([[np.zeros((13 - len(np.arange(np.amax(TSTART + 1, time - 12), time)), 1))],
+                        sloccur = np.array([[np.zeros((13 - len(np.arange(np.amax(TSTART + 1, time - 12), time + 1)),
+                                                       1))],
                                             [np.squeeze(slsuccess[n, fwdnei, np.arange(np.amax(TSTART + 1, time - 12),
                                                                                        time + 1)] > 0)]])
                     else:
@@ -486,6 +488,8 @@ def NarcoLogic(mr, times):
                                                        len(fwdnei)))],
                                             [np.transpose(np.squeeze(slsuccess[n, fwdnei,
                                             np.arange(np.amax(TSTART + 1, time - 12), time + 1)] > 0))]])
+
+                    sl_risk, slevnt, tmevnt = calc_intrisk(sloccur, t_eff, alpharisk, betarisk, timeweight)
 
 
 def ismember(a, b):
