@@ -503,6 +503,10 @@ def NarcoLogic(mr, times):
                     # Make trafficking move
                     MOV[:, n, time] = STOCK[:, time]
 
+            # Risk premium on cost of doing business (transport costs)
+            CTRANS[:, :, time + 1] = np.multiply(CTRANS[:, :, time], RISKPREM[:, :, time])
+            totslrisk[time + 1] = np.mean(np.concatenate(2, avgslrisk[:, time]))
+
 
 def ismember(a, b):
     bind = {}
