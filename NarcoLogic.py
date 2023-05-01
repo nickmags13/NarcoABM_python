@@ -376,10 +376,10 @@ def NarcoLogic(mr, times):
                         inei = inei[ismember(inei, np.array(
                             [np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO']), [np.transpose(endnodeset)]]))]
                         if len(np.where(inei, 1)) == 0:
-                            inei = np.logical_and(np.where(ADJ[n,:] == 1),
+                            inei = np.logical_and(np.where(ADJ[n, :] == 1),
                                                   np.where(routepref[n, :, time] == np.max(routepref[n, :, time])))
                             inei = inei[ismember(inei, np.array([np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO']),
-                                                        [np.transpose(endnodeset)]]))]
+                                                                 [np.transpose(endnodeset)]]))]
 
                     # Procedure for selecting routes based on expected profit #
                     c_trans = CTRANS[n, inei, time]
@@ -410,7 +410,7 @@ def NarcoLogic(mr, times):
                     activeroute[n, time] = np.split(np.transpose(inei), len(inei), 1)
                     neiset = np.unique(NodeTable.loc[inei, 'DTO'])
                     FLOW[n, inei, time] = np.amin(np.multiply(WGHT[n, inei] / np.sum(WGHT[n, inei]), STOCK[n, time]),
-                                               CPCTY[n, inei])
+                                                  CPCTY[n, inei])
                     OUTFLOW[n, time] = np.sum(FLOW[n, inei, time])
                     STOCK[n, time] = STOCK[n, time] - OUTFLOW[n, time]
                     nodecosts = np.sum(np.multiply(FLOW[n, inei, time], CTRANS[n, inei, time]))
@@ -427,7 +427,7 @@ def NarcoLogic(mr, times):
                             if p_int[p] <= intcpt[p]:
                                 slsuccess[n, inei[isl[p]], time] = FLOW[n, inei[isl[p]], time]
                                 slvalue[n, inei[isl[p]], time] = np.multiply(FLOW[n, inei[isl[p]], time],
-                                                                          np.transpose(PRICE[inei[isl[p]], time]))
+                                                                             np.transpose(PRICE[inei[isl[p]], time]))
                                 FLOW[n, inei[isl[p]], time] = 0
                             else:
                                 slsuccess[n, inei[isl[p]], time] = 0
@@ -471,6 +471,13 @@ def NarcoLogic(mr, times):
                     # Update perceived risk in response to S&L and Interdiction events
                     timeweight = twght[n]
 
+                    # identify neighbors in network (without network toolbox)
+                    fwdnei = inei
+                    t_eff = np.arange(0, 12)
+                    if t == TSTART + 1:
+                        # Risk perception only updated when successful interdiction takes place
+                        sloccur = np.array([[np.zeros((12, len(fwdnei)))], [(slsuccess[n, fwdnei, TSTART + 1] > 0)]])
+                    elif t > TSTART+1 and len(fwdnei) == 1:
 
 
 
