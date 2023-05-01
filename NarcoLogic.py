@@ -491,9 +491,17 @@ def NarcoLogic(mr, times):
 
                     sl_risk, slevnt, tmevnt = calc_intrisk(sloccur, t_eff, alpharisk, betarisk, timeweight)
                     SLRISK[n, fwdnei] = sl_risk
+
                     if len(np.where(sl_risk != 0)) > 0:
                         avgslrisk[n, time] = np.split(SLRISK[n, activeroute[n, time]], 1, len(activeroute[n, time]))
 
+                    NodeTable['Stock'] = STOCK[:, time]
+                    NodeTable['Capital'] = TOTCPTL[:, time]
+                    RISKPREM[:, :, time] = np.amax(np.multiply((1 - delta_rt), RISKPREM[:, :, time - 1]) + np.multiply(
+                        delta_rt, ((SLRISK / baserisk[erun]) ** riskmltplr[erun])), 1)
+
+                    # Make trafficking move
+                    MOV[:, n, time] = STOCK[:, time]
 
 
 def ismember(a, b):
