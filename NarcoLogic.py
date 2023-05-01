@@ -513,6 +513,11 @@ def NarcoLogic(mr, times):
             activenodes = np.unique(np.concatenate(1, activeroute[:, time]))
             actedge = activeroute[:, time]
 
+            # Calculate updated marginal profit
+            for q in range(0, nnodes):
+                if len(np.where(ADJ[q, :] == 1)) == 0:
+                    margval[q, q + 1: nnodes, time] = PRICE[q + 1: nnodes, time]-PRICE[q, time]
+
 
 def ismember(a, b):
     bind = {}
