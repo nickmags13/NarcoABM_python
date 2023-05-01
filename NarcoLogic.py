@@ -490,6 +490,10 @@ def NarcoLogic(mr, times):
                                             np.arange(np.amax(TSTART + 1, time - 12), time + 1)] > 0))]])
 
                     sl_risk, slevnt, tmevnt = calc_intrisk(sloccur, t_eff, alpharisk, betarisk, timeweight)
+                    SLRISK[n, fwdnei] = sl_risk
+                    if len(np.where(sl_risk != 0)) > 0:
+                        avgslrisk[n, time] = np.split(SLRISK[n, activeroute[n, time]], 1, len(activeroute[n, time]))
+
 
 
 def ismember(a, b):
