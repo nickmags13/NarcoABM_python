@@ -585,6 +585,16 @@ def NarcoLogic(mr, times):
                 STOCK[0, time] = (stock_max * stock_0 * np.exp(prodgrow[erun] * int(np.floor(time / 12)))) / (
                             stock_max + stock_0 * (np.exp(prodgrow[erun] * int(np.floor(time / 12))) - 1))
 
+            STOCK[endnodeset, time+1] = 0
+            NodeTable.loc[1, 'Stock'] = STOCK[1, time + 1]
+            NodeTable[endnodeset, 'Stock'] = 0
+            slcount_edges[time] = len(np.where(slsuccess[:, :, time] > 0))
+            h_slsuccess = slsuccess[:,:, time]
+            slcount_vol[time] = np.sum(h_slsuccess[h_slsuccess > 0])
+
+            # Output tables for flows(t) and interdiction prob(t-1)
+
+
 
 
 def ismember(a, b):
