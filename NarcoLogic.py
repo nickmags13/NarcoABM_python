@@ -7,7 +7,6 @@ Function for initializing and executing NarcoLogic dynamics from Python
 
 import numpy as np
 import pandas as pd
-
 from calc_intrisk import calc_intrisk
 from calc_neival import calc_neival
 from load_expmntl_parms import load_expmntl_parms
@@ -15,6 +14,7 @@ from optimize_interdiction_batch import optimize_interdiction_batch
 from intrd_tables_batch import intrd_tables_batch
 from lldistkm import lldistkm
 import scipy
+from optimizeroute_multidto import optimizeroute_multidto
 
 
 def NarcoLogic(mr, times):
@@ -551,7 +551,7 @@ def NarcoLogic(mr, times):
                 nrow = ipossl[0]
                 ncol = ipossl[1]
                 flowvalues = np.multiply(allflows[allflows > 0], (
-                            (PRICE[dtorefvec[col], time] - PRICE[dtorefvec[irow], time]) - dtoCTRANS[allflows > 0]))
+                            (PRICE[dtorefvec[ncol], time] - PRICE[dtorefvec[irow], time]) - dtoCTRANS[allflows > 0]))
                 supplyfit = np.sum(np.multiply(dtoslsuc[ipossl], (
                             (PRICE[dtorefvec[ncol], time] - PRICE[dtorefvec[nrow], time]) - dtoCTRANS[ipossl])))
                 losstolval = losstol * np.amax(flowvalues)
