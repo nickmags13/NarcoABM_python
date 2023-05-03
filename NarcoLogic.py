@@ -574,6 +574,16 @@ def NarcoLogic(mr, times):
                 edgechange[dt] = newedgechange
 
                 # Bottom-up route optimization
+                routepref[dtorefvec, dtorefvec, time + 1] = newroutepref
+
+            PRICE[:, time + 1] = PRICE[:, time]
+
+            if growthmdl[erun] == 1:
+                STOCK[0, time] = stock_0 + (prodgrow[erun] * np.ceil((time - TSTART) / 12)) # additional production to
+                # enter network next time step
+            elif growthmdl[erun] == 2:
+                STOCK[0, time] = (stock_max * stock_0 * np.exp(prodgrow[erun] * int(np.floor(time / 12)))) / (
+                            stock_max + stock_0 * (np.exp(prodgrow[erun] * int(np.floor(time / 12))) - 1))
 
 
 
