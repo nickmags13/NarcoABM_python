@@ -518,6 +518,9 @@ def NarcoLogic(mr, times):
                 if len(np.where(ADJ[q, :] == 1)) == 0:
                     margval[q, q + 1: nnodes, time] = PRICE[q + 1: nnodes, time]-PRICE[q, time]
 
+            # Route Optimization ###########
+
+
 
 def ismember(a, b):
     bind = {}
