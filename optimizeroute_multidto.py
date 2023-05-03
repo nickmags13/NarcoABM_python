@@ -3,9 +3,9 @@
 import numpy as np
 from NarcoLogic import ismember
 
+
 def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, dtoEdgeTable, dtoSLRISK, dtoADDVAL,
                            dtoCTRANS, losstolval, dtoslsuc):
-
     iactiveedges = np.logical_or(np.where(subflow > 0), np.where(dtoslsuc > 0))
     actrow = iactiveedges[0]
     actcol = iactiveedges[1]
@@ -24,6 +24,17 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
         if len(ikeep_primary) == 1:
             edgecut = edgecut[not ismember(edgecut, np.array(
                 [[iprimary[ikeep_primary]], [np.where(edgesort[edgecut, 3] == edgesort[iprimary[ikeep_primary], 4])]]))]
-
+        else:
+            maxprofit_primary = np.amax(edgesort[iprimary[ikeep_primary], 1])
+            ikeep_primary = ikeep_primary[edgesort[iprimary[ikeep_primary], 1] == maxprofit_primary]
+            if len(ikeep_primary) == 1:
+                edgecut = edgecut[not ismember(edgecut, np.array([[iprimary[ikeep_primary]],
+                                                                  [np.where(edgesort[edgecut, 3] == edgesort[
+                                                                      iprimary[ikeep_primary], 5])]]))]
+            else:
+                ikeep_primary = ikeep_primary[1]
+                edgecut = edgecut[not ismember(edgecut, np.array([[iprimary[ikeep_primary]],
+                                                                  [np.where(edgesort[edgecut, 4] == edgesort[
+                                                                      iprimary[ikeep_primary], 5])]]))]
 
     return newroutepref
