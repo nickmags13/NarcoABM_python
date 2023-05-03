@@ -539,6 +539,14 @@ def NarcoLogic(mr, times):
                 irow = indices[0]
                 icol = indices[1]
                 sendedge = ismember(EdgeTable['EndNodes'].str[0], dtorefvec)
+                dtoEdgeTable = EdgeTable.loc[:, 'sendedge']
+                dtoEdgeTable = dtoEdgeTable[ismember(dtoEdgeTable['EndNodes'].str[1], dtorefvec),:]
+                dtoSLRISK = SLRISK[dtorefvec, dtorefvec]
+                dtoADDVAL = margval[dtorefvec, dtorefvec, time]
+                dtoCTRANS = CTRANS[dtorefvec, dtorefvec, time]
+
+                # calculate losses from S&L events
+                # volume-based - does not matter where in supply chain
 
 
 
