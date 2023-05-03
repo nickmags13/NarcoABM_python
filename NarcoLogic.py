@@ -519,6 +519,13 @@ def NarcoLogic(mr, times):
                     margval[q, q + 1: nnodes, time] = PRICE[q + 1: nnodes, time]-PRICE[q, time]
 
             # Route Optimization ###########
+            for dt in range(0, ndto):
+                idto = np.where(NodeTable['DTO'] == dt)
+                DTOBDGT[dt, time] = np.sum(np.multiply(STOCK[endnodeset, time], PRICE[endnodeset, time])) # total DTO
+                # funds for expansion/viability
+                dtorefvec = np.array([[1], [idto], [mexnode]])
+                subnnodes = len(idto)
+                subroutepref = routepref[dtorefvec, dtorefvec, time]
 
 
 
