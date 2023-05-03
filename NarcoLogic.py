@@ -547,7 +547,33 @@ def NarcoLogic(mr, times):
 
                 # calculate losses from S&L events
                 # volume-based - does not matter where in supply chain
+                ipossl = np.where(dtoslsuc > 0)
+                nrow = ipossl[0]
+                ncol = ipossl[1]
+                flowvalues = np.multiply(allflows[allflows > 0], (
+                            (PRICE[dtorefvec[col], time] - PRICE[dtorefvec[irow], time]) - dtoCTRANS[allflows > 0]))
+                supplyfit = np.sum(np.multiply(dtoslsuc[ipossl], (
+                            (PRICE[dtorefvec[ncol], time] - PRICE[dtorefvec[nrow], time]) - dtoCTRANS[ipossl])))
+                losstolval = losstol * np.amax(flowvalues)
+                if len(np.where(supplyfit != 0)) == 0 and len(np.where(losstolval != 0)) == 0:
+                    supplyfit = 0.1
 
+                # Route capacity constrains flow volumes, need to expand routes
+                idtonet = dtorefvec[not ismember(dtorefvec, endnodeset)]
+
+                if np.sum(STOCK[idtonet, time]) >= np.amax(dtoEdgeTable['Capacity']):
+                    supplyfit = np.amax(supplyfit, losstolval * np.sum(STOCK[idtonet, time]) / rtcap[erun])
+
+                # call top-down route optimization
+                expmax = expandmax[erun]
+
+                newroutepref, newedgechange = optimizeroute_multidto(dtorefvec, allflows, subflow, supplyfit, expmax,
+                                                                     subroutepref, dtoEdgeTable, dtoSLRISK, dtoADDVAL,
+                                                                     dtoCTRANS, losstolval, dtoslsuc)
+
+                edgechange[dt] = newedgechange
+
+                # Bottom-up route optimization
 
 
 
