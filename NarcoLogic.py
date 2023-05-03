@@ -526,6 +526,20 @@ def NarcoLogic(mr, times):
                 dtorefvec = np.array([[1], [idto], [mexnode]])
                 subnnodes = len(idto)
                 subroutepref = routepref[dtorefvec, dtorefvec, time]
+                subactivenodes = activenodes[ismember(activenodes, idto)]
+                subactedges = np.concatenate(1, actedge[dtorefvec])
+                ikeep = np.where(NodeTable[subactedges, 'DTO'] == dt)
+                dtoACTEDGES = subactedges[ikeep]
+                idtoactedges = np.where(ismember(dtorefvec, dtoACTEDGES) == 1)
+                subflow = FLOW[dtorefvec, dtorefvec, time]
+                dtoslsuc = slsuccess[dtorefvec, dtorefvec, time]
+                allflows = subflow + dtoslsuc
+                # locate active edges
+                indices = np.where(allflows > 0)
+                irow = indices[0]
+                icol = indices[1]
+                sendedge = ismember(EdgeTable['EndNodes'].str[0], dtorefvec)
+
 
 
 
