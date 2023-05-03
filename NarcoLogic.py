@@ -593,8 +593,9 @@ def NarcoLogic(mr, times):
             slcount_vol[time] = np.sum(h_slsuccess[h_slsuccess > 0])
 
             # Output tables for flows(t) and interdiction prob(t-1)
-
-
+            Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, mrun,
+                                               batchrun)
+            return Tflow
 
 
 def ismember(a, b):
