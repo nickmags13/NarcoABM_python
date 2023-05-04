@@ -37,4 +37,14 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
                                                                   [np.where(edgesort[edgecut, 4] == edgesort[
                                                                       iprimary[ikeep_primary], 5])]]))]
 
+        # remove highest risk edges
+        for j in range(0, len(edgecut)):
+            icheckroute = np.where(subflow(edgesort[edgecut[j], 3], ismember(dtorefvec, dtoEdgeTable['EndNodes'][
+                dtoEdgeTable['EndNodes'].str[0] == dtorefvec[edgesort[edgecut[j], 3]], 1])) > 0)
+            actroutes = dtoEdgeTable['EndNodes'][dtoEdgeTable['EndNodes'].str[0] ==
+                                                 dtorefvec[edgesort[edgecut[j], 3]], 1]
+
+
+    newroutepref = subroutepref
+
     return newroutepref
