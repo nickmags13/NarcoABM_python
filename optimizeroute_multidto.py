@@ -43,6 +43,27 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
                 dtoEdgeTable['EndNodes'].str[0] == dtorefvec[edgesort[edgecut[j], 3]], 1])) > 0)
             actroutes = dtoEdgeTable['EndNodes'][dtoEdgeTable['EndNodes'].str[0] ==
                                                  dtorefvec[edgesort[edgecut[j], 3]], 1]
+            checknoderoutes = (
+                        len(actroutes[icheckroute]) == len(np.where(edgesort[edgecut, 3] == edgesort[edgecut[j], 3])))
+            if checknoderoutes:
+                cutsenders = np.where(ismember(dtorefvec, dtoEdgeTable['EndNodes'](dtoEdgeTable['EndNodes'].str[1] ==
+                                                                                   dtorefvec[edgesort[edgecut[j], 3]],
+                                                                                   1)) == 1)
+                """ CHECK the calculation below"""
+                cutind = [cutsenders, edgesort[edgecut[j], 4] * np.ones((len(cutsenders), 1))]
+                subroutepref[cutind] = 0
+
+            if len(icheckroute) == 1:
+                subroutepref[edgesort[edgecut[j], 2]] = 0
+                irmvsender = (edgesort[:, 4] == edgesort[edgecut[j], 3])
+                subroutepref[edgesort[irmvsender, 2]] = 0
+            else:
+                subroutepref[edgesort[edgecut[j], 2]] = 0
+
+    elif supplyfit >= losstolval:   # need to expand supply chain
+
+
+
 
 
     newroutepref = subroutepref
