@@ -27,7 +27,7 @@ def optimize_interdiction_batch(ADJ):
     intrdct_events = np.zeros(ADJ.shape)
     intrdct_nodes = Tintevent
     for j in np.arange(0, len(Tintevent)):       # Check whether it needs len or shape
-        iupstream = (ADJ[:, int(Tintevent[j])] == 1)
-        intrdct_events[iupstream, int(Tintevent[j])] = 1
+        iupstream = (ADJ[:, int(Tintevent[j])-1] == 1)
+        intrdct_events[iupstream, int(Tintevent[j])-1] = 1
 
     return intrdct_events, intrdct_nodes
