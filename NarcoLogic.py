@@ -339,7 +339,7 @@ def NarcoLogic(mr, times):
         for time in times:
             breakpoint()
             intrdct_events, intrdct_nodes = optimize_interdiction_batch(ADJ)
-            slevent[:][:][time] = intrdct_events
+            slevent[:, :, time] = intrdct_events
             """CHECK THE LINE BELOW FOR SHAPE AND INDICES"""
             slnodes[0, time] = [intrdct_nodes[intrdct_nodes.shape[0]: 0], intrdct_nodes[0: intrdct_nodes.shape[1]]]
             MOV[:, 0, time] = NodeTable['Stock']
