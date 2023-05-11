@@ -273,7 +273,7 @@ def NarcoLogic(mr, times):
     routepref = np.zeros((nnodes, nnodes, TMAX))  # weighting by network agent of successful routes
     slevent = np.zeros((nnodes, nnodes, TMAX))  # occurrence of S&L event
     intrdctobs = np.zeros((nnodes, nnodes, TMAX))
-    slnodes = np.empty((1, TMAX))
+    slnodes = [[] for _ in range(TMAX)]
     slsuccess = np.zeros((nnodes, nnodes, TMAX))  # volume of cocaine seized in S&L events
     slvalue = np.zeros((nnodes, nnodes, TMAX))  # value of cocaine seized in S&L events
     slcount_edges = np.zeros((1, TMAX))
@@ -341,7 +341,7 @@ def NarcoLogic(mr, times):
             intrdct_events, intrdct_nodes = optimize_interdiction_batch(ADJ)
             slevent[:, :, time] = intrdct_events
             """CHECK THE LINE BELOW FOR SHAPE AND INDICES"""
-            slnodes[0, time] = [intrdct_nodes[intrdct_nodes.shape[0]: 0], intrdct_nodes[0: intrdct_nodes.shape[1]]]
+            slnodes[time].append(intrdct_nodes)
             MOV[:, 0, time] = NodeTable['Stock']
 
             # Iterate through trafficking nodes
