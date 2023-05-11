@@ -21,11 +21,11 @@ def optimize_interdiction_batch(ADJ):
 
     print('Interdiction Input File Success, t= ' + t)
     """
-    breakpoint()
+
     Tintevent = np.loadtxt(trgtfile)
     intrdct_events = np.zeros(ADJ.shape)
     intrdct_nodes = Tintevent
-    for j in np.arange(0, len(Tintevent)):       # Check whether it needs len or shape
+    for j in np.arange(0, len(Tintevent)):
         iupstream = (ADJ[:, int(Tintevent[j])-1] == 1)
         intrdct_events[iupstream, int(Tintevent[j])-1] = 1
 
