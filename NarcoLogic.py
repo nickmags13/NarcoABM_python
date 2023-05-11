@@ -14,7 +14,7 @@ from optimize_interdiction_batch import optimize_interdiction_batch
 from intrd_tables_batch import intrd_tables_batch
 from lldistkm import lldistkm
 import scipy
-from optimizeroute_multidto import optimizeroute_multidto
+from optimizeroute_multidto import optimizeroute_multidto, ismember
 
 
 def NarcoLogic(mr, times):
@@ -334,7 +334,7 @@ def NarcoLogic(mr, times):
         MOV[rinit[w], cinit[w], 1] = FLOW[rinit[w], cinit[w], 1]
 
     Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, mrun, batchrun)
-
+    breakpoint()
     for m in mr:
         for time in times:
             intrdct_events, intrdct_nodes = optimize_interdiction_batch(time, ADJ, testflag, erun, mrun, batchrun)
@@ -596,11 +596,3 @@ def NarcoLogic(mr, times):
             Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, mrun,
                                                batchrun)
             return Tflow
-
-
-def ismember(a, b):
-    bind = {}
-    for i, elt in enumerate(b):
-        if elt not in bind:
-            bind[elt] = i
-    return [bind.get(itm, None) for itm in a]

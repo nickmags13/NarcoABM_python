@@ -1,7 +1,6 @@
 # Top-down supply chain optimization ########
 
 import numpy as np
-from NarcoLogic import ismember
 
 
 def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, dtoEdgeTable, dtoSLRISK, dtoADDVAL,
@@ -94,3 +93,11 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
     newroutepref = subroutepref
 
     return newroutepref
+
+
+def ismember(a, b):
+    bind = {}
+    for i, elt in enumerate(b):
+        if elt not in bind:
+            bind[elt] = i
+    return [bind.get(itm, None) for itm in a]
