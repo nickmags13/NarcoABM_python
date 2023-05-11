@@ -5,7 +5,6 @@ import glob
 import numpy as np
 
 
-#def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
 def optimize_interdiction_batch(ADJ):
 
     trgtfile = 'data/MTMCI_IntNodes.txt'
