@@ -32,7 +32,7 @@ def NarcoLogic(mr, times):
 
     testflag = 1
     erun = 3
-    mrun = mr
+    mrun = 2
 
     # Start initialization, set random number generator state for repeatability
 
@@ -337,7 +337,7 @@ def NarcoLogic(mr, times):
     breakpoint()
     for m in mr:
         for time in times:
-            intrdct_events, intrdct_nodes = optimize_interdiction_batch(time, ADJ, testflag, erun, mrun, batchrun)
+            intrdct_events, intrdct_nodes = optimize_interdiction_batch(time, ADJ, testflag, erun, m, batchrun)
             slevent[:][:][time] = intrdct_events
             """CHECK THE LINE BELOW FOR SHAPE AND INDICES"""
             slnodes[0, time] = [intrdct_nodes[intrdct_nodes.shape[0]: 0], intrdct_nodes[0: intrdct_nodes.shape[1]]]
@@ -593,6 +593,6 @@ def NarcoLogic(mr, times):
             slcount_vol[time] = np.sum(h_slsuccess[h_slsuccess > 0])
 
             # Output tables for flows(t) and interdiction prob(t-1)
-            Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, mrun,
+            Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, m,
                                                batchrun)
             return Tflow
