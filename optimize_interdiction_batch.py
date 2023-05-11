@@ -7,7 +7,7 @@ import numpy as np
 
 def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
 
-    trgtfile = 'MTMCI_IntNodes.txt'
+    trgtfile = 'data/MTMCI_IntNodes.txt'
 
     """
     readflag = 0
