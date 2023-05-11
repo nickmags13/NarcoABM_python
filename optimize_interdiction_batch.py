@@ -7,8 +7,10 @@ import numpy as np
 
 def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
 
-    readflag = 0
     trgtfile = 'MTMCI_IntNodes.txt'
+
+    """
+    readflag = 0
     print('Looking for ' + trgtfile)
 
     fileSearch = trgtfile.split('.')
@@ -18,6 +20,7 @@ def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
             readflag = 1
 
     print('Interdiction Input File Success, t= ' + t)
+    """
     Tintevent = np.loadtxt(trgtfile)
     intrdct_events = np.zeros(ADJ.shape)
     intrdct_nodes = Tintevent
