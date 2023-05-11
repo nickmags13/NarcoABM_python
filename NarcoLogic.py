@@ -334,10 +334,11 @@ def NarcoLogic(mr, times):
         MOV[rinit[w], cinit[w], 1] = FLOW[rinit[w], cinit[w], 1]
 
     Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, mrun, batchrun)
-    breakpoint()
+
     for m in mr:
         for time in times:
-            intrdct_events, intrdct_nodes = optimize_interdiction_batch(time, ADJ, testflag, erun, m, batchrun)
+            breakpoint()
+            intrdct_events, intrdct_nodes = optimize_interdiction_batch(ADJ)
             slevent[:][:][time] = intrdct_events
             """CHECK THE LINE BELOW FOR SHAPE AND INDICES"""
             slnodes[0, time] = [intrdct_nodes[intrdct_nodes.shape[0]: 0], intrdct_nodes[0: intrdct_nodes.shape[1]]]
