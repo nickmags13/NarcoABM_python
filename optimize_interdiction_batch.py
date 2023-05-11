@@ -5,7 +5,8 @@ import glob
 import numpy as np
 
 
-def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
+#def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
+def optimize_interdiction_batch(ADJ):
 
     trgtfile = 'data/MTMCI_IntNodes.txt'
 
@@ -21,11 +22,12 @@ def optimize_interdiction_batch(t, ADJ, testflag, erun, mrun, batchrun):
 
     print('Interdiction Input File Success, t= ' + t)
     """
+    breakpoint()
     Tintevent = np.loadtxt(trgtfile)
     intrdct_events = np.zeros(ADJ.shape)
     intrdct_nodes = Tintevent
     for j in np.arange(0, len(Tintevent)):       # Check whether it needs len or shape
-        iupstream = (ADJ[:, Tintevent[j]] == 1)
-        intrdct_events[iupstream, Tintevent[j]] = 1
+        iupstream = (ADJ[:, int(Tintevent[j])] == 1)
+        intrdct_events[iupstream, int(Tintevent[j])] = 1
 
     return intrdct_events, intrdct_nodes
