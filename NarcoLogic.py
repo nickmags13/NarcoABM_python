@@ -15,6 +15,7 @@ from intrd_tables_batch import intrd_tables_batch
 from lldistkm import lldistkm
 import scipy
 from optimizeroute_multidto import optimizeroute_multidto, ismember
+from data import data_sourcing, data_processing
 
 
 def NarcoLogic(mr, times):
@@ -595,4 +596,4 @@ def NarcoLogic(mr, times):
             # Output tables for flows(t) and interdiction prob(t-1)
             Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, m,
                                                batchrun)
-            return Tflow
+            data_processing(Tflow, data_sourcing(), time, m)
