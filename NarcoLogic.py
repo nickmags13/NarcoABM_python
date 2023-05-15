@@ -22,10 +22,10 @@ def NarcoLogic(mr, times):
     np.seterr(divide='ignore')
 
     batchrun = 9
-    MRUNS = 30
+    MRUNS = 31
     ERUNS = 11
     TSTART = 0
-    TMAX = 180  # 15 years at monthly time steps
+    TMAX = 181  # 15 years at monthly time steps
 
     # thistate = scipy.io.loadmat('data/savedrngstate.mat')['thistate']
     thistate = 1  # Verify the correct file upload and remove it after testing
