@@ -17,7 +17,8 @@ def data_sourcing():
     return nodes
 
 
-def data_processing(Tflow, Nodes, i, mr):
+def data_processing(Tflow, i, mr):
+    Nodes = data_sourcing()
     strt = time.time()
     # cast the returned TFlow table and timestep to py variables
     # input will be tflow for t = n x mr 1-n; need to group t by model run; doublecheck the tflow output
