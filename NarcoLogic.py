@@ -10,7 +10,7 @@ import pandas as pd
 from calc_intrisk import calc_intrisk
 from calc_neival import calc_neival
 from load_expmntl_parms import load_expmntl_parms
-from optimize_interdiction_batch import optimize_interdiction_batch
+from optimize import optimize_interdiction_batch
 from intrd_tables_batch import intrd_tables_batch
 from lldistkm import lldistkm
 import scipy
