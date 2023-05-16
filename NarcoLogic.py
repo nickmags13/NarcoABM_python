@@ -359,7 +359,7 @@ def NarcoLogic(mr, times):
                 if len(np.where(rtdto == 0)[0]) > 0:
                     rtdto[(np.where[rtdto] == 0)[0]] = NodeTable.loc[n, 'DTO']
                 breakpoint()
-                CPCTY[n, np.where(ADJ[n, :] == 1)[0]] = basecap[erun] * rtcap[rtdto - 1, int(np.floor(time / 12)) + 1]
+                CPCTY[n, np.where(ADJ[n, :] == 1)[0]] = basecap[0, erun] * rtcap[rtdto - 1, int(np.floor(time / 12)) + 1]
                 TOTCPTL[n, time] = TOTCPTL[n, time - 1] + TOTCPTL[n, time]
                 if STOCK[n, time] > 0:
                     if n > 1:
