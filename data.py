@@ -192,7 +192,7 @@ def MTMCI_func(NodesDF, timestep, mr):
         for t in T:
             y[i, t] = MTMCLP.addVar(vtype=GRB.BINARY, name=f'Demand{i, t}')
 
-    ##Create a[i,t] dictionary
+    # Create a[i,t] dictionary
     # make a dataframe with just the ait# and ID field
     Ait = NodesDF.filter(regex='^ait', axis=1)
     ID = NodesDF['ID']
@@ -210,40 +210,23 @@ def MTMCI_func(NodesDF, timestep, mr):
     df1 = pd.DataFrame(ID_Ait[others].values.ravel(), index=multi_ix, columns=["data"])
     a = df1.to_dict()["data"]
 
-    ##Create U[j] lists for each node, list the Type#s that have 0 as a value for that ID#
+    # Create U[j] lists for each node, list the Type#s that have 0 as a value for that ID#
     # e.g. {5:[1,2,4,5,6,7,8]}
     Uj = NodesDF.filter(regex='^Type', axis=1)
     Uj_ID = Uj.join(ID, how='right')
     U = {k: [int(i[-1]) for i, v in d.items() if v == 0]
          for k, d in Uj_ID.set_index('ID').to_dict('index').items()}
-    ##The x[j,t] values are = 0 if type can't locate at that node (2)
-    #     for j,t in x:
-    #         if t in U[j]:
-    #             MTMCLP.addConstr(x[j,t], GRB.EQUAL, 0, f'Type {t} Constraint')
+
     # KMC/formulation version
     for j in J:
         MTMCLP.addConstr(quicksum(x[j, t] for t in U[j]), GRB.EQUAL, 0)
-
-    #     #Covering Constraints by Force Package Type  (3)a
-    #     for i,t in y:
-    #         for j in range(1,164):
-    #             MTMCLP.addConstr(x[i,t],GRB.GREATER_EQUAL, y[i,t], f'Covering Constraint{t}')
-
-    #     ##Cov Constraint as in formulation (3)b ##does not prevent demand loc i from being covered 2x
-    #     for i in I:
-    #         for t in T:
-    #             MTMCLP.addConstr(quicksum(x[j,t] for j in J), GRB.GREATER_EQUAL, y[i,t], f'Covering Constraint{t}')
 
     # #Cov Constraint w/o quicksum for j in J (3) #loc i can be covered >1 if by diff FP type (Const 3c)
     for i in I:
         for t in T:
             MTMCLP.addConstr(x[i, t], GRB.GREATER_EQUAL, y[i, t], f'Covering Constraint{i, t}')
 
-    ###Locate Number of Force Packages (4)
-    # P ={1:2,2:2,3:1,4:1,5:1,6:1,7:1,8:1}
-    # P = Directory 1
-    # P ={1:1,2:1,3:4,4:2,5:3,6:4,7:1,8:2}
-    # P = Directory 9
+    # Locate Number of Force Packages (4)
     P = {1: 3, 2: 2, 3: 4, 4: 2, 5: 3, 6: 4, 7: 1, 8: 2}
 
     for t in T:
@@ -267,7 +250,6 @@ def MTMCI_func(NodesDF, timestep, mr):
 
     # write interdicted nodes to text file
     SolutionFP = r'C:\Users\pcbmi\Box\NSF_D-ISN\Code\NarcoLogic\MTMCI_IntNodes\MTMCI_IntNodes.txt'
-    # os.remove(SolutionFP)
 
     with open(SolutionFP, 'w') as q:
         for site in intSites:
