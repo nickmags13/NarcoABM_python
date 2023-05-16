@@ -105,7 +105,8 @@ def data_processing(Tflow, i, mr):
     ActiveLinks.reset_index(drop=True, inplace=True)
 
     # write active links to table; concat w/ each timestep
-    CompActLinksFP = r'C:\Users\pcbmi\Box\NSF_D-ISN\Code\NarcoLogic\TrialResults\CompActLinks.csv'  # this filename will need a MR suffix
+    CompActLinksFP = r'C:\Users\pcbmi\Box\NSF_D-ISN\Code\NarcoLogic\TrialResults\CompActLinks.csv'  # this filename will
+    # need a MR suffix
     if os.path.exists(CompActLinksFP):
         CompActLinks = pd.read_csv(CompActLinksFP)  # drop index
         CompActLinks.drop(CompActLinks.columns[0], axis=1, inplace=True)  # omit this line
