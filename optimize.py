@@ -1,7 +1,5 @@
 """   Interdiction events from optimization model   """
 
-import os
-import glob
 import numpy as np
 
 
