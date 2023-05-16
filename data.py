@@ -1,7 +1,7 @@
 import os
 import time
 import pandas as pd
-from gurobipy import Model
+from gurobipy as gp
 
 
 def data_sourcing():
@@ -176,7 +176,7 @@ def data_processing(Tflow, i, mr):
 
 def MTMCI_func(NodesDF, timestep, mr):
     """Writes Interdicted Nodes as text file."""
-    MTMCLP = Model()
+    MTMCLP = gp.Model()
     MTMCLP.setParam('OutputFlag', 0)
     x = {}
     y = {}
