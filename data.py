@@ -1,7 +1,8 @@
 import os
 import time
 import pandas as pd
-from gurobipy as gp
+import numpy as np
+import gurobipy as gp
 
 
 def data_sourcing():
@@ -187,10 +188,10 @@ def MTMCI_func(NodesDF, timestep, mr):
 
     for j in J:
         for t in T:
-            x[j, t] = MTMCLP.addVar(vtype=GRB.BINARY, name=f'Node{j, t}')
+            x[j, t] = MTMCLP.addVar(vtype=gp.GRB.BINARY, name=f'Node{j, t}')
     for i in I:
         for t in T:
-            y[i, t] = MTMCLP.addVar(vtype=GRB.BINARY, name=f'Demand{i, t}')
+            y[i, t] = MTMCLP.addVar(vtype=gp.GRB.BINARY, name=f'Demand{i, t}')
 
     # Create a[i,t] dictionary
     # make a dataframe with just the ait# and ID field
@@ -219,21 +220,21 @@ def MTMCI_func(NodesDF, timestep, mr):
 
     # KMC/formulation version
     for j in J:
-        MTMCLP.addConstr(quicksum(x[j, t] for t in U[j]), GRB.EQUAL, 0)
+        MTMCLP.addConstr(gp.quicksum(x[j, t] for t in U[j]), gp.GRB.EQUAL, 0)
 
     # #Cov Constraint w/o quicksum for j in J (3) #loc i can be covered >1 if by diff FP type (Const 3c)
     for i in I:
         for t in T:
-            MTMCLP.addConstr(x[i, t], GRB.GREATER_EQUAL, y[i, t], f'Covering Constraint{i, t}')
+            MTMCLP.addConstr(x[i, t], gp.GRB.GREATER_EQUAL, y[i, t], f'Covering Constraint{i, t}')
 
     # Locate Number of Force Packages (4)
     P = {1: 3, 2: 2, 3: 4, 4: 2, 5: 3, 6: 4, 7: 1, 8: 2}
 
     for t in T:
-        MTMCLP.addConstr(quicksum(x[j, t] for j in range(1, 164)), GRB.EQUAL, P[t], f'Type Force Packages{j, t}')
+        MTMCLP.addConstr(gp.quicksum(x[j, t] for j in range(1, 164)), gp.GRB.EQUAL, P[t], f'Type Force Packages{j, t}')
 
     ##Set the Objective Function (1)
-    MTMCLP.setObjective(quicksum(a[i, t] * y[i, t] for i in I for t in T), GRB.MAXIMIZE)
+    MTMCLP.setObjective(gp.quicksum(a[i, t] * y[i, t] for i in I for t in T), gp.GRB.MAXIMIZE)
 
     ##Update
     MTMCLP.update()
