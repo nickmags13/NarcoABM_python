@@ -15,6 +15,9 @@ from intrd_tables_batch import intrd_tables_batch
 from lldistkm import lldistkm
 import scipy
 from data import data_processing, MTMCI_func, data_sourcing
+import warnings
+
+warnings.filterwarnings("ignore")
 
 
 def NarcoLogic(mr, times):
@@ -337,7 +340,9 @@ def NarcoLogic(mr, times):
 
     for m in mr:
         for time in times:
-            MTMCI_func(data_sourcing(), time, m)
+            """ Remove comment after testing"""
+            # MTMCI_func(data_sourcing(), time, m)
+
             intrdct_events, intrdct_nodes = optimize_interdiction_batch(ADJ)
             slevent[:, :, time] = intrdct_events
             slnodes[time].append(intrdct_nodes)
@@ -345,7 +350,6 @@ def NarcoLogic(mr, times):
 
             # Iterate through trafficking nodes
             for n in range(0, nnodes):
-                breakpoint()
                 if len(np.where(ADJ[n, :] == 1)[0]) == 0 or n == endnodeset:
                     continue
 
@@ -354,7 +358,8 @@ def NarcoLogic(mr, times):
                 rtdto = NodeTable.loc[np.where(ADJ[n, :] == 1)[0], 'DTO']
                 if len(np.where(rtdto == 0)[0]) > 0:
                     rtdto[(np.where[rtdto] == 0)[0]] = NodeTable.loc[n, 'DTO']
-                CPCTY[n, np.where(ADJ[n, :] == 1)[0]] = basecap[erun] * rtcap[rtdto, int(np.floor(time / 12)) + 1]
+                breakpoint()
+                CPCTY[n, np.where(ADJ[n, :] == 1)[0]] = basecap[erun] * rtcap[rtdto - 1, int(np.floor(time / 12)) + 1]
                 TOTCPTL[n, time] = TOTCPTL[n, time - 1] + TOTCPTL[n, time]
                 if STOCK[n, time] > 0:
                     if n > 1:
