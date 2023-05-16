@@ -10,11 +10,10 @@ import pandas as pd
 from calc_intrisk import calc_intrisk
 from calc_neival import calc_neival
 from load_expmntl_parms import load_expmntl_parms
-from optimize import optimize_interdiction_batch
+from optimize import optimize_interdiction_batch, optimizeroute_multidto, ismember
 from intrd_tables_batch import intrd_tables_batch
 from lldistkm import lldistkm
 import scipy
-from optimizeroute_multidto import optimizeroute_multidto, ismember
 from data import data_processing, MTMCI_func, data_sourcing
 
 
