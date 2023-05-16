@@ -15,7 +15,7 @@ from intrd_tables_batch import intrd_tables_batch
 from lldistkm import lldistkm
 import scipy
 from optimizeroute_multidto import optimizeroute_multidto, ismember
-from data import data_processing
+from data import data_processing, MTMCI_func, data_sourcing
 
 
 def NarcoLogic(mr, times):
@@ -338,6 +338,7 @@ def NarcoLogic(mr, times):
 
     for m in mr:
         for time in times:
+            MTMCI_func(data_sourcing(), time, m)
             intrdct_events, intrdct_nodes = optimize_interdiction_batch(ADJ)
             slevent[:, :, time] = intrdct_events
             slnodes[time].append(intrdct_nodes)
