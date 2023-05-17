@@ -19,10 +19,11 @@ def optimize_interdiction_batch(ADJ):
 # Top-down supply chain optimization ########
 def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, dtoEdgeTable, dtoSLRISK, dtoADDVAL,
                            dtoCTRANS, losstolval, dtoslsuc):
-    iactiveedges = np.logical_or(np.where(subflow > 0), np.where(dtoslsuc > 0))
+    breakpoint()
+    iactiveedges = np.concatenate((np.where(subflow > 0), np.where(dtoslsuc > 0)), axis=1)
     actrow = iactiveedges[0]
     actcol = iactiveedges[1]
-    edgeparms = np.array([subflow[iactiveedges], dtoSLRISK[iactiveedges], iactiveedges, actrow, actcol])
+    edgeparms = [subflow[iactiveedges], dtoSLRISK[iactiveedges], iactiveedges, actrow, actcol]
 
     if supplyfit < losstolval:  # need to consolidate supply chain
         edgesort = edgeparms[edgeparms[:, 0].argsort()[::-1]]
