@@ -31,13 +31,13 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
         edgesort = edgeparms[edgeparms[:, 1].argsort()[::-1]]
         # primary movement
         iprimary = np.intersect1d(np.where(edgesort[:, 2] == 0)[0], np.where(edgesort[:, 3] != len(dtorefvec) - 1)[0])
-        breakpoint()
         edgecut = np.arange(1, min(round(len(iactiveedges[0]) * (supplyfit / (supplyfit + losstolval))),
                                    len(iactiveedges[0]) - 1))
 
         # Preserve at least one primary movement
         minrisk_primary = np.amin(edgesort[iprimary, 1])
-        ikeep_primary = np.where(edgesort[iprimary, 2] == minrisk_primary)
+        ikeep_primary = np.where(edgesort[iprimary, 1] == minrisk_primary)[0]
+        breakpoint()
         if len(ikeep_primary) == 1:
             edgecut = edgecut[not ismember(edgecut, np.array(
                 [[iprimary[ikeep_primary]], [np.where(edgesort[edgecut, 3] == edgesort[iprimary[ikeep_primary], 4])]]))]
