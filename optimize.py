@@ -32,22 +32,26 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
         # primary movement
         iprimary = list(np.intersect1d(np.where(edgesort[:, 2] == 0)[0],
                                        np.where(edgesort[:, 3] != len(dtorefvec) - 1)[0]))
-        edgecut = np.arange(1, min(round(len(iactiveedges[0]) * (supplyfit / (supplyfit + losstolval))),
-                                   len(iactiveedges[0]) - 1))
+        upper_lim = min(round(len(iactiveedges[0]) * (supplyfit / (supplyfit + losstolval))), len(iactiveedges[0]) - 1)
+        if upper_lim > 0:
+            edgecut = np.arange(1, upper_lim)
+        else:
+            edgecut = []
 
         # Preserve at least one primary movement
         minrisk_primary = np.amin(edgesort[iprimary, 1])
         ikeep_primary = np.where(edgesort[iprimary, 1] == minrisk_primary)[0]
-        breakpoint()
         if len(ikeep_primary) != 1:
             maxprofit_primary = max(edgesort[iprimary[ikeep_primary], 0])
             ikeep_primary = ikeep_primary[edgesort[iprimary[ikeep_primary], 0] == maxprofit_primary]
             if len(ikeep_primary) != 1:
                 ikeep_primary = ikeep_primary[0]
-        edgecut = edgecut[not np.intersect1d(edgecut, [iprimary[ikeep_primary[0]]] +
-                                             list(np.where(edgesort[edgecut, 2] ==
-                                                           edgesort[iprimary[ikeep_primary[0]], 3])[0]))]
 
+        if len(edgecut) > 0:
+            edgecut = edgecut[not np.intersect1d(edgecut, [iprimary[ikeep_primary[0]]] +
+                                                 list(np.where(edgesort[edgecut, 2] ==
+                                                               edgesort[iprimary[ikeep_primary[0]], 3])[0]))]
+        breakpoint()
         # remove highest risk edges
         for j in range(0, len(edgecut)):
             icheckroute = np.where(subflow(edgesort[edgecut[j], 3], ismember(dtorefvec, dtoEdgeTable['EndNodes'][
