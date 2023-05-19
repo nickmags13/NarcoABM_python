@@ -24,8 +24,9 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
     actcol = iactiveedges[1]
     edgeparms = []
     for edge in range(len(iactiveedges[0])):
-        edgeparms.append(np.array([subflow[iactiveedges[0][edge], iactiveedges[1][edge]], dtoSLRISK[iactiveedges[0][edge],
-        iactiveedges[1][edge]], iactiveedges[0][edge], iactiveedges[1][edge]]))
+        edgeparms.append(np.array([subflow[iactiveedges[0][edge], iactiveedges[1][edge]],
+                                   dtoSLRISK[iactiveedges[0][edge], iactiveedges[1][edge]], iactiveedges[0][edge],
+                                   iactiveedges[1][edge]]))
     edgeparms = np.array(edgeparms)
 
     breakpoint()
