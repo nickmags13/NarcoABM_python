@@ -39,22 +39,14 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
         minrisk_primary = np.amin(edgesort[iprimary, 1])
         ikeep_primary = np.where(edgesort[iprimary, 1] == minrisk_primary)[0]
         breakpoint()
-        if len(ikeep_primary) == 1:
-            edgecut = edgecut[not np.intersect1d(edgecut, [iprimary[ikeep_primary[0]]] +
-                                                 list(np.where(edgesort[edgecut, 2] ==
-                                                               edgesort[iprimary[ikeep_primary[0]], 3])[0]))]
-        else:
+        if len(ikeep_primary) != 1:
             maxprofit_primary = max(edgesort[iprimary[ikeep_primary], 0])
             ikeep_primary = ikeep_primary[edgesort[iprimary[ikeep_primary], 0] == maxprofit_primary]
-            if len(ikeep_primary) == 1:
-                edgecut = edgecut[not np.intersect1d(edgecut, [iprimary[ikeep_primary[0]]] +
-                                                     list(np.where(edgesort[edgecut, 2] ==
-                                                                   edgesort[iprimary[ikeep_primary[0]], 3])[0]))]
-            else:
+            if len(ikeep_primary) != 1:
                 ikeep_primary = ikeep_primary[0]
-                edgecut = edgecut[not np.intersect1d(edgecut, [iprimary[ikeep_primary[0]]] +
-                                                     list(np.where(edgesort[edgecut, 2] ==
-                                                                   edgesort[iprimary[ikeep_primary[0]], 3])[0]))]
+        edgecut = edgecut[not np.intersect1d(edgecut, [iprimary[ikeep_primary[0]]] +
+                                             list(np.where(edgesort[edgecut, 2] ==
+                                                           edgesort[iprimary[ikeep_primary[0]], 3])[0]))]
 
         # remove highest risk edges
         for j in range(0, len(edgecut)):
