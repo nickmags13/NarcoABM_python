@@ -34,7 +34,7 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
                                        np.where(edgesort[:, 3] != len(dtorefvec) - 1)[0]))
         upper_lim = min(round(len(iactiveedges[0]) * (supplyfit / (supplyfit + losstolval))), len(iactiveedges[0]) - 1)
         if upper_lim > 0:
-            edgecut = np.arange(1, upper_lim)
+            edgecut = np.arange(0, upper_lim)
         else:
             edgecut = []
 
