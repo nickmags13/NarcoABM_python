@@ -40,19 +40,19 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
         breakpoint()
         if len(ikeep_primary) == 1:
             edgecut = edgecut[not ismember(edgecut, np.array(
-                [[iprimary[ikeep_primary]], [np.where(edgesort[edgecut, 3] == edgesort[iprimary[ikeep_primary], 4])]]))]
+                [iprimary[ikeep_primary], np.where(edgesort[edgecut, 2] == edgesort[iprimary[ikeep_primary], 3])]))]
         else:
-            maxprofit_primary = np.amax(edgesort[iprimary[ikeep_primary], 1])
-            ikeep_primary = ikeep_primary[edgesort[iprimary[ikeep_primary], 1] == maxprofit_primary]
+            maxprofit_primary = max(edgesort[iprimary[ikeep_primary], 0])
+            ikeep_primary = ikeep_primary[edgesort[iprimary[ikeep_primary], 0] == maxprofit_primary]
             if len(ikeep_primary) == 1:
                 edgecut = edgecut[not ismember(edgecut, np.array([[iprimary[ikeep_primary]],
-                                                                  [np.where(edgesort[edgecut, 3] == edgesort[
-                                                                      iprimary[ikeep_primary], 5])]]))]
+                                                                  [np.where(edgesort[edgecut, 2] == edgesort[
+                                                                      iprimary[ikeep_primary], 3])]]))]
             else:
-                ikeep_primary = ikeep_primary[1]
+                ikeep_primary = ikeep_primary[0]
                 edgecut = edgecut[not ismember(edgecut, np.array([[iprimary[ikeep_primary]],
-                                                                  [np.where(edgesort[edgecut, 4] == edgesort[
-                                                                      iprimary[ikeep_primary], 5])]]))]
+                                                                  [np.where(edgesort[edgecut, 2] == edgesort[
+                                                                      iprimary[ikeep_primary], 3])]]))]
 
         # remove highest risk edges
         for j in range(0, len(edgecut)):
