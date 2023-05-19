@@ -20,8 +20,6 @@ def optimize_interdiction_batch(ADJ):
 def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, dtoEdgeTable, dtoSLRISK, dtoADDVAL,
                            dtoCTRANS, losstolval, dtoslsuc):
     iactiveedges = np.concatenate((np.where(subflow > 0), np.where(dtoslsuc > 0)), axis=1)
-    actrow = iactiveedges[0]
-    actcol = iactiveedges[1]
     edgeparms = []
     for edge in range(len(iactiveedges[0])):
         edgeparms.append(np.array([subflow[iactiveedges[0][edge], iactiveedges[1][edge]],
