@@ -64,12 +64,13 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
             checknoderoutes = (
                     len(actroutes[icheckroute]) == len(np.where(edgesort[edgecut, 3] == edgesort[edgecut[j], 3])))
             if checknoderoutes:
-                cutsenders = np.where(ismember(dtorefvec, dtoEdgeTable['EndNodes'](dtoEdgeTable['EndNodes'].str[1] ==
-                                                                                   dtorefvec[edgesort[edgecut[j], 3]],
-                                                                                   1)) == 1)
-                """ CHECK the calculation below"""
-                cutind = [cutsenders, edgesort[edgecut[j], 4] * np.ones((len(cutsenders), 1))]
-                subroutepref[cutind] = 0
+                cutsenders = np.where(dtorefvec[np.in1d(dtorefvec,
+                                                        dtoEdgeTable['EndNodes'].str[0]
+                                                        [np.where(dtoEdgeTable['EndNodes'].str[1] ==
+                                                                  dtorefvec[edgesort[edgecut[j], 3]])[0]])]
+                                      == 1)
+                for i in range(len(cutsenders)):
+                    subroutepref[cutsenders[i], edgesort[edgecut[j], 3]] = 0
 
             if len(icheckroute) == 1:
                 subroutepref[edgesort[edgecut[j], 2]] = 0
