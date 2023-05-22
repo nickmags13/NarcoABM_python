@@ -100,8 +100,9 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
                     continue
                 ipotedge = [potsenders[k] * np.ones((len(ipotreceive), 1)),
                             np.where(ismember(dtorefvec, potnodes[ipotreceive]) == 1)]
-                newedgeparms = np.array([[newedgeparms], [(dtoADDVAL[ipotedge] - dtoCTRANS[ipotedge]),
-                                                          dtoSLRISK[ipotedge], ipotedge, ipotreceive]])
+                for i in range(len(ipotedge[0])):
+                    newedgeparms.append([(dtoADDVAL[ipotedge[i]] - dtoCTRANS[ipotedge[i]]), dtoSLRISK[ipotedge[i]], ipotedge[i], ipotreceive[i]])
+                newedgeparms = np.array(newedgeparms)
                 edgesort = newedgeparms[newedgeparms[:, 1].argsort()[::-1]]
                 subroutepref[edgesort[edgeadd, 2]] = 1
                 ireceivers = dtoEdgeTable.loc[dtoEdgeTable['EndNodes'].str[0][np.in1d(dtoEdgeTable['EndNodes'].str[0],
