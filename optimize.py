@@ -48,9 +48,9 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
                 ikeep_primary = ikeep_primary[0]
 
         if len(edgecut) > 0:
-            edgecut = edgecut[not np.intersect1d(edgecut, [iprimary[ikeep_primary[0]]] +
-                                                 list(np.where(edgesort[edgecut, 2] ==
-                                                               edgesort[iprimary[ikeep_primary[0]], 3])[0]))]
+            edgecut = np.delete(edgecut, np.intersect1d(edgecut, [iprimary[ikeep_primary[0]]] +
+                                                        list(np.where(edgesort[edgecut, 2] ==
+                                                                      edgesort[iprimary[ikeep_primary[0]], 3])[0])))
         breakpoint()
         # remove highest risk edges
         for j in range(0, len(edgecut)):
