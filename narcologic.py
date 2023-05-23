@@ -607,3 +607,9 @@ def ismember(a, b):
         if elt not in bind:
             bind[elt] = i
     return [bind.get(itm, None) for itm in a]
+
+
+if __name__ == "__main__":
+    mr = range(0, 31)
+    times = range(1, 180)
+    main(mr, times)
