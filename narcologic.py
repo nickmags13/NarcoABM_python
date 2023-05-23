@@ -356,7 +356,8 @@ def main(mr, times):
                 if len(np.where(rtdto == 0)[0]) > 0:
                     rtdto[(np.where[rtdto] == 0)[0]] = NodeTable.loc[n, 'DTO']
                 breakpoint()
-                CPCTY[n, np.where(ADJ[n, :] == 1)[0]] = basecap[0, erun] * rtcap[rtdto - 1, int(np.floor(time / 12)) + 1]
+                CPCTY[n, np.where(ADJ[n, :] == 1)[0]] = basecap[0, erun] * rtcap[
+                    rtdto - 1, int(np.floor(time / 12)) + 1]
                 TOTCPTL[n, time] = TOTCPTL[n, time - 1] + TOTCPTL[n, time]
                 if STOCK[n, time] > 0:
                     if n > 0:
@@ -519,12 +520,12 @@ def main(mr, times):
             # Calculate updated marginal profit
             for q in range(0, nnodes):
                 if len(np.where(ADJ[q, :] == 1)) == 0:
-                    margval[q, q + 1: nnodes, time] = PRICE[q + 1: nnodes, time]-PRICE[q, time]
+                    margval[q, q + 1: nnodes, time] = PRICE[q + 1: nnodes, time] - PRICE[q, time]
 
             # Route Optimization ###########
             for dt in range(0, ndto):
                 idto = np.where(NodeTable['DTO'] == dt)
-                DTOBDGT[dt, time] = np.sum(np.multiply(STOCK[endnodeset, time], PRICE[endnodeset, time])) # total DTO
+                DTOBDGT[dt, time] = np.sum(np.multiply(STOCK[endnodeset, time], PRICE[endnodeset, time]))  # total DTO
                 # funds for expansion/viability
                 dtorefvec = np.array([[1], [idto], [mexnode]])
                 subnnodes = len(idto)
@@ -543,7 +544,7 @@ def main(mr, times):
                 icol = indices[1]
                 sendedge = ismember(EdgeTable['EndNodes'].str[0], dtorefvec)
                 dtoEdgeTable = EdgeTable.loc[:, 'sendedge']
-                dtoEdgeTable = dtoEdgeTable[ismember(dtoEdgeTable['EndNodes'].str[1], dtorefvec),:]
+                dtoEdgeTable = dtoEdgeTable[ismember(dtoEdgeTable['EndNodes'].str[1], dtorefvec), :]
                 dtoSLRISK = SLRISK[dtorefvec, dtorefvec]
                 dtoADDVAL = margval[dtorefvec, dtorefvec, time]
                 dtoCTRANS = CTRANS[dtorefvec, dtorefvec, time]
@@ -554,15 +555,15 @@ def main(mr, times):
                 nrow = ipossl[0]
                 ncol = ipossl[1]
                 flowvalues = np.multiply(allflows[allflows > 0], (
-                            (PRICE[dtorefvec[ncol], time] - PRICE[dtorefvec[irow], time]) - dtoCTRANS[allflows > 0]))
+                        (PRICE[dtorefvec[ncol], time] - PRICE[dtorefvec[irow], time]) - dtoCTRANS[allflows > 0]))
                 supplyfit = np.sum(np.multiply(dtoslsuc[ipossl], (
-                            (PRICE[dtorefvec[ncol], time] - PRICE[dtorefvec[nrow], time]) - dtoCTRANS[ipossl])))
+                        (PRICE[dtorefvec[ncol], time] - PRICE[dtorefvec[nrow], time]) - dtoCTRANS[ipossl])))
                 losstolval = losstol * np.amax(flowvalues)
                 if len(np.where(supplyfit != 0)) == 0 and len(np.where(losstolval != 0)) == 0:
                     supplyfit = 0.1
 
                 # Route capacity constrains flow volumes, need to expand routes
-                idtonet = dtorefvec[not ismember(dtorefvec, endnodeset)]
+                idtonet = np.delete(dtorefvec, dtorefvec[np.in1d(dtorefvec, endnodeset)])
 
                 if np.sum(STOCK[idtonet, time]) >= np.amax(dtoEdgeTable['Capacity']):
                     supplyfit = np.amax(supplyfit, losstolval * np.sum(STOCK[idtonet, time]) / rtcap[erun])
@@ -582,17 +583,17 @@ def main(mr, times):
             PRICE[:, time + 1] = PRICE[:, time]
 
             if growthmdl[erun] == 1:
-                STOCK[0, time] = stock_0 + (prodgrow[erun] * np.ceil((time - TSTART) / 12)) # additional production to
+                STOCK[0, time] = stock_0 + (prodgrow[erun] * np.ceil((time - TSTART) / 12))  # additional production to
                 # enter network next time step
             elif growthmdl[erun] == 2:
                 STOCK[0, time] = (stock_max * stock_0 * np.exp(prodgrow[erun] * int(np.floor(time / 12)))) / (
-                            stock_max + stock_0 * (np.exp(prodgrow[erun] * int(np.floor(time / 12))) - 1))
+                        stock_max + stock_0 * (np.exp(prodgrow[erun] * int(np.floor(time / 12))) - 1))
 
-            STOCK[endnodeset, time+1] = 0
+            STOCK[endnodeset, time + 1] = 0
             NodeTable.loc[1, 'Stock'] = STOCK[1, time + 1]
             NodeTable[endnodeset, 'Stock'] = 0
             slcount_edges[time] = len(np.where(slsuccess[:, :, time] > 0))
-            h_slsuccess = slsuccess[:,:, time]
+            h_slsuccess = slsuccess[:, :, time]
             slcount_vol[time] = np.sum(h_slsuccess[h_slsuccess > 0])
 
             # Output tables for flows(t) and interdiction prob(t-1)
