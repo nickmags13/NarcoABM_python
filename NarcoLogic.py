@@ -7,7 +7,7 @@ Function for initializing and executing NarcoLogic dynamics from Python
 
 import numpy as np
 import pandas as pd
-from calc_intrisk import calc_intrisk
+from calc import calc_intrisk
 from calc_neival import calc_neival
 from load_expmntl_parms import load_expmntl_parms
 from optimize import optimize_interdiction_batch, optimizeroute_multidto
