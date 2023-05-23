@@ -117,9 +117,7 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
                 subroutepref[send_row, rec_col] = 1
                 subroutepref[rec_col, len(dtorefvec)] = 1
 
-    newroutepref = subroutepref
-
-    return newroutepref
+    return subroutepref
 
 
 def ismember(a, b):
