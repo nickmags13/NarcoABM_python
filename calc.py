@@ -5,13 +5,11 @@ def calc_intrisk(sloccur, t_eff, alpharisk, betarisk, timeweight):
     slevnt = np.sum(np.multiply(sloccur, np.tile(np.transpose(np.power(timeweight, t_eff)), (1, len(sloccur[1, :])))),
                     0, keepdims=True)  # make sure to load t_eff as 2D array in order for this to work properly
     tmevnt = np.sum(np.power(timeweight, t_eff))
-    sl_risk = (slevnt + alpharisk) / (tmevnt + alpharisk + betarisk)  # Check for ./ in python and
-    # / equivalent to np.divide
+    sl_risk = (slevnt + alpharisk) / (tmevnt + alpharisk + betarisk)
     return sl_risk, slevnt, tmevnt
 
 
-def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei, cutflag, totcpcty, totstock,
-                edgechange):
+def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei, cutflag, totcpcty, totstock, edgechange):
     pay_noevent = np.zeros((c_trans.shape[1], 1))  # len in numpy defaults to 1st dimension and shape provides a tuple
     pay_event = np.zeros((c_trans.shape[1], 1))
     xpay_noevent = np.zeros((c_trans.shape[1], 1))
@@ -32,8 +30,8 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei, cutflag, to
 
     for i in np.arange(0, c_trans.shape[1]):
         pay_noevent[i, 0] = y_node[i, 0] * q_node[0, i] - c_trans[0, i] * q_node[0, i]  # payoff with no S&L event
-        pay_event[i, 0] = y_node[i, 0] * q_node[0, i] - c_trans[0, i] * q_node[0, i] - y_node[i, 0] * q_node[
-            0, i]  # payoff with S&L event
+        pay_event[i, 0] = y_node[i, 0] * q_node[0, i] - c_trans[0, i] * q_node[0, i] - y_node[i, 0] * \
+                          q_node[0, i]  # payoff with S&L event
         xpay_noevent[i, 0] = pay_noevent[i, 0]  # payoff for route A with no S&L event
         xpay_event[i, 0] = pay_event[i, 0]  # payoff for route A with S&L event
 
