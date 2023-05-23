@@ -10,7 +10,7 @@ import pandas as pd
 from calc_intrisk import calc_intrisk
 from calc_neival import calc_neival
 from load_expmntl_parms import load_expmntl_parms
-from optimize import optimize_interdiction_batch, optimizeroute_multidto, ismember
+from optimize import optimize_interdiction_batch, optimizeroute_multidto
 from intrd_tables_batch import intrd_tables_batch
 from lldistkm import lldistkm
 import scipy
@@ -602,3 +602,11 @@ def NarcoLogic(mr, times):
             Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, m,
                                                batchrun)
             data_processing(Tflow, time, m)
+
+
+def ismember(a, b):
+    bind = {}
+    for i, elt in enumerate(b):
+        if elt not in bind:
+            bind[elt] = i
+    return [bind.get(itm, None) for itm in a]

@@ -118,11 +118,3 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
                 subroutepref[rec_col, len(dtorefvec)] = 1
 
     return subroutepref
-
-
-def ismember(a, b):
-    bind = {}
-    for i, elt in enumerate(b):
-        if elt not in bind:
-            bind[elt] = i
-    return [bind.get(itm, None) for itm in a]
