@@ -17,7 +17,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
-def NarcoLogic(mr, times):
+def main(mr, times):
     # Ignore divide by zero runtime warning
     np.seterr(divide='ignore')
 
