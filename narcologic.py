@@ -333,7 +333,7 @@ def main(mr, times):
     for w in range(0, len(rinit)):
         MOV[rinit[w], cinit[w], 1] = FLOW[rinit[w], cinit[w], 1]
 
-    Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, mrun, batchrun)
+    Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, erun, mrun)
 
     for m in mr:
         for time in times:
@@ -596,8 +596,7 @@ def main(mr, times):
             slcount_vol[time] = np.sum(h_slsuccess[h_slsuccess > 0])
 
             # Output tables for flows(t) and interdiction prob(t-1)
-            Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, m,
-                                               batchrun)
+            Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, erun, m)
             data_processing(Tflow, time, m)
 
 

@@ -62,7 +62,7 @@ def load_expmntl_parms(ERUNS):
 
 
 # Interdiction Initialization #
-def intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, testflag, erun, mrun, batchrun):
+def intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, erun, mrun):
     Tflow = pd.DataFrame(columns=['End_Node', 'Start_Node', 'IntitFlow', 'DTO'], index=range(1, EdgeTable.shape[0]+1),
                          dtype=float)
     startFLOW = np.add(FLOW[:, :, t-1], slsuccess[:, :, t-1])
