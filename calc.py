@@ -10,7 +10,7 @@ def calc_intrisk(sloccur, t_eff, alpharisk, betarisk, timeweight):
     return sl_risk, slevnt, tmevnt
 
 
-def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, profmdl, cutflag, totcpcty, totstock,
+def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei, cutflag, totcpcty, totstock,
                 edgechange):
     pay_noevent = np.zeros((c_trans.shape[1], 1))  # len in numpy defaults to 1st dimension and shape provides a tuple
     pay_event = np.zeros((c_trans.shape[1], 1))
@@ -100,8 +100,8 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk, dtonei, pr
 
     return neipick, neivalue, valuex
 
-def lldistkm(latlon1, latlon2):
 
+def lldistkm(latlon1, latlon2):
     radius = 6371
     lat1 = latlon1[:, 0] * np.pi / 180
     lat2 = latlon2[:, 0] * np.pi / 180

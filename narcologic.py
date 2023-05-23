@@ -399,8 +399,8 @@ def main(mr, times):
                     profmdl = profitmodel[erun]
                     cutflag = dtocutflag[np.unique(dtonei[np.where(dtonei != 0)])]
 
-                    neipick, neivalue, valuex = calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, tslrisk,
-                                                            dtonei, profmdl, cutflag, totcpcty, totstock, edgechange)
+                    neipick, neivalue, valuex = calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei,
+                                                            cutflag, totcpcty, totstock, edgechange)
 
                     # With top-down route optimization
                     inei = inei[neipick]
