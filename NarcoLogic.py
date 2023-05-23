@@ -14,7 +14,7 @@ from optimize import optimize_interdiction_batch, optimizeroute_multidto
 from intrd_tables_batch import intrd_tables_batch
 from lldistkm import lldistkm
 import scipy
-from data import data_processing, MTMCI_func, data_sourcing
+from data import data_processing
 import warnings
 
 warnings.filterwarnings("ignore")
