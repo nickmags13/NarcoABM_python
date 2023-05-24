@@ -83,14 +83,14 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
     elif supplyfit >= losstolval:  # need to expand supply chain
         potnodes = np.delete(dtorefvec, np.in1d(dtorefvec, np.concatenate(([1], dtorefvec[np.int_(
             np.unique(edgeparms[:, 2:4]))].flatten())))).reshape(-1, 1)
-        breakpoint()
         edgeadd = np.arange(0, min(max(math.ceil(supplyfit / losstolval), 1), min(expmax, len(potnodes))))
 
         if len(np.where(potnodes)[0]) == 0:
             pass
         else:
+            breakpoint()
             newedgeparms = []
-            potsenders = np.unique(edgeparms[:, 3:5])  # dto node index
+            potsenders = np.unique(edgeparms[:, 2:4])  # dto node index
             potsenders = potsenders[potsenders != len(dtorefvec)]
             for k in range(0, len(potsenders)):
                 ipotreceive = np.where(potnodes[np.in1d(potnodes,
