@@ -92,10 +92,11 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
             potsenders = np.int_(np.unique(edgeparms[:, 2:4]))  # dto node index
             potsenders = potsenders[potsenders != len(dtorefvec)]
             for k in range(0, len(potsenders)):
+                ipotreceive = np.where(np.in1d(potnodes,
+                                               dtoEdgeTable['EndNodes'].str[1][np.where(dtoEdgeTable['EndNodes'].str[0]
+                                                                                        == dtorefvec[potsenders[k], 0])
+                                               [0]]) == 1)[0]
                 breakpoint()
-                ipotreceive = np.where(np.in1d(potnodes, dtoEdgeTable['EndNodes'].str[1]
-                                                        [np.where(dtoEdgeTable['EndNodes'].str[0] ==
-                                                                  dtorefvec[potsenders[k], 0])[0]]) == 1)[0]
                 if len(np.where(ipotreceive)[0]) == 0:
                     continue
                 ipotedge_col = np.where(dtorefvec[np.in1d(dtorefvec, potnodes[ipotreceive])] == 1)[0]
@@ -108,7 +109,7 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
                 subroutepref[edgesort[edgeadd, 2]] = 1
                 ireceivers = dtoEdgeTable.loc[dtoEdgeTable['EndNodes'].str[0][np.in1d(dtoEdgeTable['EndNodes'].str[0],
                                                                                       dtorefvec[edgesort[edgeadd, 3]])]
-                                              , 'EndNodes']
+                , 'EndNodes']
                 send_row = []
                 rec_col = []
                 for jj in range(0, len(ireceivers[:, 0])):
