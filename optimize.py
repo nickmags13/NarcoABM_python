@@ -51,7 +51,7 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
             edgecut = np.delete(edgecut, np.intersect1d(edgecut, [iprimary[ikeep_primary[0]]] +
                                                         list(np.where(edgesort[edgecut, 2] ==
                                                                       edgesort[iprimary[ikeep_primary[0]], 3])[0])))
-        breakpoint()
+
         # remove highest risk edges
         for j in range(0, len(edgecut)):
             icheckroute = np.where(subflow(edgesort[edgecut[j], 3],
@@ -80,8 +80,9 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
                 subroutepref[edgesort[edgecut[j], 2]] = 0
 
     elif supplyfit >= losstolval:  # need to expand supply chain
-        potnodes = np.delete(dtorefvec, dtorefvec[np.in1d(dtorefvec,
-                                                          np.array([[1], [dtorefvec[np.unique(edgeparms[:, 3:5])]]]))])
+        breakpoint()
+        potnodes = np.delete(dtorefvec, np.in1d(dtorefvec, np.concatenate(([1], dtorefvec[np.int_(
+            np.unique(edgeparms[:, 2:4]))].flatten()))))
         edgeadd = np.arange(0, np.amin(np.amax(np.ceil(supplyfit / losstolval), 1), np.amin(expmax, len(potnodes))))
 
         if len(np.where(potnodes)[0]) == 0:
