@@ -571,7 +571,7 @@ def main(mr, times):
                 # call top-down route optimization
                 expmax = expandmax[erun]
 
-                newroutepref, newedgechange = optimizeroute_multidto(dtorefvec, allflows, subflow, supplyfit, expmax,
+                newroutepref, newedgechange = optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax,
                                                                      subroutepref, dtoEdgeTable, dtoSLRISK, dtoADDVAL,
                                                                      dtoCTRANS, losstolval, dtoslsuc)
 
