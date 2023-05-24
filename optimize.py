@@ -1,6 +1,7 @@
 """   Interdiction events from optimization model   """
 
 import numpy as np
+import math
 
 
 def optimize_interdiction_batch(ADJ):
@@ -80,10 +81,10 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
                 subroutepref[edgesort[edgecut[j], 2]] = 0
 
     elif supplyfit >= losstolval:  # need to expand supply chain
-        breakpoint()
         potnodes = np.delete(dtorefvec, np.in1d(dtorefvec, np.concatenate(([1], dtorefvec[np.int_(
-            np.unique(edgeparms[:, 2:4]))].flatten()))))
-        edgeadd = np.arange(0, np.amin(np.amax(np.ceil(supplyfit / losstolval), 1), np.amin(expmax, len(potnodes))))
+            np.unique(edgeparms[:, 2:4]))].flatten())))).reshape(-1, 1)
+        breakpoint()
+        edgeadd = np.arange(0, min(max(math.ceil(supplyfit / losstolval), 1), min(expmax, len(potnodes))))
 
         if len(np.where(potnodes)[0]) == 0:
             pass
