@@ -113,11 +113,10 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
             ireceivers = np.array(ireceivers)
             send_row = []
             rec_col = []
-            breakpoint()
             for jj in range(0, len(ireceivers[:, 0])):
                 send_row = np.append(send_row, np.where(np.in1d(dtorefvec, ireceivers[jj, 0]) == 1)[0])
                 rec_col = np.append(rec_col, np.where(np.in1d(dtorefvec, ireceivers[jj, 1]) == 1)[0])
-            breakpoint()
+
             subroutepref[np.int_(send_row), np.int_(rec_col)] = 1
             subroutepref[np.int_(rec_col), len(dtorefvec)] = 1
 
