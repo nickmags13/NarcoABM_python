@@ -108,11 +108,12 @@ def optimizeroute_multidto(dtorefvec, subflow, supplyfit, expmax, subroutepref, 
             newedgeparms = np.array(newedgeparms)
             edgesort = newedgeparms[newedgeparms[:, 0].argsort()[::-1]]
             subroutepref[np.int_(edgesort[edgeadd, 2]), np.int_(edgesort[edgeadd, 3])] = 1
-            breakpoint()
-            ireceivers = dtoEdgeTable.loc[dtoEdgeTable['EndNodes'].str[0][np.in1d(
-                dtoEdgeTable['EndNodes'].str[0], dtorefvec[np.int_(edgesort[edgeadd, 3])])], 'EndNodes']
+            rows = np.in1d(dtoEdgeTable['EndNodes'].str[0], dtorefvec[np.int_(edgesort[edgeadd, 3])])
+            ireceivers = [dtoEdgeTable.loc[row, 'EndNodes'] for row in range(len(rows)) if rows[row]]
+            ireceivers = np.array(ireceivers)
             send_row = []
             rec_col = []
+            breakpoint()
             for jj in range(0, len(ireceivers[:, 0])):
                 send_row = np.array([[send_row], [np.where(dtorefvec[np.in1d(dtorefvec, ireceivers[jj, 0])] == 1)]])
                 rec_col = np.array([[rec_col], [np.where(dtorefvec[np.in1d(dtorefvec, ireceivers[jj, 1])] == 1)]])
