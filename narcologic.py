@@ -364,19 +364,18 @@ def main(mr, times):
                         STOCK[n, time] = STOCK[n, time] - LEAK[n, time]
                     elif n == 0:
                         inei = np.intersect1d(np.where(ADJ[n, :] == 1), np.where(routepref[n, :, time] > 0))
-                        breakpoint()
                         for nd in range(0, len(np.unique(NodeTable.loc[1:nnodes, 'DTO']))):
                             if len(np.where(NodeTable.loc[inei, 'DTO'] == nd)) == 0:
-                                idtombr = np.where(NodeTable['DTO'] == nd)
-                                subinei = np.logical_and(np.where(ADJ[n, idtombr] == 1),
-                                                         np.where(routepref[n, idtombr, time] > 0))
+                                idtombr = np.where(NodeTable['DTO'] == nd)[0]
+                                subinei = np.intersect1d(np.where(ADJ[n, idtombr] == 1)[0],
+                                                         np.where(routepref[n, idtombr, time] > 0)[0])
                                 if len(subinei) == 0:
                                     subinei = np.logical_and(np.where(ADJ[n, idtombr] == 1),
                                                              np.where(routepref[n, idtombr, time] ==
                                                                       np.max(routepref[n, idtombr, time])))
-                                inei.append(subinei)
+                                np.append(inei, subinei)
                     else:
-                        inei = np.logical_and(np.where(ADJ[n, :] == 1), np.where(routepref[n, :, time] > 0))
+                        inei = np.intersect1d(np.where(ADJ[n, :] == 1), np.where(routepref[n, :, time] > 0))
                         """ CHECK ismember() function for 2D arrays"""
                         inei = inei[ismember(inei, np.array(
                             [np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO']), [np.transpose(endnodeset)]]))]
@@ -385,7 +384,7 @@ def main(mr, times):
                                                   np.where(routepref[n, :, time] == np.max(routepref[n, :, time])))
                             inei = inei[ismember(inei, np.array([np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO']),
                                                                  [np.transpose(endnodeset)]]))]
-
+                    breakpoint()
                     # Procedure for selecting routes based on expected profit #
                     c_trans = CTRANS[n, inei, time]
                     p_sl = SLRISK[n, inei]
