@@ -363,8 +363,7 @@ def main(mr, times):
                         LEAK[n, time] = nodeloss * STOCK[n, time]
                         STOCK[n, time] = STOCK[n, time] - LEAK[n, time]
                     elif n == 0:
-                        inei = np.intersect1d(np.where(ADJ[n, :] == 1),
-                                              np.where(routepref[n, :, time] > 0)).reshape(1, -1)
+                        inei = np.intersect1d(np.where(ADJ[n, :] == 1), np.where(routepref[n, :, time] > 0))
                         breakpoint()
                         for nd in range(0, len(np.unique(NodeTable.loc[1:nnodes, 'DTO']))):
                             if len(np.where(NodeTable.loc[inei, 'DTO'] == nd)) == 0:
