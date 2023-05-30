@@ -81,7 +81,7 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei, cutflag, to
                 subicut = []
             icut = np.concatenate((icut, idto[subicut]), axis=0)
     else:
-        if np.where(valuex > 0).size == 0:
+        if np.where(valuex > 0)[0].size == 0:
             icut = np.transpose(np.arange(0, np.where(np.cumsum(rankroute[:, 5]) >= totstock)[0][0]))
         elif np.where(rankroute[:, 0] > 0)[0].size == 0:
             volcut = np.transpose(np.arange(0, np.where(np.cumsum(rankroute[:, 5]) >= totstock)[0][0]))
