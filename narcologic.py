@@ -393,9 +393,9 @@ def main(mr, times):
                     lccf = ltcoeff[n, 0]
                     totstock = STOCK[n, time]
                     totcpcty = CPCTY[n, inei]
-                    breakpoint()
                     rtpref = routepref[n, inei, time]
-                    dtonei = NodeTable.loc[inei, 'DTO']
+                    dtonei = NodeTable.loc[inei, 'DTO'].to_numpy()
+                    breakpoint()
                     cutflag = dtocutflag[np.unique(dtonei[np.where(dtonei != 0)])]
 
                     neipick, neivalue, valuex = calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei,
