@@ -386,7 +386,7 @@ def main(mr, times):
                                                                 , endnodeset))]
 
                     # Procedure for selecting routes based on expected profit #
-                    c_trans = CTRANS[n, inei, time]
+                    c_trans = CTRANS[n, inei, time].reshape(1, -1)
                     p_sl = SLRISK[n, inei]
                     y_node = PRICE[inei, time] - PRICE[n, time]
                     q_node = np.minimum(STOCK[n, time] / len(inei), CPCTY[n, inei])
@@ -395,9 +395,10 @@ def main(mr, times):
                     totcpcty = CPCTY[n, inei]
                     rtpref = routepref[n, inei, time]
                     dtonei = NodeTable.loc[inei, 'DTO'].to_numpy()
-                    breakpoint()
+                    """ Remove below line after testing """
+                    dtonei -= 1
                     cutflag = dtocutflag[np.unique(dtonei[np.where(dtonei != 0)])]
-
+                    breakpoint()
                     neipick, neivalue, valuex = calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei,
                                                             cutflag, totcpcty, totstock, edgechange)
 
