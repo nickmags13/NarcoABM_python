@@ -391,7 +391,7 @@ def main(mr, times):
                     y_node = PRICE[inei, time] - PRICE[n, time]
                     breakpoint()
                     q_node = np.minimum(STOCK[n, time] / len(inei), CPCTY[n, inei])
-                    lccf = ltcoeff[n]
+                    lccf = ltcoeff[n, 0]
                     totstock = STOCK[n, time]
                     totcpcty = CPCTY[n, inei]
                     tslrisk = totslrisk[time]
