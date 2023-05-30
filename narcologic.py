@@ -389,15 +389,13 @@ def main(mr, times):
                     c_trans = CTRANS[n, inei, time]
                     p_sl = SLRISK[n, inei]
                     y_node = PRICE[inei, time] - PRICE[n, time]
-                    breakpoint()
                     q_node = np.minimum(STOCK[n, time] / len(inei), CPCTY[n, inei])
                     lccf = ltcoeff[n, 0]
                     totstock = STOCK[n, time]
                     totcpcty = CPCTY[n, inei]
-                    tslrisk = totslrisk[time]
+                    breakpoint()
                     rtpref = routepref[n, inei, time]
                     dtonei = NodeTable.loc[inei, 'DTO']
-                    profmdl = profitmodel[erun]
                     cutflag = dtocutflag[np.unique(dtonei[np.where(dtonei != 0)])]
 
                     neipick, neivalue, valuex = calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei,
