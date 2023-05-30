@@ -379,11 +379,11 @@ def main(mr, times):
                         """ CHECK ismember() function for 2D arrays"""
                         inei = inei[np.isin(inei, np.append(np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO'])[0],
                                                             endnodeset))]
-                        if len(np.where(inei, 1)) == 0:
+                        if len(np.where(inei != 0)[0]) == 0:
                             inei = np.intersect1d(np.where(ADJ[n, :] == 1),
                                                   np.where(routepref[n, :, time] == np.max(routepref[n, :, time])))
-                            inei = inei[ismember(inei, np.array([np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO']),
-                                                                 [np.transpose(endnodeset)]]))]
+                            inei = inei[np.isin(inei, np.append(np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO'])[0],
+                                                            endnodeset))]
                     breakpoint()
                     # Procedure for selecting routes based on expected profit #
                     c_trans = CTRANS[n, inei, time]
