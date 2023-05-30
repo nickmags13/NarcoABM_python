@@ -384,12 +384,13 @@ def main(mr, times):
                                                   np.where(routepref[n, :, time] == np.max(routepref[n, :, time]))[0])
                             inei = inei[np.isin(inei, np.append(np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO'])[0]
                                                                 , endnodeset))]
-                    breakpoint()
+
                     # Procedure for selecting routes based on expected profit #
                     c_trans = CTRANS[n, inei, time]
                     p_sl = SLRISK[n, inei]
                     y_node = PRICE[inei, time] - PRICE[n, time]
-                    q_node = np.min(STOCK[n, time] / len(inei), CPCTY[n, inei])
+                    breakpoint()
+                    q_node = np.minimum((STOCK[n, time] / len(inei)) * np.ones(CPCTY[n, inei].shape), CPCTY[n, inei])
                     lccf = ltcoeff[n]
                     totstock = STOCK[n, time]
                     totcpcty = CPCTY[n, inei]
