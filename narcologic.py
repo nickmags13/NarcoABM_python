@@ -363,27 +363,27 @@ def main(mr, times):
                         LEAK[n, time] = nodeloss * STOCK[n, time]
                         STOCK[n, time] = STOCK[n, time] - LEAK[n, time]
                     elif n == 0:
-                        inei = np.intersect1d(np.where(ADJ[n, :] == 1), np.where(routepref[n, :, time] > 0))
+                        inei = np.intersect1d(np.where(ADJ[n, :] == 1)[0], np.where(routepref[n, :, time] > 0)[0])
                         for nd in range(0, len(np.unique(NodeTable.loc[1:nnodes, 'DTO']))):
                             if len(np.where(NodeTable.loc[inei, 'DTO'] == nd)) == 0:
                                 idtombr = np.where(NodeTable['DTO'] == nd)[0]
                                 subinei = np.intersect1d(np.where(ADJ[n, idtombr] == 1)[0],
                                                          np.where(routepref[n, idtombr, time] > 0)[0])
                                 if len(subinei) == 0:
-                                    subinei = np.intersect1d(np.where(ADJ[n, idtombr] == 1),
+                                    subinei = np.intersect1d(np.where(ADJ[n, idtombr] == 1)[0],
                                                              np.where(routepref[n, idtombr, time] ==
-                                                                      np.max(routepref[n, idtombr, time])))
+                                                                      np.max(routepref[n, idtombr, time]))[0])
                                 np.append(inei, subinei)
                     else:
-                        inei = np.intersect1d(np.where(ADJ[n, :] == 1), np.where(routepref[n, :, time] > 0))
+                        inei = np.intersect1d(np.where(ADJ[n, :] == 1)[0], np.where(routepref[n, :, time] > 0)[0])
                         """ CHECK ismember() function for 2D arrays"""
                         inei = inei[np.isin(inei, np.append(np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO'])[0],
                                                             endnodeset))]
                         if len(np.where(inei != 0)[0]) == 0:
-                            inei = np.intersect1d(np.where(ADJ[n, :] == 1),
-                                                  np.where(routepref[n, :, time] == np.max(routepref[n, :, time])))
-                            inei = inei[np.isin(inei, np.append(np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO'])[0],
-                                                            endnodeset))]
+                            inei = np.intersect1d(np.where(ADJ[n, :] == 1)[0],
+                                                  np.where(routepref[n, :, time] == np.max(routepref[n, :, time]))[0])
+                            inei = inei[np.isin(inei, np.append(np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO'])[0]
+                                                                , endnodeset))]
                     breakpoint()
                     # Procedure for selecting routes based on expected profit #
                     c_trans = CTRANS[n, inei, time]
