@@ -387,17 +387,17 @@ def main(mr, times):
 
                     # Procedure for selecting routes based on expected profit #
                     c_trans = CTRANS[n, inei, time].reshape(1, -1)
-                    p_sl = SLRISK[n, inei]
-                    y_node = PRICE[inei, time] - PRICE[n, time]
-                    q_node = np.minimum(STOCK[n, time] / len(inei), CPCTY[n, inei])
+                    p_sl = SLRISK[n, inei].reshape(1, -1)
+                    y_node = (PRICE[inei, time] - PRICE[n, time]).reshape(-1, 1)
+                    q_node = np.minimum(STOCK[n, time] / len(inei), CPCTY[n, inei]).reshape(1, -1)
                     lccf = ltcoeff[n, 0]
                     totstock = STOCK[n, time]
-                    totcpcty = CPCTY[n, inei]
-                    rtpref = routepref[n, inei, time]
-                    dtonei = NodeTable.loc[inei, 'DTO'].to_numpy()
+                    totcpcty = CPCTY[n, inei].reshape(1, -1)
+                    rtpref = routepref[n, inei, time].reshape(1, -1)
+                    dtonei = NodeTable.loc[inei, 'DTO'].to_numpy().reshape(-1, 1)
                     """ Remove below line after testing """
                     dtonei -= 1
-                    cutflag = dtocutflag[np.unique(dtonei[np.where(dtonei != 0)])]
+                    cutflag = dtocutflag[np.unique(dtonei[np.where(dtonei != 0)])].reshape(-1, 1)
                     breakpoint()
                     neipick, neivalue, valuex = calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei,
                                                             cutflag, totcpcty, totstock, edgechange)
