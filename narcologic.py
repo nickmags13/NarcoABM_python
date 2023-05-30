@@ -390,7 +390,7 @@ def main(mr, times):
                     p_sl = SLRISK[n, inei]
                     y_node = PRICE[inei, time] - PRICE[n, time]
                     breakpoint()
-                    q_node = np.minimum((STOCK[n, time] / len(inei)) * np.ones(CPCTY[n, inei].shape), CPCTY[n, inei])
+                    q_node = np.minimum(STOCK[n, time] / len(inei)), CPCTY[n, inei])
                     lccf = ltcoeff[n]
                     totstock = STOCK[n, time]
                     totcpcty = CPCTY[n, inei]
