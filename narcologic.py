@@ -411,7 +411,6 @@ def main(mr, times):
                         WGHT[n, inei] = np.transpose(np.amax(valuex[neipick], 0) / np.sum(np.amax(valuex[neipick], 0)))
 
                     activeroute[n, time] = np.split(np.transpose(inei), len(inei), 1)
-                    neiset = np.unique(NodeTable.loc[inei, 'DTO'])
                     FLOW[n, inei, time] = np.amin(np.multiply(WGHT[n, inei] / np.sum(WGHT[n, inei]), STOCK[n, time]),
                                                   CPCTY[n, inei])
                     OUTFLOW[n, time] = np.sum(FLOW[n, inei, time])
