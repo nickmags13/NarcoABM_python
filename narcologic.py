@@ -397,13 +397,13 @@ def main(mr, times):
                     dtonei = NodeTable.loc[inei, 'DTO'].to_numpy().reshape(-1, 1)
                     """ check NodeTable DTO should have 0 and 1 instead of 1 and 2 - if so remove -1 from line below """
                     cutflag = dtocutflag[np.unique(dtonei[np.where(dtonei != 0)])-1].reshape(-1, 1)
-                    breakpoint()
                     neipick, neivalue, valuex = calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei,
                                                             cutflag, totcpcty, totstock, edgechange)
 
+                    neipick = np.int_(neipick)
                     # With top-down route optimization
                     inei = inei[neipick]
-
+                    breakpoint()
                     # weight according to salience value function
                     if len(np.where(valuex <= 0)) == 0:
                         WGHT[n, inei] = (1 - SLRISK[n, inei]) / np.sum(1 - SLRISK[n, inei])
