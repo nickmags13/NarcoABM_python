@@ -405,7 +405,7 @@ def main(mr, times):
                     inei = inei[neipick]
                     breakpoint()
                     # weight according to salience value function
-                    if len(np.where(valuex <= 0)) == 0:
+                    if len(np.where(valuex <= 0)) > 0:
                         WGHT[n, inei] = (1 - SLRISK[n, inei]) / np.sum(1 - SLRISK[n, inei])
                     else:
                         WGHT[n, inei] = np.transpose(np.amax(valuex[neipick], 0) / np.sum(np.amax(valuex[neipick], 0)))
