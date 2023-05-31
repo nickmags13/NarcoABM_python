@@ -66,13 +66,11 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei, cutflag, to
     dtos = np.unique(dtonei)
     icut = []
 
-    breakpoint()
     if len(dtos) > 1:
         for j in np.arange(0, len(dtos)):
             idto = np.where(rankroute[:, 4] == dtos[j])[0]
             if np.where(valuex[np.where(dtonei == dtos[j])[0]] > 0)[0].size == 0:  # CHECK
-                subicut = np.transpose(np.arange(0, np.int_(np.where(np.cumsum(rankroute[idto, 5]) >= totstock
-                                                                     )[0])[0:int(edgechange[j][0])]))
+                subicut = np.where(np.cumsum(rankroute[idto, 5]) >= totstock)[0][0:int(edgechange[j][0])][0]
             elif np.where(rankroute[idto, 1] > 0)[0].size == 0:
                 subicut = np.where(rankroute[idto, 0] >= 0)[0][0:edgechange[j][0]]
             elif np.where(np.cumsum(rankroute[idto, 5]) >= totstock)[0].size == 0:
@@ -81,7 +79,8 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei, cutflag, to
                 subicut = np.where(rankroute[idto, 0] >= 0)[0][0:edgechange[j][0]]
             if cutflag[int(dtos[j] - 1), 0] == 1:
                 subicut = []
-            icut = np.concatenate((icut, idto[subicut]), axis=0)
+            # icut = np.concatenate((icut, idto[subicut]), axis=0)
+            icut.append(idto[subicut])
     else:
         if len(np.where(valuex > 0)[0]) == 0:
             icut = np.transpose(np.arange(0, np.where(np.cumsum(rankroute[:, 5]) >= totstock)[0][0]))
@@ -94,8 +93,6 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei, cutflag, to
         else:
             icut = np.where(rankroute[:, 0] >= 0)
 
-    breakpoint()
-    icut = icut.astype(int)
     neipick = rankroute[icut, 3]
     neivalue = rankroute[icut, 0]
 
