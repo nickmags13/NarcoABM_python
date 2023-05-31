@@ -551,10 +551,10 @@ def main(mr, times):
                     supplyfit = 0.1
 
                 # Route capacity constrains flow volumes, need to expand routes
-                idtonet = np.delete(dtorefvec, dtorefvec[np.in1d(dtorefvec, endnodeset)])
+                idtonet = np.delete(dtorefvec, np.in1d(dtorefvec, endnodeset))
 
                 if np.sum(STOCK[idtonet, time]) >= np.amax(dtoEdgeTable['Capacity']):
-                    supplyfit = np.amax(supplyfit, losstolval * np.sum(STOCK[idtonet, time]) / rtcap[erun])
+                    supplyfit = max(supplyfit, losstolval * np.sum(STOCK[idtonet, time]) / rtcap[erun])
 
                 # call top-down route optimization
                 expmax = expandmax[erun]
