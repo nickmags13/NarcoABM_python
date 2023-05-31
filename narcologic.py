@@ -494,7 +494,7 @@ def main(mr, times):
                     SLRISK[n, fwdnei] = sl_risk
 
                     if len(np.where(sl_risk != 0)) > 0:
-                        avgslrisk[n, time] = np.split(SLRISK[n, activeroute[n, time]], 1, len(activeroute[n, time]))
+                        avgslrisk[n, time] = SLRISK[n, activeroute[n, time]]
 
                     NodeTable['Stock'] = STOCK[:, time]
                     NodeTable['Capital'] = TOTCPTL[:, time]
@@ -509,7 +509,6 @@ def main(mr, times):
             totslrisk[time + 1] = np.mean(np.concatenate(2, avgslrisk[:, time]))
 
             # Reinforcement learning for successful routes
-            iactivenode = np.where(OUTFLOW[np.arange(2, nnodes + 1), time] > 0)
             actedge = activeroute[:, time]
 
             # Calculate updated marginal profit
@@ -519,7 +518,7 @@ def main(mr, times):
 
             # Route Optimization ###########
             for dt in range(0, ndto):
-                idto = np.where(NodeTable['DTO'] == dt)
+                idto = np.where(NodeTable['DTO'] == dt)[0]
                 DTOBDGT[dt, time] = np.sum(np.multiply(STOCK[endnodeset, time], PRICE[endnodeset, time]))  # total DTO
                 # funds for expansion/viability
                 dtorefvec = np.array([[1], [idto], [mexnode]])
@@ -539,15 +538,15 @@ def main(mr, times):
 
                 # calculate losses from S&L events
                 # volume-based - does not matter where in supply chain
-                ipossl = np.where(dtoslsuc > 0)
+                ipossl = np.where(dtoslsuc > 0)[0]
                 nrow = ipossl[0]
                 ncol = ipossl[1]
                 flowvalues = np.multiply(allflows[allflows > 0], (
                         (PRICE[dtorefvec[ncol], time] - PRICE[dtorefvec[irow], time]) - dtoCTRANS[allflows > 0]))
                 supplyfit = np.sum(np.multiply(dtoslsuc[ipossl], (
                         (PRICE[dtorefvec[ncol], time] - PRICE[dtorefvec[nrow], time]) - dtoCTRANS[ipossl])))
-                losstolval = losstol * np.amax(flowvalues)
-                if len(np.where(supplyfit != 0)) == 0 and len(np.where(losstolval != 0)) == 0:
+                losstolval = losstol * np.maximum(flowvalues)
+                if len(np.where(supplyfit != 0)[0]) == 0 and len(np.where(losstolval != 0)[0]) == 0:
                     supplyfit = 0.1
 
                 # Route capacity constrains flow volumes, need to expand routes
@@ -580,7 +579,7 @@ def main(mr, times):
             STOCK[endnodeset, time + 1] = 0
             NodeTable.loc[1, 'Stock'] = STOCK[1, time + 1]
             NodeTable[endnodeset, 'Stock'] = 0
-            slcount_edges[time] = len(np.where(slsuccess[:, :, time] > 0))
+            slcount_edges[time] = len(np.where(slsuccess[:, :, time] > 0)[0])
             h_slsuccess = slsuccess[:, :, time]
             slcount_vol[time] = np.sum(h_slsuccess[h_slsuccess > 0])
 
