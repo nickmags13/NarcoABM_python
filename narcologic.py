@@ -395,9 +395,8 @@ def main(mr, times):
                     totcpcty = CPCTY[n, inei].reshape(1, -1)
                     rtpref = routepref[n, inei, time].reshape(1, -1)
                     dtonei = NodeTable.loc[inei, 'DTO'].to_numpy().reshape(-1, 1)
-                    """ Remove below line after testing """
-                    dtonei -= 1
-                    cutflag = dtocutflag[np.unique(dtonei[np.where(dtonei != 0)])].reshape(-1, 1)
+                    """ check NodeTable DTO should have 0 and 1 instead of 1 and 2 - if so remove -1 from line below """
+                    cutflag = dtocutflag[np.unique(dtonei[np.where(dtonei != 0)])-1].reshape(-1, 1)
                     breakpoint()
                     neipick, neivalue, valuex = calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei,
                                                             cutflag, totcpcty, totstock, edgechange)
