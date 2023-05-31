@@ -169,7 +169,7 @@ def main(mr, times):
     RENTCAP = np.zeros((nnodes, TMAX))  # portion of MARGIN retained at node as profit
     LEAK = np.zeros((nnodes, TMAX))  # dynamic amount of cocaine leaked at each node
     """Check which data structure to use instead of cell"""
-    activeroute = np.empty((nnodes, TMAX))  # track active routes
+    activeroute = np.empty((nnodes, TMAX), dtype=object)  # track active routes
     """Check which data structure to use instead of cell"""
     avgslrisk = np.empty((nnodes, TMAX))  # average S&L risk at each node given active routes
     totslrisk = np.zeros((1, TMAX))  # etwork-wide average S&L risk
@@ -410,7 +410,7 @@ def main(mr, times):
                     else:
                         WGHT[n, inei] = np.transpose(np.amax(valuex[neipick], 0) / np.sum(np.amax(valuex[neipick], 0)))
 
-                    activeroute[n, time] = np.split(np.transpose(inei), len(inei), 1)
+                    activeroute[n, time] = inei
                     FLOW[n, inei, time] = np.amin(np.multiply(WGHT[n, inei] / np.sum(WGHT[n, inei]), STOCK[n, time]),
                                                   CPCTY[n, inei])
                     OUTFLOW[n, time] = np.sum(FLOW[n, inei, time])
