@@ -21,16 +21,12 @@ def main(mr, times):
     # Ignore divide by zero runtime warning
     np.seterr(divide='ignore')
 
-    batchrun = 9
-    MRUNS = 31
     ERUNS = 11
     TSTART = 0
     TMAX = 181  # 15 years at monthly time steps
 
-    # thistate = scipy.io.loadmat('data/savedrngstate.mat')['thistate']
-    thistate = 1  # Verify the correct file upload and remove it after testing
+    thistate = scipy.io.loadmat('data/savedrngstate.mat')['thistate']
 
-    testflag = 1
     erun = 3
     mrun = 2
 
