@@ -104,7 +104,6 @@ def main(mr, times):
     NodeTable['CoastDist'][nnodes - 1] = 0
 
     # Assign nodes to initials DTOs
-    # CHECK the variable assignments in the for loop ####
     for nn in range(1, nnodes - 2):
         try:
             westdir = NodeTable['Col'][nn] - np.where(np.isnan(dcoast[NodeTable['Row'][nn],
