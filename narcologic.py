@@ -396,7 +396,7 @@ def main(mr, times):
                     rtpref = routepref[n, inei, time].reshape(1, -1)
                     dtonei = NodeTable.loc[inei, 'DTO'].to_numpy().reshape(-1, 1)
                     """ check NodeTable DTO should have 0 and 1 instead of 1 and 2 - if so remove -1 from line below """
-                    cutflag = dtocutflag[np.unique(dtonei[np.where(dtonei != 0)])-1].reshape(-1, 1)
+                    cutflag = dtocutflag[np.unique(dtonei[np.where(dtonei != 0)]) - 1].reshape(-1, 1)
                     neipick, neivalue, valuex = calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei,
                                                             cutflag, totcpcty, totstock, edgechange)
 
@@ -409,16 +409,17 @@ def main(mr, times):
                     else:
                         WGHT[n, inei] = np.transpose(np.amax(valuex[neipick], 0) / np.sum(np.amax(valuex[neipick], 0)))
 
-                    breakpoint()
                     activeroute[n, time] = inei
                     FLOW[n, inei, time] = np.minimum(np.multiply(WGHT[n, inei] / np.sum(WGHT[n, inei]), STOCK[n, time]),
-                                                  CPCTY[n, inei])
+                                                     CPCTY[n, inei])
+
                     OUTFLOW[n, time] = np.sum(FLOW[n, inei, time])
                     STOCK[n, time] = STOCK[n, time] - OUTFLOW[n, time]
                     nodecosts = np.sum(np.multiply(FLOW[n, inei, time], CTRANS[n, inei, time]))
 
+                    breakpoint()
                     # Check for S#L event
-                    if len(np.where(ismember(np.where(slevent[n, :, time] != 0), inei) != 0)) > 0:
+                    if len(np.where(np.isin(np.where(slevent[n, :, time] != 0)[0], inei) != 0)) > 0:
                         isl = np.where(slevent[n, inei, time] == 1)
                         intrdctobs[n, inei[isl], time] = 1
                         intcpt = np.amin(p_sucintcpt[erun] * NodeTable.loc[inei[isl], 'pintcpt'], 1)
@@ -525,21 +526,15 @@ def main(mr, times):
                 DTOBDGT[dt, time] = np.sum(np.multiply(STOCK[endnodeset, time], PRICE[endnodeset, time]))  # total DTO
                 # funds for expansion/viability
                 dtorefvec = np.array([[1], [idto], [mexnode]])
-                subnnodes = len(idto)
                 subroutepref = routepref[dtorefvec, dtorefvec, time]
-                subactivenodes = activenodes[ismember(activenodes, idto)]
                 subactedges = np.concatenate(1, actedge[dtorefvec])
                 ikeep = np.where(NodeTable[subactedges, 'DTO'] == dt)
-                dtoACTEDGES = subactedges[ikeep]
-                idtoactedges = np.where(ismember(dtorefvec, dtoACTEDGES) == 1)
                 subflow = FLOW[dtorefvec, dtorefvec, time]
                 dtoslsuc = slsuccess[dtorefvec, dtorefvec, time]
                 allflows = subflow + dtoslsuc
                 # locate active edges
                 indices = np.where(allflows > 0)
                 irow = indices[0]
-                icol = indices[1]
-                sendedge = ismember(EdgeTable['EndNodes'].str[0], dtorefvec)
                 dtoEdgeTable = EdgeTable.loc[:, 'sendedge']
                 dtoEdgeTable = dtoEdgeTable[ismember(dtoEdgeTable['EndNodes'].str[1], dtorefvec), :]
                 dtoSLRISK = SLRISK[dtorefvec, dtorefvec]
