@@ -11,7 +11,7 @@ import scipy
 from calc import calc_intrisk, calc_neival, lldistkm
 from initialize import load_expmntl_parms, intrd_tables_batch
 from optimize import optimize_interdiction_batch, optimizeroute_multidto
-from data import data_processing
+from data import data_processing, MTMCI_func, data_sourcing
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -296,8 +296,7 @@ def main(mr, times):
 
     for m in mr:
         for time in times:
-            """ Remove comment after testing"""
-            # MTMCI_func(data_sourcing(), time, m)
+            MTMCI_func(data_sourcing(), time, m)
 
             intrdct_events, intrdct_nodes = optimize_interdiction_batch(ADJ)
             slevent[:, :, time] = intrdct_events
