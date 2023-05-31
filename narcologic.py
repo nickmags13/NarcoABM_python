@@ -422,7 +422,7 @@ def main(mr, times):
                     if np.any(np.isin(np.where(slevent[n, :, time] != 0)[0], inei)):
                         isl = np.where(slevent[n, inei, time] == 1)
                         intrdctobs[n, inei[isl], time] = 1
-                        intcpt = np.amin(p_sucintcpt[erun] * NodeTable.loc[inei[isl], 'pintcpt'], 1)
+                        intcpt = np.minimum(p_sucintcpt[erun] * NodeTable.loc[inei[isl], 'pintcpt'], 1)
 
                         # interception probability
                         p_int = np.random.rand(len(intcpt), 1)
