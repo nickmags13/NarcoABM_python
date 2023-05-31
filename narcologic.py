@@ -391,7 +391,6 @@ def main(mr, times):
                     STOCK[n, time] = STOCK[n, time] - OUTFLOW[n, time]
                     nodecosts = np.sum(np.multiply(FLOW[n, inei, time], CTRANS[n, inei, time]))
 
-                    breakpoint()
                     # Check for S#L event
                     if np.any(np.isin(np.where(slevent[n, :, time] != 0)[0], inei)):
                         isl = np.where(slevent[n, inei, time] == 1)
