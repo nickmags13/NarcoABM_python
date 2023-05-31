@@ -440,7 +440,7 @@ def main(mr, times):
                         TOTCPTL[inei, time] = TOTCPTL[inei, time] - (np.multiply(np.transpose(FLOW[n, inei, time]),
                                                                                  PRICE[inei, time]))
                         ICPTL[n, time] = rentcap * np.sum(np.multiply(FLOW[n, inei], ADDVAL[n, inei]))
-                        MARGIN[n, time] = noderevenue - nodecosts + np.minimum(TOTCPTL[n, time], 0)
+                        MARGIN[n, time] = noderevenue - nodecosts + min(TOTCPTL[n, time], 0)
                         if n > 1:
                             BRIBE[n, time] = max(bribepct * MARGIN[n, time], 0)
                             if MARGIN[n, time] > 0:
@@ -458,14 +458,14 @@ def main(mr, times):
                         TOTCPTL[inei, time] = TOTCPTL[inei, time] - np.multiply(np.transpose(FLOW[n, inei, time]),
                                                                                 PRICE[inei, time])
                         ICPTL[n, time] = rentcap * np.sum(np.multiply(FLOW[n, inei], ADDVAL[n, inei]))
-                        MARGIN[n, time] = noderevenue - nodecosts + np.minimum(TOTCPTL[n, time], 0)
+                        MARGIN[n, time] = noderevenue - nodecosts + min(TOTCPTL[n, time], 0)
                         if n > 1:
-                            BRIBE[n, time] = np.amax(bribepct * MARGIN[n, time], 0)
+                            BRIBE[n, time] = max(bribepct * MARGIN[n, time], 0)
                             if MARGIN[n, time] > 0:
                                 RENTCAP[n, time] = MARGIN[n, time] - BRIBE[n, time]
                             else:
                                 RENTCAP[n, time] = MARGIN[n, time]
-                            TOTCPTL[n, time] = np.amax(TOTCPTL[n, time], 0) + RENTCAP[n, time]
+                            TOTCPTL[n, time] = max(TOTCPTL[n, time], 0) + RENTCAP[n, time]
                         else:
                             RENTCAP[n, time] = MARGIN[n, time]
                             TOTCPTL[n, time] = TOTCPTL[n, time] + RENTCAP[n, time]
@@ -510,8 +510,6 @@ def main(mr, times):
 
             # Reinforcement learning for successful routes
             iactivenode = np.where(OUTFLOW[np.arange(2, nnodes + 1), time] > 0)
-            avgflow = STOCK[iendnode, time] / len(iactivenode)
-            activenodes = np.unique(np.concatenate(1, activeroute[:, time]))
             actedge = activeroute[:, time]
 
             # Calculate updated marginal profit
@@ -527,7 +525,6 @@ def main(mr, times):
                 dtorefvec = np.array([[1], [idto], [mexnode]])
                 subroutepref = routepref[dtorefvec, dtorefvec, time]
                 subactedges = np.concatenate(1, actedge[dtorefvec])
-                ikeep = np.where(NodeTable[subactedges, 'DTO'] == dt)
                 subflow = FLOW[dtorefvec, dtorefvec, time]
                 dtoslsuc = slsuccess[dtorefvec, dtorefvec, time]
                 allflows = subflow + dtoslsuc
