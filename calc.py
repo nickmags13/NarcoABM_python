@@ -72,7 +72,7 @@ def calc_neival(c_trans, p_sl, y_node, q_node, lccf, rtpref, dtonei, cutflag, to
             idto = np.where(rankroute[:, 4] == dtos[j])[0]
             if np.where(valuex[np.where(dtonei == dtos[j])[0]] > 0)[0].size == 0:  # CHECK
                 subicut = np.transpose(np.arange(0, np.int_(np.where(np.cumsum(rankroute[idto, 5]) >= totstock
-                                                                     ))[0][0:edgechange[j][0]]))
+                                                                     )[0])[0:int(edgechange[j][0])]))
             elif np.where(rankroute[idto, 1] > 0)[0].size == 0:
                 subicut = np.where(rankroute[idto, 0] >= 0)[0][0:edgechange[j][0]]
             elif np.where(np.cumsum(rankroute[idto, 5]) >= totstock)[0].size == 0:
