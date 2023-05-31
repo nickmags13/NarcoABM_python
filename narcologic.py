@@ -406,7 +406,7 @@ def main(mr, times):
                     if len(np.where(valuex <= 0)) > 0:
                         WGHT[n, inei] = (1 - SLRISK[n, inei]) / np.sum(1 - SLRISK[n, inei])
                     else:
-                        WGHT[n, inei] = np.transpose(np.amax(valuex[neipick], 0) / np.sum(np.amax(valuex[neipick], 0)))
+                        WGHT[n, inei] = np.transpose(np.maximum(valuex[neipick], 0) / np.sum(np.amax(valuex[neipick], 0)))
 
                     activeroute[n, time] = inei
                     FLOW[n, inei, time] = np.minimum(np.multiply(WGHT[n, inei] / np.sum(WGHT[n, inei]), STOCK[n, time]),
@@ -440,14 +440,14 @@ def main(mr, times):
                         TOTCPTL[inei, time] = TOTCPTL[inei, time] - (np.multiply(np.transpose(FLOW[n, inei, time]),
                                                                                  PRICE[inei, time]))
                         ICPTL[n, time] = rentcap * np.sum(np.multiply(FLOW[n, inei], ADDVAL[n, inei]))
-                        MARGIN[n, time] = noderevenue - nodecosts + np.amin(TOTCPTL[n, time], 0)
+                        MARGIN[n, time] = noderevenue - nodecosts + np.minimum(TOTCPTL[n, time], 0)
                         if n > 1:
-                            BRIBE[n, time] = np.amax(bribepct * MARGIN[n, time], 0)
+                            BRIBE[n, time] = max(bribepct * MARGIN[n, time], 0)
                             if MARGIN[n, time] > 0:
                                 RENTCAP[n, time] = MARGIN[n, time] - BRIBE[n, time]
                             else:
                                 RENTCAP[n, time] = MARGIN[n, time]
-                            TOTCPTL[n, time] = np.amax(TOTCPTL[n, time], 0) + RENTCAP[n, time]
+                            TOTCPTL[n, time] = max(TOTCPTL[n, time], 0) + RENTCAP[n, time]
                         else:
                             RENTCAP[n, time] = MARGIN[n, time]
                             TOTCPTL[n, time] = TOTCPTL[n, time] + RENTCAP[n, time]
@@ -458,7 +458,7 @@ def main(mr, times):
                         TOTCPTL[inei, time] = TOTCPTL[inei, time] - np.multiply(np.transpose(FLOW[n, inei, time]),
                                                                                 PRICE[inei, time])
                         ICPTL[n, time] = rentcap * np.sum(np.multiply(FLOW[n, inei], ADDVAL[n, inei]))
-                        MARGIN[n, time] = noderevenue - nodecosts + np.amin(TOTCPTL[n, time], 0)
+                        MARGIN[n, time] = noderevenue - nodecosts + np.minimum(TOTCPTL[n, time], 0)
                         if n > 1:
                             BRIBE[n, time] = np.amax(bribepct * MARGIN[n, time], 0)
                             if MARGIN[n, time] > 0:
