@@ -376,7 +376,6 @@ def main(mr, times):
                                 np.append(inei, subinei)
                     else:
                         inei = np.intersect1d(np.where(ADJ[n, :] == 1)[0], np.where(routepref[n, :, time] > 0)[0])
-                        """ CHECK ismember() function for 2D arrays"""
                         inei = inei[np.isin(inei, np.append(np.where(NodeTable['DTO'] == NodeTable.loc[n, 'DTO'])[0],
                                                             endnodeset))]
                         if len(np.where(inei != 0)[0]) == 0:
@@ -536,7 +535,7 @@ def main(mr, times):
                 indices = np.where(allflows > 0)
                 irow = indices[0]
                 dtoEdgeTable = EdgeTable.loc[:, 'sendedge']
-                dtoEdgeTable = dtoEdgeTable[ismember(dtoEdgeTable['EndNodes'].str[1], dtorefvec), :]
+                dtoEdgeTable = dtoEdgeTable[np.isin(dtoEdgeTable['EndNodes'].str[1], dtorefvec), :]
                 dtoSLRISK = SLRISK[dtorefvec, dtorefvec]
                 dtoADDVAL = margval[dtorefvec, dtorefvec, time]
                 dtoCTRANS = CTRANS[dtorefvec, dtorefvec, time]
@@ -591,14 +590,6 @@ def main(mr, times):
             # Output tables for flows(t) and interdiction prob(t-1)
             Tflow, Tintrd = intrd_tables_batch(FLOW, slsuccess, SLPROB, NodeTable, EdgeTable, t, erun, m)
             data_processing(Tflow, time, m)
-
-
-def ismember(a, b):
-    bind = {}
-    for i, elt in enumerate(b):
-        if elt not in bind:
-            bind[elt] = i
-    return [bind.get(itm, None) for itm in a]
 
 
 if __name__ == "__main__":
