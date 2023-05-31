@@ -381,7 +381,8 @@ def main(mr, times):
                     if len(np.where(valuex <= 0)) > 0:
                         WGHT[n, inei] = (1 - SLRISK[n, inei]) / np.sum(1 - SLRISK[n, inei])
                     else:
-                        WGHT[n, inei] = np.transpose(np.maximum(valuex[neipick], 0) / np.sum(np.amax(valuex[neipick], 0)))
+                        WGHT[n, inei] = np.transpose(
+                            np.maximum(valuex[neipick], 0) / np.sum(np.amax(valuex[neipick], 0)))
 
                     activeroute[n, time] = inei
                     FLOW[n, inei, time] = np.minimum(np.multiply(WGHT[n, inei] / np.sum(WGHT[n, inei]), STOCK[n, time]),
