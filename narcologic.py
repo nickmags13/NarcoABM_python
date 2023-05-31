@@ -133,18 +133,11 @@ def main(mr, times):
         else:
             NodeTable['DTO'][nn] = 2
 
-    dptcodes = scipy.io.loadmat('data/dptcodes.mat')['dptcodes']
-    dptgrid = scipy.io.loadmat('data/dptgrid.mat')['dptgrid']
-    # Rdptgrid = scipy.io.loadmat('data/Rdptgrid.mat')['Rdptgrid']  # Geographic cells reference - check in python
-
     ADJ = np.zeros((nnodes, nnodes))  # adjacency matrix for trafficking network
-    TRRTY = np.zeros((nnodes, nnodes))  # control of nodes by each DTO
     DIST = np.zeros((nnodes, nnodes))  # geographic distance associated with edges
     ADDVAL = np.zeros((nnodes, nnodes))  # added value per edge in trafficking network
     WGHT = np.ones((nnodes, nnodes))  # dynamic weighting of edges
-    FLOW = np.zeros((nnodes, nnodes, TMAX))  # dynamic flows of cocaine between nodes
     SLRISK = slprob_0 * np.ones((nnodes, nnodes))  # dynamic perceived risk of seisure and loss per edge by node agent
-    INTRISK = np.zeros((nnodes, TMAX))  # dynamic perceived risk of interdiction at each node
     CPCTY = np.zeros((nnodes, nnodes))  # maximum flow possible between nodes
     CTRANS = np.zeros((nnodes, nnodes, TMAX))  # ransportation costs between nodes
     RMTFAC = np.zeros((nnodes, nnodes))  # landscape factor (remoteness) influencing S&L risk
@@ -154,24 +147,18 @@ def main(mr, times):
     # international border
 
     SUITFAC = np.zeros((nnodes, nnodes))
-    """Check which data structure to use instead of cell"""
-    NEIHOOD = np.empty((nnodes, 2))
     STOCK = np.zeros((nnodes, TMAX))  # dynamic cocaine stock at each node
     PRICE = np.zeros((nnodes, TMAX))  # $/kilo at each node
     RISKPREM = np.ones((nnodes, nnodes, TMAX))
-    INFLOW = np.zeros((nnodes, TMAX))  # dynamic stock of cocaine coming into at each node
     OUTFLOW = np.zeros((nnodes, TMAX))  # dynamic stock of cocaine leaving from each node
     TOTCPTL = np.zeros((nnodes, TMAX))  # total value of cocaine at each node
     ICPTL = np.zeros((nnodes, TMAX))  # dynamic illicit capital accumulated at each node
-    LCPTL = np.zeros((nnodes, TMAX))  # dynamic legitimate capital accumulated at each node
     BRIBE = np.zeros((nnodes, TMAX))  # annual bribe payments made at each node to maintain control
     MARGIN = np.zeros((nnodes, TMAX))  # gross profit per node after purchasing, trafficking, and selling
     RENTCAP = np.zeros((nnodes, TMAX))  # portion of MARGIN retained at node as profit
     LEAK = np.zeros((nnodes, TMAX))  # dynamic amount of cocaine leaked at each node
-    """Check which data structure to use instead of cell"""
     activeroute = np.empty((nnodes, TMAX), dtype=object)  # track active routes
-    """Check which data structure to use instead of cell"""
-    avgslrisk = np.empty((nnodes, TMAX))  # average S&L risk at each node given active routes
+    avgslrisk = np.empty((nnodes, TMAX), dtype=object)  # average S&L risk at each node given active routes
     totslrisk = np.zeros((1, TMAX))  # etwork-wide average S&L risk
     slcpcty = np.zeros((1, TMAX))
 
