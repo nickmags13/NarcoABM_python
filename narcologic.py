@@ -334,6 +334,7 @@ def main(mr, times):
                     rtdto - 1, int(np.floor(time / 12)) + 1]
                 TOTCPTL[n, time] = TOTCPTL[n, time - 1] + TOTCPTL[n, time]
                 if STOCK[n, time] > 0:
+                    inei = []
                     if n > 0:
                         LEAK[n, time] = nodeloss * STOCK[n, time]
                         STOCK[n, time] = STOCK[n, time] - LEAK[n, time]
