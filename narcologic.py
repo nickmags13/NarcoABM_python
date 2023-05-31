@@ -47,9 +47,6 @@ def main(mr, times):
     # @@@@@@@@@@ Agent Attributes @@@@@@@@@@@@
     # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-    # Interdiction Agent #
-    delta_sl = sl_learn[0, erun]  # reinforcement learning rate for S&L vents (i.e., weight on new information)
-
     # Network Agent #
     ndto = 2  # initial number of DTOs
     dtocutflag = np.zeros((ndto, 1))
@@ -73,7 +70,6 @@ def main(mr, times):
 
     slprob_0 = 1 / (np.sum(np.power(timewght_0, np.array((np.arange(0, 13))))) + betarisk)
     bribepct = 0.3
-    bribethresh = 12
     rentcap = 1 - bribepct
     edgechange = expandmax[0, erun] * np.ones((ndto, 1))
 
@@ -147,7 +143,6 @@ def main(mr, times):
     slcpcty = np.zeros((1, TMAX))
 
     np.random.set_state(savedState)
-    hitrngstate = np.random.rand(nnodes, 1)
 
     for k in range(0, nnodes):
         # Create adjacency matrix
@@ -170,8 +165,6 @@ def main(mr, times):
     # Create adjacency matrix
     iendnode = NodeTable.loc[NodeTable['DeptCode'] == 2, 'ID'].iloc[0]
     ADJ[EdgeTable['EndNodes'].str[0][np.where(EdgeTable['EndNodes'].str[1] == iendnode)[0]], iendnode] = 1
-    iedge = np.where(ADJ == 1)[0]  # CHECK if required
-    subneihood = np.zeros((LANDSUIT.shape[0], LANDSUIT.shape[1]))
 
     for j in range(0, nnodes):
         # Create weight and capacity matrices
@@ -231,7 +224,6 @@ def main(mr, times):
             ireceiver = (EdgeTable['EndNodes'].str[1][EdgeTable['EndNodes'].str[0] == j]).to_numpy()
             ireceiver = ireceiver.reshape(len(ireceiver), 1)
             idist_coast = (NodeTable.loc[ireceiver[:, 0], 'CoastDist'] < 20).to_numpy().reshape(-1, 1)
-            idist_inland = (NodeTable.loc[ireceiver[:, 0], 'CoastDist'] >= 20).to_numpy().reshape(-1, 1)
             CTRANS[j, ireceiver[idist_coast], TSTART] = np.multiply(ctrans_coast,
                                                                     DIST[j, ireceiver[idist_coast]]) / DIST[0, mexnode]
             if 156 <= j <= 158:
@@ -256,7 +248,6 @@ def main(mr, times):
     facmat = np.stack(facmat_list, axis=2)
     SLPROB[:, :, TSTART] = np.mean(facmat[:, :, range(0, 5)], 2)
     SLPROB[:, :, TSTART + 1] = SLPROB[:, :, TSTART]
-    slmin = SLPROB[:, :, TSTART]
     INTRDPROB[:, TSTART + 1] = slprob_0 * np.ones(nnodes)  # dynamic probability of interdiction at nodes
 
     # Initialize Node agents
@@ -264,7 +255,6 @@ def main(mr, times):
     TOTCPTL[:, TSTART] = NodeTable['Capital']
     PRICE[:, TSTART + 1] = PRICE[:, TSTART]
     slcpcty_0 = sl_min[0, erun]
-    slcpcty_max = sl_max[0, erun]
     slcpcty[0, TSTART + 1] = slcpcty_0
 
     # subjective risk perception with time distortion
@@ -285,8 +275,6 @@ def main(mr, times):
     routepref[:, endnodeset, TSTART + 1] = 1
     totslrisk[0, TSTART + 1] = 1
 
-    OWN = np.zeros((LANDSUIT.shape[0], LANDSUIT.shape[1]))  # node agent land ownership
-    IOWN = np.empty((nnodes, TMAX))  # dynamic list of owned parcels
     CTRANS[:, :, TSTART + 1] = CTRANS[:, :, TSTART]
 
     # Set-up figure for trafficking movie
@@ -495,7 +483,6 @@ def main(mr, times):
                 # funds for expansion/viability
                 dtorefvec = np.array([[1], [idto], [mexnode]])
                 subroutepref = routepref[dtorefvec, dtorefvec, time]
-                subactedges = np.concatenate(1, actedge[dtorefvec])
                 subflow = FLOW[dtorefvec, dtorefvec, time]
                 dtoslsuc = slsuccess[dtorefvec, dtorefvec, time]
                 allflows = subflow + dtoslsuc
