@@ -403,15 +403,15 @@ def main(mr, times):
                     neipick = np.int_(neipick)
                     # With top-down route optimization
                     inei = inei[neipick]
-                    breakpoint()
                     # weight according to salience value function
                     if len(np.where(valuex <= 0)) > 0:
                         WGHT[n, inei] = (1 - SLRISK[n, inei]) / np.sum(1 - SLRISK[n, inei])
                     else:
                         WGHT[n, inei] = np.transpose(np.amax(valuex[neipick], 0) / np.sum(np.amax(valuex[neipick], 0)))
 
+                    breakpoint()
                     activeroute[n, time] = inei
-                    FLOW[n, inei, time] = np.amin(np.multiply(WGHT[n, inei] / np.sum(WGHT[n, inei]), STOCK[n, time]),
+                    FLOW[n, inei, time] = np.minimum(np.multiply(WGHT[n, inei] / np.sum(WGHT[n, inei]), STOCK[n, time]),
                                                   CPCTY[n, inei])
                     OUTFLOW[n, time] = np.sum(FLOW[n, inei, time])
                     STOCK[n, time] = STOCK[n, time] - OUTFLOW[n, time]
