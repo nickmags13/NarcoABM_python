@@ -467,9 +467,6 @@ def main(mr, times):
             CTRANS[:, :, time + 1] = np.multiply(CTRANS[:, :, time], RISKPREM[:, :, time])
             totslrisk[time + 1] = np.mean(np.concatenate(2, avgslrisk[:, time]))
 
-            # Reinforcement learning for successful routes
-            actedge = activeroute[:, time]
-
             # Calculate updated marginal profit
             for q in range(0, nnodes):
                 if len(np.where(ADJ[q, :] == 1)) == 0:
